@@ -1,0 +1,372 @@
+
+*** Running vivado
+    with args -log TopMod.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source TopMod.tcl
+
+
+
+****** Vivado v2022.1 (64-bit)
+  **** SW Build 3526262 on Mon Apr 18 15:48:16 MDT 2022
+  **** IP Build 3524634 on Mon Apr 18 20:55:01 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source TopMod.tcl -notrace
+Command: read_checkpoint -auto_incremental -incremental C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/utils_1/imports/synth_1/SCCPU.dcp
+INFO: [Vivado 12-5825] Read reference checkpoint from C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/utils_1/imports/synth_1/SCCPU.dcp for incremental synthesis
+INFO: [Vivado 12-7989] Please ensure there are no constraint changes
+Command: synth_design -top TopMod -part xc7a100tcsg324-1
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7a100t'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a100t'
+INFO: [Device 21-403] Loading part xc7a100tcsg324-1
+INFO: [Designutils 20-5440] No compile time benefit to using incremental synthesis; A full resynthesis will be run
+INFO: [Designutils 20-4379] Flow is switching to default flow due to incremental criteria not met. If you would like to alter this behaviour and have the flow terminate instead, please set the following parameter config_implementation {autoIncr.Synth.RejectBehavior Terminate}
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 17228
+WARNING: [Synth 8-8895] 'alures' is already implicitly declared on line 99 [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:112]
+WARNING: [Synth 8-8895] 'memout' is already implicitly declared on line 99 [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:115]
+WARNING: [Synth 8-6901] identifier 'Branch' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:39]
+WARNING: [Synth 8-6901] identifier 'MemRead' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:39]
+WARNING: [Synth 8-6901] identifier 'MemtoReg' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:39]
+WARNING: [Synth 8-6901] identifier 'ALUop' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:39]
+WARNING: [Synth 8-6901] identifier 'MemtoWrite' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:39]
+WARNING: [Synth 8-6901] identifier 'ALUsrc' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:39]
+WARNING: [Synth 8-6901] identifier 'RegWrite' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:39]
+WARNING: [Synth 8-6901] identifier 'ALUS' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:39]
+WARNING: [Synth 8-6901] identifier 'zero' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:39]
+WARNING: [Synth 8-6901] identifier 'Branch' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:39]
+WARNING: [Synth 8-6901] identifier 'zero' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:39]
+WARNING: [Synth 8-6901] identifier 'immediate' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:45]
+WARNING: [Synth 8-6901] identifier 'Branch' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:46]
+WARNING: [Synth 8-6901] identifier 'zero' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:46]
+WARNING: [Synth 8-6901] identifier 'immediate' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:46]
+WARNING: [Synth 8-6901] identifier 'data1' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:47]
+WARNING: [Synth 8-6901] identifier 'data2' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:48]
+WARNING: [Synth 8-6901] identifier 'MemtoReg' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:49]
+WARNING: [Synth 8-6901] identifier 'memout' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:49]
+WARNING: [Synth 8-6901] identifier 'alures' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:49]
+WARNING: [Synth 8-6901] identifier 'immediate' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:50]
+WARNING: [Synth 8-6901] identifier 'immediate' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:51]
+WARNING: [Synth 8-6901] identifier 'alusrc2' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:52]
+WARNING: [Synth 8-6901] identifier 'alures' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:53]
+WARNING: [Synth 8-6901] identifier 'memout' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:54]
+WARNING: [Synth 8-6901] identifier 'Branch' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:63]
+WARNING: [Synth 8-6901] identifier 'zero' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:63]
+WARNING: [Synth 8-6901] identifier 'immediate' is used before its declaration [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:63]
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:02 ; elapsed = 00:00:03 . Memory (MB): peak = 1297.945 ; gain = 0.000
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'TopMod' [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/TopMod.v:23]
+INFO: [Synth 8-6157] synthesizing module 'SCCPU' [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:23]
+INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:36]
+INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:42]
+INFO: [Synth 8-6157] synthesizing module 'InstMem' [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/InstMem.v:21]
+INFO: [Synth 8-6155] done synthesizing module 'InstMem' (0#1) [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/InstMem.v:21]
+INFO: [Synth 8-6157] synthesizing module 'TheControlUnit' [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/TheControlUnit.v:23]
+INFO: [Synth 8-6155] done synthesizing module 'TheControlUnit' (0#1) [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/TheControlUnit.v:23]
+WARNING: [Synth 8-689] width (32) of port connection 'instruction' does not match port width (7) of module 'TheControlUnit' [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:88]
+INFO: [Synth 8-6157] synthesizing module 'regFile' [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/regFile.v:23]
+INFO: [Synth 8-6155] done synthesizing module 'regFile' (0#1) [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/regFile.v:23]
+INFO: [Synth 8-6157] synthesizing module 'Immediategenerator' [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/Immediategenerator.v:23]
+INFO: [Synth 8-6155] done synthesizing module 'Immediategenerator' (0#1) [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/Immediategenerator.v:23]
+INFO: [Synth 8-6157] synthesizing module 'ALUControlUnit' [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/ALUControlUnit.v:23]
+INFO: [Synth 8-6155] done synthesizing module 'ALUControlUnit' (0#1) [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/ALUControlUnit.v:23]
+INFO: [Synth 8-6157] synthesizing module 'NbitALU' [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/NbitALU.v:23]
+INFO: [Synth 8-6157] synthesizing module 'RCA' [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/RCA.v:23]
+INFO: [Synth 8-6157] synthesizing module 'fullAdder' [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/fullAdder.v:23]
+INFO: [Synth 8-6155] done synthesizing module 'fullAdder' (0#1) [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/fullAdder.v:23]
+INFO: [Synth 8-6155] done synthesizing module 'RCA' (0#1) [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/RCA.v:23]
+WARNING: [Synth 8-7071] port 'Cout' of module 'RCA' is unconnected for instance 'r' [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/NbitALU.v:29]
+WARNING: [Synth 8-7023] instance 'r' of module 'RCA' has 5 connections declared, but only 4 given [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/NbitALU.v:29]
+INFO: [Synth 8-6155] done synthesizing module 'NbitALU' (0#1) [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/NbitALU.v:23]
+INFO: [Synth 8-6157] synthesizing module 'DataMem' [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/DataMem.v:23]
+INFO: [Synth 8-6155] done synthesizing module 'DataMem' (0#1) [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/DataMem.v:23]
+INFO: [Synth 8-6155] done synthesizing module 'SCCPU' (0#1) [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:23]
+INFO: [Synth 8-6157] synthesizing module 'BCD' [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/BCD.v:23]
+INFO: [Synth 8-6155] done synthesizing module 'BCD' (0#1) [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/BCD.v:23]
+INFO: [Synth 8-6155] done synthesizing module 'TopMod' (0#1) [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/TopMod.v:23]
+WARNING: [Synth 8-3917] design TopMod has port CAnode[3] driven by constant 0
+WARNING: [Synth 8-3917] design TopMod has port CAnode[2] driven by constant 0
+WARNING: [Synth 8-3917] design TopMod has port CAnode[1] driven by constant 0
+WARNING: [Synth 8-3917] design TopMod has port CAnode[0] driven by constant 0
+WARNING: [Synth 8-7129] Port clk in module NbitALU is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module ALUControlUnit is either unconnected or has no load
+WARNING: [Synth 8-7129] Port instruction[19] in module Immediategenerator is either unconnected or has no load
+WARNING: [Synth 8-7129] Port instruction[18] in module Immediategenerator is either unconnected or has no load
+WARNING: [Synth 8-7129] Port instruction[17] in module Immediategenerator is either unconnected or has no load
+WARNING: [Synth 8-7129] Port instruction[16] in module Immediategenerator is either unconnected or has no load
+WARNING: [Synth 8-7129] Port instruction[15] in module Immediategenerator is either unconnected or has no load
+WARNING: [Synth 8-7129] Port instruction[14] in module Immediategenerator is either unconnected or has no load
+WARNING: [Synth 8-7129] Port instruction[13] in module Immediategenerator is either unconnected or has no load
+WARNING: [Synth 8-7129] Port instruction[12] in module Immediategenerator is either unconnected or has no load
+WARNING: [Synth 8-7129] Port instruction[4] in module Immediategenerator is either unconnected or has no load
+WARNING: [Synth 8-7129] Port instruction[3] in module Immediategenerator is either unconnected or has no load
+WARNING: [Synth 8-7129] Port instruction[2] in module Immediategenerator is either unconnected or has no load
+WARNING: [Synth 8-7129] Port instruction[1] in module Immediategenerator is either unconnected or has no load
+WARNING: [Synth 8-7129] Port instruction[0] in module Immediategenerator is either unconnected or has no load
+WARNING: [Synth 8-7129] Port instruction[1] in module TheControlUnit is either unconnected or has no load
+WARNING: [Synth 8-7129] Port instruction[0] in module TheControlUnit is either unconnected or has no load
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:02 ; elapsed = 00:00:04 . Memory (MB): peak = 1297.945 ; gain = 0.000
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:03 ; elapsed = 00:00:04 . Memory (MB): peak = 1297.945 ; gain = 0.000
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:03 ; elapsed = 00:00:04 . Memory (MB): peak = 1297.945 ; gain = 0.000
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.012 . Memory (MB): peak = 1297.945 ; gain = 0.000
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/constrs_1/new/SCCPU_const.xdc]
+WARNING: [Vivado 12-507] No nets matched 'clock_IBUF'. [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/constrs_1/new/SCCPU_const.xdc:6]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/constrs_1/new/SCCPU_const.xdc:6]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+Finished Parsing XDC File [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/constrs_1/new/SCCPU_const.xdc]
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/constrs_1/new/SCCPU_const.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/TopMod_propImpl.xdc].
+Resolution: To avoid this warning, move constraints listed in [.Xil/TopMod_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1377.344 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.003 . Memory (MB): peak = 1377.344 ; gain = 0.000
+INFO: [Designutils 20-5440] No compile time benefit to using incremental synthesis; A full resynthesis will be run
+INFO: [Designutils 20-4379] Flow is switching to default flow due to incremental criteria not met. If you would like to alter this behaviour and have the flow terminate instead, please set the following parameter config_implementation {autoIncr.Synth.RejectBehavior Terminate}
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:05 ; elapsed = 00:00:08 . Memory (MB): peak = 1377.344 ; gain = 79.398
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7a100tcsg324-1
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:05 ; elapsed = 00:00:08 . Memory (MB): peak = 1377.344 ; gain = 79.398
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:05 ; elapsed = 00:00:08 . Memory (MB): peak = 1377.344 ; gain = 79.398
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-327] inferring latch for variable 'ALUS_reg' [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/ALUControlUnit.v:28]
+WARNING: [Synth 8-327] inferring latch for variable 'LEDs_reg' [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:37]
+WARNING: [Synth 8-327] inferring latch for variable 'BCD_reg' [C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.srcs/sources_1/new/SCCPU.v:43]
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:05 ; elapsed = 00:00:09 . Memory (MB): peak = 1377.344 ; gain = 79.398
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input   13 Bit       Adders := 2     
+	   2 Input    4 Bit       Adders := 22    
++---XORs : 
+	   2 Input      1 Bit         XORs := 64    
++---Registers : 
+	               32 Bit    Registers := 32    
+	                4 Bit    Registers := 2     
++---Muxes : 
+	  12 Input   32 Bit        Muxes := 1     
+	   5 Input   32 Bit        Muxes := 1     
+	   2 Input   32 Bit        Muxes := 6     
+	   4 Input   16 Bit        Muxes := 1     
+	   2 Input   13 Bit        Muxes := 2     
+	   2 Input   12 Bit        Muxes := 2     
+	   5 Input    4 Bit        Muxes := 1     
+	   2 Input    4 Bit        Muxes := 25    
+	   4 Input    4 Bit        Muxes := 2     
+	   2 Input    3 Bit        Muxes := 1     
+	   5 Input    2 Bit        Muxes := 1     
+	   5 Input    1 Bit        Muxes := 5     
+	   2 Input    1 Bit        Muxes := 33    
+	   4 Input    1 Bit        Muxes := 1     
+	  13 Input    1 Bit        Muxes := 1     
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 240 (col length:80)
+BRAMs: 270 (col length: RAMB18 80 RAMB36 40)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
+WARNING: [Synth 8-3917] design TopMod has port CAnode[3] driven by constant 0
+WARNING: [Synth 8-3917] design TopMod has port CAnode[2] driven by constant 0
+WARNING: [Synth 8-3917] design TopMod has port CAnode[1] driven by constant 0
+WARNING: [Synth 8-3917] design TopMod has port CAnode[0] driven by constant 0
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:11 ; elapsed = 00:00:22 . Memory (MB): peak = 1377.344 ; gain = 79.398
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+
+Distributed RAM: Preliminary Mapping Report (see note below)
++------------+------------------------+-----------+----------------------+----------------+
+|Module Name | RTL Object             | Inference | Size (Depth x Width) | Primitives     | 
++------------+------------------------+-----------+----------------------+----------------+
+|TopMod      | cpu/datamemory/mem_reg | Implied   | 64 x 32              | RAM64X1S x 32  | 
++------------+------------------------+-----------+----------------------+----------------+
+
+Note: The table above is a preliminary report that shows the Distributed RAMs at the current stage of the synthesis flow. Some Distributed RAMs may be reimplemented as non Distributed RAM primitives later in the synthesis flow. Multiple instantiated RAMs are reported only once.
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:13 ; elapsed = 00:00:25 . Memory (MB): peak = 1377.344 ; gain = 79.398
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:13 ; elapsed = 00:00:25 . Memory (MB): peak = 1377.344 ; gain = 79.398
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+
+Distributed RAM: Final Mapping Report
++------------+------------------------+-----------+----------------------+----------------+
+|Module Name | RTL Object             | Inference | Size (Depth x Width) | Primitives     | 
++------------+------------------------+-----------+----------------------+----------------+
+|TopMod      | cpu/datamemory/mem_reg | Implied   | 64 x 32              | RAM64X1S x 32  | 
++------------+------------------------+-----------+----------------------+----------------+
+
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:13 ; elapsed = 00:00:26 . Memory (MB): peak = 1377.344 ; gain = 79.398
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:14 ; elapsed = 00:00:28 . Memory (MB): peak = 1377.344 ; gain = 79.398
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:14 ; elapsed = 00:00:28 . Memory (MB): peak = 1377.344 ; gain = 79.398
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:15 ; elapsed = 00:00:28 . Memory (MB): peak = 1377.344 ; gain = 79.398
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:15 ; elapsed = 00:00:28 . Memory (MB): peak = 1377.344 ; gain = 79.398
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:15 ; elapsed = 00:00:28 . Memory (MB): peak = 1377.344 ; gain = 79.398
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:15 ; elapsed = 00:00:28 . Memory (MB): peak = 1377.344 ; gain = 79.398
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+---------+------+
+|      |Cell     |Count |
++------+---------+------+
+|1     |BUFG     |     2|
+|2     |CARRY4   |    20|
+|3     |LUT1     |     3|
+|4     |LUT2     |    89|
+|5     |LUT3     |    24|
+|6     |LUT4     |    69|
+|7     |LUT5     |   161|
+|8     |LUT6     |   262|
+|9     |MUXF7    |    64|
+|10    |RAM64X1S |    32|
+|11    |FDCE     |   255|
+|12    |FDRE     |    28|
+|13    |LD       |    29|
+|14    |LDC      |     2|
+|15    |LDCP     |     1|
+|16    |LDP      |     1|
+|17    |IBUF     |     9|
+|18    |OBUF     |    31|
++------+---------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:15 ; elapsed = 00:00:28 . Memory (MB): peak = 1377.344 ; gain = 79.398
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 8 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:12 ; elapsed = 00:00:27 . Memory (MB): peak = 1377.344 ; gain = 0.000
+Synthesis Optimization Complete : Time (s): cpu = 00:00:15 ; elapsed = 00:00:28 . Memory (MB): peak = 1377.344 ; gain = 79.398
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.008 . Memory (MB): peak = 1377.344 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 149 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1377.344 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 65 instances were transformed.
+  LD => LDCE: 29 instances
+  LDC => LDCE: 2 instances
+  LDCP => LDCP (GND, LDCE, LUT3(x2), VCC): 1 instance 
+  LDP => LDPE: 1 instance 
+  RAM64X1S => RAM64X1S (RAMS64E): 32 instances
+
+Synth Design complete, checksum: cb6388e6
+INFO: [Common 17-83] Releasing license: Synthesis
+47 Infos, 63 Warnings, 1 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:16 ; elapsed = 00:00:31 . Memory (MB): peak = 1377.344 ; gain = 79.398
+INFO: [runtcl-6] Synthesis results are not added to the cache due to CRITICAL_WARNING
+INFO: [Common 17-1381] The checkpoint 'C:/Users/mennatallahzaid/Downloads/SCCPU/SCCPU/SCCPU.runs/synth_1/TopMod.dcp' has been generated.
+INFO: [runtcl-4] Executing : report_utilization -file TopMod_utilization_synth.rpt -pb TopMod_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Sun Nov  2 09:45:20 2025...

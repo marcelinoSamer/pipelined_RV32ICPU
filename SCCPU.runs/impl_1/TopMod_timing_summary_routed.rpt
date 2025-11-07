@@ -1,0 +1,1032 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2022.1 (win64) Build 3526262 Mon Apr 18 15:48:16 MDT 2022
+| Date         : Sun Nov  2 09:46:03 2025
+| Host         : CSE-P07-2168-58 running 64-bit major release  (build 9200)
+| Command      : report_timing_summary -max_paths 10 -report_unconstrained -file TopMod_timing_summary_routed.rpt -pb TopMod_timing_summary_routed.pb -rpx TopMod_timing_summary_routed.rpx -warn_on_violation
+| Design       : TopMod
+| Device       : 7a100t-csg324
+| Speed File   : -1  PRODUCTION 1.23 2018-06-13
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Summary Report
+
+------------------------------------------------------------------------------------------------
+| Timer Settings
+| --------------
+------------------------------------------------------------------------------------------------
+
+  Enable Multi Corner Analysis               :  Yes
+  Enable Pessimism Removal                   :  Yes
+  Pessimism Removal Resolution               :  Nearest Common Node
+  Enable Input Delay Default Clock           :  No
+  Enable Preset / Clear Arcs                 :  No
+  Disable Flight Delays                      :  No
+  Ignore I/O Paths                           :  No
+  Timing Early Launch at Borrowing Latches   :  No
+  Borrow Time for Max Delay Exceptions       :  Yes
+  Merge Timing Exceptions                    :  Yes
+
+  Corner  Analyze    Analyze    
+  Name    Max Paths  Min Paths  
+  ------  ---------  ---------  
+  Slow    Yes        Yes        
+  Fast    Yes        Yes        
+
+
+------------------------------------------------------------------------------------------------
+| Report Methodology
+| ------------------
+------------------------------------------------------------------------------------------------
+
+Rule       Severity          Description                     Violations  
+---------  ----------------  ------------------------------  ----------  
+TIMING-17  Critical Warning  Non-clocked sequential cell     315         
+LUTAR-1    Warning           LUT drives async reset alert    3           
+TIMING-20  Warning           Non-clocked latch               33          
+LATCH-1    Advisory          Existing latches in the design  1           
+
+Note: This report is based on the most recent report_methodology run and may not be up-to-date. Run report_methodology on the current design for the latest report.
+
+
+
+check_timing report
+
+Table of Contents
+-----------------
+1. checking no_clock (389)
+2. checking constant_clock (0)
+3. checking pulse_width_clock (0)
+4. checking unconstrained_internal_endpoints (1054)
+5. checking no_input_delay (7)
+6. checking no_output_delay (27)
+7. checking multiple_clock (0)
+8. checking generated_clocks (0)
+9. checking loops (0)
+10. checking partial_input_delay (0)
+11. checking partial_output_delay (0)
+12. checking latch_loops (0)
+
+1. checking no_clock (389)
+--------------------------
+ There are 28 register/latch pins with no clock driven by root clock pin: clk (HIGH)
+
+ There are 287 register/latch pins with no clock driven by root clock pin: clock (HIGH)
+
+ There are 16 register/latch pins with no clock driven by root clock pin: ledsel[0] (HIGH)
+
+ There are 16 register/latch pins with no clock driven by root clock pin: ledsel[1] (HIGH)
+
+ There are 13 register/latch pins with no clock driven by root clock pin: ssdSel[2] (HIGH)
+
+ There are 13 register/latch pins with no clock driven by root clock pin: ssdSel[3] (HIGH)
+
+ There are 4 register/latch pins with no clock driven by root clock pin: cpu/PC_reg[2]/Q (HIGH)
+
+ There are 4 register/latch pins with no clock driven by root clock pin: cpu/PC_reg[3]/Q (HIGH)
+
+ There are 4 register/latch pins with no clock driven by root clock pin: cpu/PC_reg[4]/Q (HIGH)
+
+ There are 4 register/latch pins with no clock driven by root clock pin: cpu/PC_reg[5]/Q (HIGH)
+
+
+2. checking constant_clock (0)
+------------------------------
+ There are 0 register/latch pins with constant_clock.
+
+
+3. checking pulse_width_clock (0)
+---------------------------------
+ There are 0 register/latch pins which need pulse_width check
+
+
+4. checking unconstrained_internal_endpoints (1054)
+---------------------------------------------------
+ There are 1054 pins that are not constrained for maximum delay. (HIGH)
+
+ There are 0 pins that are not constrained for maximum delay due to constant clock.
+
+
+5. checking no_input_delay (7)
+------------------------------
+ There are 7 input ports with no input delay specified. (HIGH)
+
+ There are 0 input ports with no input delay but user has a false path constraint.
+
+
+6. checking no_output_delay (27)
+--------------------------------
+ There are 27 ports with no output delay specified. (HIGH)
+
+ There are 0 ports with no output delay but user has a false path constraint
+
+ There are 0 ports with no output delay but with a timing clock defined on it or propagating through it
+
+
+7. checking multiple_clock (0)
+------------------------------
+ There are 0 register/latch pins with multiple clocks.
+
+
+8. checking generated_clocks (0)
+--------------------------------
+ There are 0 generated clocks that are not connected to a clock source.
+
+
+9. checking loops (0)
+---------------------
+ There are 0 combinational loops in the design.
+
+
+10. checking partial_input_delay (0)
+------------------------------------
+ There are 0 input ports with partial input delay specified.
+
+
+11. checking partial_output_delay (0)
+-------------------------------------
+ There are 0 ports with partial output delay specified.
+
+
+12. checking latch_loops (0)
+----------------------------
+ There are 0 combinational latch loops in the design through latch input
+
+
+
+------------------------------------------------------------------------------------------------
+| Design Timing Summary
+| ---------------------
+------------------------------------------------------------------------------------------------
+
+    WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
+    -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
+        inf        0.000                      0                 1081          inf        0.000                      0                 1081           NA           NA                      NA                    NA  
+
+
+There are no user specified timing constraints.
+
+
+------------------------------------------------------------------------------------------------
+| Clock Summary
+| -------------
+------------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------------------------
+| Intra Clock Table
+| -----------------
+------------------------------------------------------------------------------------------------
+
+Clock             WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
+-----             -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
+
+
+------------------------------------------------------------------------------------------------
+| Inter Clock Table
+| -----------------
+------------------------------------------------------------------------------------------------
+
+From Clock    To Clock          WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints  
+----------    --------          -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------  
+
+
+------------------------------------------------------------------------------------------------
+| Other Path Groups Table
+| -----------------------
+------------------------------------------------------------------------------------------------
+
+Path Group    From Clock    To Clock          WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints  
+----------    ----------    --------          -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------  
+
+
+------------------------------------------------------------------------------------------------
+| User Ignored Path Table
+| -----------------------
+------------------------------------------------------------------------------------------------
+
+Path Group    From Clock    To Clock    
+----------    ----------    --------    
+
+
+------------------------------------------------------------------------------------------------
+| Unconstrained Path Table
+| ------------------------
+------------------------------------------------------------------------------------------------
+
+Path Group    From Clock    To Clock    
+----------    ----------    --------    
+(none)                                    
+
+
+------------------------------------------------------------------------------------------------
+| Timing Details
+| --------------
+------------------------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------------
+Path Group:  (none)
+From Clock:  
+  To Clock:  
+
+Max Delay          1081 Endpoints
+Min Delay          1081 Endpoints
+--------------------------------------------------------------------------------------
+
+
+Max Delay Paths
+--------------------------------------------------------------------------------------
+Slack:                    inf
+  Source:                 cpu/PC_reg[5]/C
+                            (rising edge-triggered cell FDCE)
+  Destination:            cpu/BCD_reg[5]/D
+  Path Group:             (none)
+  Path Type:              Max at Slow Process Corner
+  Data Path Delay:        27.345ns  (logic 3.457ns (12.642%)  route 23.888ns (87.358%))
+  Logic Levels:           21  (FDCE=1 LUT2=1 LUT4=3 LUT5=7 LUT6=8 MUXF7=1)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    SLICE_X0Y63          FDCE                         0.000     0.000 r  cpu/PC_reg[5]/C
+    SLICE_X0Y63          FDCE (Prop_fdce_C_Q)         0.456     0.456 r  cpu/PC_reg[5]/Q
+                         net (fo=158, routed)         4.107     4.563    cpu/rf/PC_reg[3]
+    SLICE_X15Y68         LUT4 (Prop_lut4_I0_O)        0.124     4.687 r  cpu/rf/mem_reg_0_63_0_0_i_32/O
+                         net (fo=64, routed)          3.687     8.373    cpu/rf/inst[16]
+    SLICE_X2Y61          LUT5 (Prop_lut5_I2_O)        0.124     8.497 r  cpu/rf/regFile[7][0]_i_5/O
+                         net (fo=1, routed)           0.000     8.497    cpu/rf/regFile[7][0]_i_5_n_0
+    SLICE_X2Y61          MUXF7 (Prop_muxf7_I0_O)      0.241     8.738 r  cpu/rf/regFile_reg[7][0]_i_4/O
+                         net (fo=4, routed)           1.005     9.743    cpu/rf/data1[0]
+    SLICE_X5Y63          LUT5 (Prop_lut5_I4_O)        0.298    10.041 r  cpu/rf/regFile[7][1]_i_4/O
+                         net (fo=3, routed)           1.007    11.047    cpu/rf/C_1
+    SLICE_X5Y61          LUT6 (Prop_lut6_I4_O)        0.124    11.171 r  cpu/rf/regFile[7][8]_i_6/O
+                         net (fo=1, routed)           0.967    12.138    cpu/rf/Cout00_out__2
+    SLICE_X5Y64          LUT6 (Prop_lut6_I0_O)        0.124    12.262 r  cpu/rf/regFile[7][8]_i_5/O
+                         net (fo=2, routed)           1.033    13.295    cpu/rf/alu/r/C_6
+    SLICE_X7Y68          LUT6 (Prop_lut6_I0_O)        0.124    13.419 r  cpu/rf/regFile[7][8]_i_4/O
+                         net (fo=2, routed)           0.302    13.721    cpu/rf/C_8
+    SLICE_X7Y69          LUT6 (Prop_lut6_I0_O)        0.124    13.845 r  cpu/rf/regFile[7][11]_i_8/O
+                         net (fo=3, routed)           0.699    14.544    cpu/alucu/C_10
+    SLICE_X8Y69          LUT6 (Prop_lut6_I1_O)        0.124    14.668 f  cpu/alucu/regFile[7][10]_i_3/O
+                         net (fo=1, routed)           0.900    15.568    cpu/alucu/ALU[10]
+    SLICE_X7Y69          LUT2 (Prop_lut2_I0_O)        0.152    15.720 f  cpu/alucu/regFile[7][10]_i_2/O
+                         net (fo=3, routed)           0.820    16.540    cpu/alucu/ALUS_reg[3]_13
+    SLICE_X7Y67          LUT4 (Prop_lut4_I3_O)        0.326    16.866 r  cpu/alucu/LEDs_reg[1]_i_12/O
+                         net (fo=1, routed)           1.037    17.903    cpu/alucu/LEDs_reg[1]_i_12_n_0
+    SLICE_X11Y67         LUT5 (Prop_lut5_I1_O)        0.124    18.027 r  cpu/alucu/LEDs_reg[1]_i_11/O
+                         net (fo=1, routed)           0.956    18.983    cpu/alucu/LEDs_reg[1]_i_11_n_0
+    SLICE_X11Y65         LUT5 (Prop_lut5_I1_O)        0.124    19.107 r  cpu/alucu/LEDs_reg[1]_i_10/O
+                         net (fo=1, routed)           0.577    19.684    cpu/alucu/LEDs_reg[1]_i_10_n_0
+    SLICE_X11Y63         LUT5 (Prop_lut5_I1_O)        0.124    19.808 r  cpu/alucu/LEDs_reg[1]_i_9/O
+                         net (fo=1, routed)           1.109    20.917    cpu/alucu/LEDs_reg[1]_i_9_n_0
+    SLICE_X13Y60         LUT5 (Prop_lut5_I1_O)        0.124    21.041 r  cpu/alucu/LEDs_reg[1]_i_8/O
+                         net (fo=1, routed)           0.725    21.766    cpu/alucu/LEDs_reg[1]_i_8_n_0
+    SLICE_X11Y59         LUT4 (Prop_lut4_I1_O)        0.124    21.890 r  cpu/alucu/LEDs_reg[1]_i_5/O
+                         net (fo=1, routed)           0.438    22.328    cpu/alucu/LEDs_reg[1]_i_5_n_0
+    SLICE_X8Y59          LUT6 (Prop_lut6_I1_O)        0.124    22.452 r  cpu/alucu/LEDs_reg[1]_i_3/O
+                         net (fo=2, routed)           0.964    23.415    cpu/alucu/LEDs_reg[1]_i_3_n_0
+    SLICE_X7Y62          LUT6 (Prop_lut6_I4_O)        0.124    23.539 r  cpu/alucu/LEDs_reg[0]_i_2/O
+                         net (fo=44, routed)          1.817    25.356    cpu/alucu/LEDs_reg[0]_i_2_n_0
+    SLICE_X2Y65          LUT6 (Prop_lut6_I0_O)        0.124    25.480 r  cpu/alucu/BCD_reg[5]_i_4/O
+                         net (fo=1, routed)           1.018    26.498    cpu/datamemory/BCD_reg[5]_0
+    SLICE_X5Y65          LUT5 (Prop_lut5_I4_O)        0.124    26.622 r  cpu/datamemory/BCD_reg[5]_i_1/O
+                         net (fo=1, routed)           0.722    27.345    cpu/datamemory_n_7
+    SLICE_X2Y70          LDCE                                         r  cpu/BCD_reg[5]/D
+  -------------------------------------------------------------------    -------------------
+
+Slack:                    inf
+  Source:                 cpu/PC_reg[5]/C
+                            (rising edge-triggered cell FDCE)
+  Destination:            cpu/BCD_reg[10]/D
+  Path Group:             (none)
+  Path Type:              Max at Slow Process Corner
+  Data Path Delay:        27.295ns  (logic 3.457ns (12.665%)  route 23.838ns (87.335%))
+  Logic Levels:           21  (FDCE=1 LUT2=1 LUT4=3 LUT5=7 LUT6=8 MUXF7=1)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    SLICE_X0Y63          FDCE                         0.000     0.000 r  cpu/PC_reg[5]/C
+    SLICE_X0Y63          FDCE (Prop_fdce_C_Q)         0.456     0.456 r  cpu/PC_reg[5]/Q
+                         net (fo=158, routed)         4.107     4.563    cpu/rf/PC_reg[3]
+    SLICE_X15Y68         LUT4 (Prop_lut4_I0_O)        0.124     4.687 r  cpu/rf/mem_reg_0_63_0_0_i_32/O
+                         net (fo=64, routed)          3.687     8.373    cpu/rf/inst[16]
+    SLICE_X2Y61          LUT5 (Prop_lut5_I2_O)        0.124     8.497 r  cpu/rf/regFile[7][0]_i_5/O
+                         net (fo=1, routed)           0.000     8.497    cpu/rf/regFile[7][0]_i_5_n_0
+    SLICE_X2Y61          MUXF7 (Prop_muxf7_I0_O)      0.241     8.738 r  cpu/rf/regFile_reg[7][0]_i_4/O
+                         net (fo=4, routed)           1.005     9.743    cpu/rf/data1[0]
+    SLICE_X5Y63          LUT5 (Prop_lut5_I4_O)        0.298    10.041 r  cpu/rf/regFile[7][1]_i_4/O
+                         net (fo=3, routed)           1.007    11.047    cpu/rf/C_1
+    SLICE_X5Y61          LUT6 (Prop_lut6_I4_O)        0.124    11.171 r  cpu/rf/regFile[7][8]_i_6/O
+                         net (fo=1, routed)           0.967    12.138    cpu/rf/Cout00_out__2
+    SLICE_X5Y64          LUT6 (Prop_lut6_I0_O)        0.124    12.262 r  cpu/rf/regFile[7][8]_i_5/O
+                         net (fo=2, routed)           1.033    13.295    cpu/rf/alu/r/C_6
+    SLICE_X7Y68          LUT6 (Prop_lut6_I0_O)        0.124    13.419 r  cpu/rf/regFile[7][8]_i_4/O
+                         net (fo=2, routed)           0.302    13.721    cpu/rf/C_8
+    SLICE_X7Y69          LUT6 (Prop_lut6_I0_O)        0.124    13.845 r  cpu/rf/regFile[7][11]_i_8/O
+                         net (fo=3, routed)           0.699    14.544    cpu/alucu/C_10
+    SLICE_X8Y69          LUT6 (Prop_lut6_I1_O)        0.124    14.668 f  cpu/alucu/regFile[7][10]_i_3/O
+                         net (fo=1, routed)           0.900    15.568    cpu/alucu/ALU[10]
+    SLICE_X7Y69          LUT2 (Prop_lut2_I0_O)        0.152    15.720 f  cpu/alucu/regFile[7][10]_i_2/O
+                         net (fo=3, routed)           0.820    16.540    cpu/alucu/ALUS_reg[3]_13
+    SLICE_X7Y67          LUT4 (Prop_lut4_I3_O)        0.326    16.866 r  cpu/alucu/LEDs_reg[1]_i_12/O
+                         net (fo=1, routed)           1.037    17.903    cpu/alucu/LEDs_reg[1]_i_12_n_0
+    SLICE_X11Y67         LUT5 (Prop_lut5_I1_O)        0.124    18.027 r  cpu/alucu/LEDs_reg[1]_i_11/O
+                         net (fo=1, routed)           0.956    18.983    cpu/alucu/LEDs_reg[1]_i_11_n_0
+    SLICE_X11Y65         LUT5 (Prop_lut5_I1_O)        0.124    19.107 r  cpu/alucu/LEDs_reg[1]_i_10/O
+                         net (fo=1, routed)           0.577    19.684    cpu/alucu/LEDs_reg[1]_i_10_n_0
+    SLICE_X11Y63         LUT5 (Prop_lut5_I1_O)        0.124    19.808 r  cpu/alucu/LEDs_reg[1]_i_9/O
+                         net (fo=1, routed)           1.109    20.917    cpu/alucu/LEDs_reg[1]_i_9_n_0
+    SLICE_X13Y60         LUT5 (Prop_lut5_I1_O)        0.124    21.041 r  cpu/alucu/LEDs_reg[1]_i_8/O
+                         net (fo=1, routed)           0.725    21.766    cpu/alucu/LEDs_reg[1]_i_8_n_0
+    SLICE_X11Y59         LUT4 (Prop_lut4_I1_O)        0.124    21.890 r  cpu/alucu/LEDs_reg[1]_i_5/O
+                         net (fo=1, routed)           0.438    22.328    cpu/alucu/LEDs_reg[1]_i_5_n_0
+    SLICE_X8Y59          LUT6 (Prop_lut6_I1_O)        0.124    22.452 r  cpu/alucu/LEDs_reg[1]_i_3/O
+                         net (fo=2, routed)           0.964    23.415    cpu/alucu/LEDs_reg[1]_i_3_n_0
+    SLICE_X7Y62          LUT6 (Prop_lut6_I4_O)        0.124    23.539 r  cpu/alucu/LEDs_reg[0]_i_2/O
+                         net (fo=44, routed)          2.016    25.555    cpu/alucu/LEDs_reg[0]_i_2_n_0
+    SLICE_X2Y66          LUT6 (Prop_lut6_I0_O)        0.124    25.679 r  cpu/alucu/BCD_reg[10]_i_4/O
+                         net (fo=1, routed)           0.964    26.643    cpu/datamemory/BCD_reg[10]_0
+    SLICE_X4Y67          LUT5 (Prop_lut5_I4_O)        0.124    26.767 r  cpu/datamemory/BCD_reg[10]_i_1/O
+                         net (fo=1, routed)           0.528    27.295    cpu/datamemory_n_2
+    SLICE_X4Y70          LDCE                                         r  cpu/BCD_reg[10]/D
+  -------------------------------------------------------------------    -------------------
+
+Slack:                    inf
+  Source:                 cpu/PC_reg[5]/C
+                            (rising edge-triggered cell FDCE)
+  Destination:            cpu/BCD_reg[8]/D
+  Path Group:             (none)
+  Path Type:              Max at Slow Process Corner
+  Data Path Delay:        27.287ns  (logic 3.457ns (12.669%)  route 23.830ns (87.331%))
+  Logic Levels:           21  (FDCE=1 LUT2=1 LUT4=3 LUT5=7 LUT6=8 MUXF7=1)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    SLICE_X0Y63          FDCE                         0.000     0.000 r  cpu/PC_reg[5]/C
+    SLICE_X0Y63          FDCE (Prop_fdce_C_Q)         0.456     0.456 r  cpu/PC_reg[5]/Q
+                         net (fo=158, routed)         4.107     4.563    cpu/rf/PC_reg[3]
+    SLICE_X15Y68         LUT4 (Prop_lut4_I0_O)        0.124     4.687 r  cpu/rf/mem_reg_0_63_0_0_i_32/O
+                         net (fo=64, routed)          3.687     8.373    cpu/rf/inst[16]
+    SLICE_X2Y61          LUT5 (Prop_lut5_I2_O)        0.124     8.497 r  cpu/rf/regFile[7][0]_i_5/O
+                         net (fo=1, routed)           0.000     8.497    cpu/rf/regFile[7][0]_i_5_n_0
+    SLICE_X2Y61          MUXF7 (Prop_muxf7_I0_O)      0.241     8.738 r  cpu/rf/regFile_reg[7][0]_i_4/O
+                         net (fo=4, routed)           1.005     9.743    cpu/rf/data1[0]
+    SLICE_X5Y63          LUT5 (Prop_lut5_I4_O)        0.298    10.041 r  cpu/rf/regFile[7][1]_i_4/O
+                         net (fo=3, routed)           1.007    11.047    cpu/rf/C_1
+    SLICE_X5Y61          LUT6 (Prop_lut6_I4_O)        0.124    11.171 r  cpu/rf/regFile[7][8]_i_6/O
+                         net (fo=1, routed)           0.967    12.138    cpu/rf/Cout00_out__2
+    SLICE_X5Y64          LUT6 (Prop_lut6_I0_O)        0.124    12.262 r  cpu/rf/regFile[7][8]_i_5/O
+                         net (fo=2, routed)           1.033    13.295    cpu/rf/alu/r/C_6
+    SLICE_X7Y68          LUT6 (Prop_lut6_I0_O)        0.124    13.419 r  cpu/rf/regFile[7][8]_i_4/O
+                         net (fo=2, routed)           0.302    13.721    cpu/rf/C_8
+    SLICE_X7Y69          LUT6 (Prop_lut6_I0_O)        0.124    13.845 r  cpu/rf/regFile[7][11]_i_8/O
+                         net (fo=3, routed)           0.699    14.544    cpu/alucu/C_10
+    SLICE_X8Y69          LUT6 (Prop_lut6_I1_O)        0.124    14.668 f  cpu/alucu/regFile[7][10]_i_3/O
+                         net (fo=1, routed)           0.900    15.568    cpu/alucu/ALU[10]
+    SLICE_X7Y69          LUT2 (Prop_lut2_I0_O)        0.152    15.720 f  cpu/alucu/regFile[7][10]_i_2/O
+                         net (fo=3, routed)           0.820    16.540    cpu/alucu/ALUS_reg[3]_13
+    SLICE_X7Y67          LUT4 (Prop_lut4_I3_O)        0.326    16.866 r  cpu/alucu/LEDs_reg[1]_i_12/O
+                         net (fo=1, routed)           1.037    17.903    cpu/alucu/LEDs_reg[1]_i_12_n_0
+    SLICE_X11Y67         LUT5 (Prop_lut5_I1_O)        0.124    18.027 r  cpu/alucu/LEDs_reg[1]_i_11/O
+                         net (fo=1, routed)           0.956    18.983    cpu/alucu/LEDs_reg[1]_i_11_n_0
+    SLICE_X11Y65         LUT5 (Prop_lut5_I1_O)        0.124    19.107 r  cpu/alucu/LEDs_reg[1]_i_10/O
+                         net (fo=1, routed)           0.577    19.684    cpu/alucu/LEDs_reg[1]_i_10_n_0
+    SLICE_X11Y63         LUT5 (Prop_lut5_I1_O)        0.124    19.808 r  cpu/alucu/LEDs_reg[1]_i_9/O
+                         net (fo=1, routed)           1.109    20.917    cpu/alucu/LEDs_reg[1]_i_9_n_0
+    SLICE_X13Y60         LUT5 (Prop_lut5_I1_O)        0.124    21.041 r  cpu/alucu/LEDs_reg[1]_i_8/O
+                         net (fo=1, routed)           0.725    21.766    cpu/alucu/LEDs_reg[1]_i_8_n_0
+    SLICE_X11Y59         LUT4 (Prop_lut4_I1_O)        0.124    21.890 r  cpu/alucu/LEDs_reg[1]_i_5/O
+                         net (fo=1, routed)           0.438    22.328    cpu/alucu/LEDs_reg[1]_i_5_n_0
+    SLICE_X8Y59          LUT6 (Prop_lut6_I1_O)        0.124    22.452 r  cpu/alucu/LEDs_reg[1]_i_3/O
+                         net (fo=2, routed)           0.964    23.415    cpu/alucu/LEDs_reg[1]_i_3_n_0
+    SLICE_X7Y62          LUT6 (Prop_lut6_I4_O)        0.124    23.539 r  cpu/alucu/LEDs_reg[0]_i_2/O
+                         net (fo=44, routed)          2.004    25.544    cpu/alucu/LEDs_reg[0]_i_2_n_0
+    SLICE_X4Y66          LUT6 (Prop_lut6_I0_O)        0.124    25.668 r  cpu/alucu/BCD_reg[8]_i_4/O
+                         net (fo=1, routed)           0.811    26.479    cpu/datamemory/BCD_reg[8]_0
+    SLICE_X4Y68          LUT5 (Prop_lut5_I4_O)        0.124    26.603 r  cpu/datamemory/BCD_reg[8]_i_1/O
+                         net (fo=1, routed)           0.684    27.287    cpu/datamemory_n_4
+    SLICE_X4Y70          LDCE                                         r  cpu/BCD_reg[8]/D
+  -------------------------------------------------------------------    -------------------
+
+Slack:                    inf
+  Source:                 cpu/PC_reg[5]/C
+                            (rising edge-triggered cell FDCE)
+  Destination:            cpu/BCD_reg[12]/D
+  Path Group:             (none)
+  Path Type:              Max at Slow Process Corner
+  Data Path Delay:        27.162ns  (logic 3.457ns (12.727%)  route 23.705ns (87.273%))
+  Logic Levels:           21  (FDCE=1 LUT2=1 LUT4=3 LUT5=7 LUT6=8 MUXF7=1)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    SLICE_X0Y63          FDCE                         0.000     0.000 r  cpu/PC_reg[5]/C
+    SLICE_X0Y63          FDCE (Prop_fdce_C_Q)         0.456     0.456 r  cpu/PC_reg[5]/Q
+                         net (fo=158, routed)         4.107     4.563    cpu/rf/PC_reg[3]
+    SLICE_X15Y68         LUT4 (Prop_lut4_I0_O)        0.124     4.687 r  cpu/rf/mem_reg_0_63_0_0_i_32/O
+                         net (fo=64, routed)          3.687     8.373    cpu/rf/inst[16]
+    SLICE_X2Y61          LUT5 (Prop_lut5_I2_O)        0.124     8.497 r  cpu/rf/regFile[7][0]_i_5/O
+                         net (fo=1, routed)           0.000     8.497    cpu/rf/regFile[7][0]_i_5_n_0
+    SLICE_X2Y61          MUXF7 (Prop_muxf7_I0_O)      0.241     8.738 r  cpu/rf/regFile_reg[7][0]_i_4/O
+                         net (fo=4, routed)           1.005     9.743    cpu/rf/data1[0]
+    SLICE_X5Y63          LUT5 (Prop_lut5_I4_O)        0.298    10.041 r  cpu/rf/regFile[7][1]_i_4/O
+                         net (fo=3, routed)           1.007    11.047    cpu/rf/C_1
+    SLICE_X5Y61          LUT6 (Prop_lut6_I4_O)        0.124    11.171 r  cpu/rf/regFile[7][8]_i_6/O
+                         net (fo=1, routed)           0.967    12.138    cpu/rf/Cout00_out__2
+    SLICE_X5Y64          LUT6 (Prop_lut6_I0_O)        0.124    12.262 r  cpu/rf/regFile[7][8]_i_5/O
+                         net (fo=2, routed)           1.033    13.295    cpu/rf/alu/r/C_6
+    SLICE_X7Y68          LUT6 (Prop_lut6_I0_O)        0.124    13.419 r  cpu/rf/regFile[7][8]_i_4/O
+                         net (fo=2, routed)           0.302    13.721    cpu/rf/C_8
+    SLICE_X7Y69          LUT6 (Prop_lut6_I0_O)        0.124    13.845 r  cpu/rf/regFile[7][11]_i_8/O
+                         net (fo=3, routed)           0.699    14.544    cpu/alucu/C_10
+    SLICE_X8Y69          LUT6 (Prop_lut6_I1_O)        0.124    14.668 f  cpu/alucu/regFile[7][10]_i_3/O
+                         net (fo=1, routed)           0.900    15.568    cpu/alucu/ALU[10]
+    SLICE_X7Y69          LUT2 (Prop_lut2_I0_O)        0.152    15.720 f  cpu/alucu/regFile[7][10]_i_2/O
+                         net (fo=3, routed)           0.820    16.540    cpu/alucu/ALUS_reg[3]_13
+    SLICE_X7Y67          LUT4 (Prop_lut4_I3_O)        0.326    16.866 r  cpu/alucu/LEDs_reg[1]_i_12/O
+                         net (fo=1, routed)           1.037    17.903    cpu/alucu/LEDs_reg[1]_i_12_n_0
+    SLICE_X11Y67         LUT5 (Prop_lut5_I1_O)        0.124    18.027 r  cpu/alucu/LEDs_reg[1]_i_11/O
+                         net (fo=1, routed)           0.956    18.983    cpu/alucu/LEDs_reg[1]_i_11_n_0
+    SLICE_X11Y65         LUT5 (Prop_lut5_I1_O)        0.124    19.107 r  cpu/alucu/LEDs_reg[1]_i_10/O
+                         net (fo=1, routed)           0.577    19.684    cpu/alucu/LEDs_reg[1]_i_10_n_0
+    SLICE_X11Y63         LUT5 (Prop_lut5_I1_O)        0.124    19.808 r  cpu/alucu/LEDs_reg[1]_i_9/O
+                         net (fo=1, routed)           1.109    20.917    cpu/alucu/LEDs_reg[1]_i_9_n_0
+    SLICE_X13Y60         LUT5 (Prop_lut5_I1_O)        0.124    21.041 r  cpu/alucu/LEDs_reg[1]_i_8/O
+                         net (fo=1, routed)           0.725    21.766    cpu/alucu/LEDs_reg[1]_i_8_n_0
+    SLICE_X11Y59         LUT4 (Prop_lut4_I1_O)        0.124    21.890 r  cpu/alucu/LEDs_reg[1]_i_5/O
+                         net (fo=1, routed)           0.438    22.328    cpu/alucu/LEDs_reg[1]_i_5_n_0
+    SLICE_X8Y59          LUT6 (Prop_lut6_I1_O)        0.124    22.452 r  cpu/alucu/LEDs_reg[1]_i_3/O
+                         net (fo=2, routed)           0.964    23.415    cpu/alucu/LEDs_reg[1]_i_3_n_0
+    SLICE_X7Y62          LUT6 (Prop_lut6_I4_O)        0.124    23.539 r  cpu/alucu/LEDs_reg[0]_i_2/O
+                         net (fo=44, routed)          2.152    25.691    cpu/alucu/LEDs_reg[0]_i_2_n_0
+    SLICE_X3Y67          LUT6 (Prop_lut6_I0_O)        0.124    25.815 r  cpu/alucu/BCD_reg[12]_i_5/O
+                         net (fo=1, routed)           0.577    26.392    cpu/datamemory/BCD_reg[12]_0
+    SLICE_X5Y67          LUT5 (Prop_lut5_I4_O)        0.124    26.516 r  cpu/datamemory/BCD_reg[12]_i_1/O
+                         net (fo=1, routed)           0.646    27.162    cpu/datamemory_n_0
+    SLICE_X5Y70          LDCE                                         r  cpu/BCD_reg[12]/D
+  -------------------------------------------------------------------    -------------------
+
+Slack:                    inf
+  Source:                 cpu/PC_reg[5]/C
+                            (rising edge-triggered cell FDCE)
+  Destination:            cpu/BCD_reg[6]/D
+  Path Group:             (none)
+  Path Type:              Max at Slow Process Corner
+  Data Path Delay:        27.135ns  (logic 3.457ns (12.740%)  route 23.678ns (87.260%))
+  Logic Levels:           21  (FDCE=1 LUT2=1 LUT4=3 LUT5=7 LUT6=8 MUXF7=1)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    SLICE_X0Y63          FDCE                         0.000     0.000 r  cpu/PC_reg[5]/C
+    SLICE_X0Y63          FDCE (Prop_fdce_C_Q)         0.456     0.456 r  cpu/PC_reg[5]/Q
+                         net (fo=158, routed)         4.107     4.563    cpu/rf/PC_reg[3]
+    SLICE_X15Y68         LUT4 (Prop_lut4_I0_O)        0.124     4.687 r  cpu/rf/mem_reg_0_63_0_0_i_32/O
+                         net (fo=64, routed)          3.687     8.373    cpu/rf/inst[16]
+    SLICE_X2Y61          LUT5 (Prop_lut5_I2_O)        0.124     8.497 r  cpu/rf/regFile[7][0]_i_5/O
+                         net (fo=1, routed)           0.000     8.497    cpu/rf/regFile[7][0]_i_5_n_0
+    SLICE_X2Y61          MUXF7 (Prop_muxf7_I0_O)      0.241     8.738 r  cpu/rf/regFile_reg[7][0]_i_4/O
+                         net (fo=4, routed)           1.005     9.743    cpu/rf/data1[0]
+    SLICE_X5Y63          LUT5 (Prop_lut5_I4_O)        0.298    10.041 r  cpu/rf/regFile[7][1]_i_4/O
+                         net (fo=3, routed)           1.007    11.047    cpu/rf/C_1
+    SLICE_X5Y61          LUT6 (Prop_lut6_I4_O)        0.124    11.171 r  cpu/rf/regFile[7][8]_i_6/O
+                         net (fo=1, routed)           0.967    12.138    cpu/rf/Cout00_out__2
+    SLICE_X5Y64          LUT6 (Prop_lut6_I0_O)        0.124    12.262 r  cpu/rf/regFile[7][8]_i_5/O
+                         net (fo=2, routed)           1.033    13.295    cpu/rf/alu/r/C_6
+    SLICE_X7Y68          LUT6 (Prop_lut6_I0_O)        0.124    13.419 r  cpu/rf/regFile[7][8]_i_4/O
+                         net (fo=2, routed)           0.302    13.721    cpu/rf/C_8
+    SLICE_X7Y69          LUT6 (Prop_lut6_I0_O)        0.124    13.845 r  cpu/rf/regFile[7][11]_i_8/O
+                         net (fo=3, routed)           0.699    14.544    cpu/alucu/C_10
+    SLICE_X8Y69          LUT6 (Prop_lut6_I1_O)        0.124    14.668 f  cpu/alucu/regFile[7][10]_i_3/O
+                         net (fo=1, routed)           0.900    15.568    cpu/alucu/ALU[10]
+    SLICE_X7Y69          LUT2 (Prop_lut2_I0_O)        0.152    15.720 f  cpu/alucu/regFile[7][10]_i_2/O
+                         net (fo=3, routed)           0.820    16.540    cpu/alucu/ALUS_reg[3]_13
+    SLICE_X7Y67          LUT4 (Prop_lut4_I3_O)        0.326    16.866 r  cpu/alucu/LEDs_reg[1]_i_12/O
+                         net (fo=1, routed)           1.037    17.903    cpu/alucu/LEDs_reg[1]_i_12_n_0
+    SLICE_X11Y67         LUT5 (Prop_lut5_I1_O)        0.124    18.027 r  cpu/alucu/LEDs_reg[1]_i_11/O
+                         net (fo=1, routed)           0.956    18.983    cpu/alucu/LEDs_reg[1]_i_11_n_0
+    SLICE_X11Y65         LUT5 (Prop_lut5_I1_O)        0.124    19.107 r  cpu/alucu/LEDs_reg[1]_i_10/O
+                         net (fo=1, routed)           0.577    19.684    cpu/alucu/LEDs_reg[1]_i_10_n_0
+    SLICE_X11Y63         LUT5 (Prop_lut5_I1_O)        0.124    19.808 r  cpu/alucu/LEDs_reg[1]_i_9/O
+                         net (fo=1, routed)           1.109    20.917    cpu/alucu/LEDs_reg[1]_i_9_n_0
+    SLICE_X13Y60         LUT5 (Prop_lut5_I1_O)        0.124    21.041 r  cpu/alucu/LEDs_reg[1]_i_8/O
+                         net (fo=1, routed)           0.725    21.766    cpu/alucu/LEDs_reg[1]_i_8_n_0
+    SLICE_X11Y59         LUT4 (Prop_lut4_I1_O)        0.124    21.890 r  cpu/alucu/LEDs_reg[1]_i_5/O
+                         net (fo=1, routed)           0.438    22.328    cpu/alucu/LEDs_reg[1]_i_5_n_0
+    SLICE_X8Y59          LUT6 (Prop_lut6_I1_O)        0.124    22.452 r  cpu/alucu/LEDs_reg[1]_i_3/O
+                         net (fo=2, routed)           0.964    23.415    cpu/alucu/LEDs_reg[1]_i_3_n_0
+    SLICE_X7Y62          LUT6 (Prop_lut6_I4_O)        0.124    23.539 r  cpu/alucu/LEDs_reg[0]_i_2/O
+                         net (fo=44, routed)          2.023    25.562    cpu/alucu/LEDs_reg[0]_i_2_n_0
+    SLICE_X2Y65          LUT6 (Prop_lut6_I0_O)        0.124    25.686 r  cpu/alucu/BCD_reg[6]_i_4/O
+                         net (fo=1, routed)           0.993    26.679    cpu/datamemory/BCD_reg[6]_0
+    SLICE_X4Y69          LUT5 (Prop_lut5_I4_O)        0.124    26.803 r  cpu/datamemory/BCD_reg[6]_i_1/O
+                         net (fo=1, routed)           0.332    27.135    cpu/datamemory_n_6
+    SLICE_X4Y70          LDCE                                         r  cpu/BCD_reg[6]/D
+  -------------------------------------------------------------------    -------------------
+
+Slack:                    inf
+  Source:                 cpu/PC_reg[5]/C
+                            (rising edge-triggered cell FDCE)
+  Destination:            cpu/BCD_reg[2]/D
+  Path Group:             (none)
+  Path Type:              Max at Slow Process Corner
+  Data Path Delay:        26.784ns  (logic 3.457ns (12.907%)  route 23.327ns (87.093%))
+  Logic Levels:           21  (FDCE=1 LUT2=1 LUT4=3 LUT5=7 LUT6=8 MUXF7=1)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    SLICE_X0Y63          FDCE                         0.000     0.000 r  cpu/PC_reg[5]/C
+    SLICE_X0Y63          FDCE (Prop_fdce_C_Q)         0.456     0.456 r  cpu/PC_reg[5]/Q
+                         net (fo=158, routed)         4.107     4.563    cpu/rf/PC_reg[3]
+    SLICE_X15Y68         LUT4 (Prop_lut4_I0_O)        0.124     4.687 r  cpu/rf/mem_reg_0_63_0_0_i_32/O
+                         net (fo=64, routed)          3.687     8.373    cpu/rf/inst[16]
+    SLICE_X2Y61          LUT5 (Prop_lut5_I2_O)        0.124     8.497 r  cpu/rf/regFile[7][0]_i_5/O
+                         net (fo=1, routed)           0.000     8.497    cpu/rf/regFile[7][0]_i_5_n_0
+    SLICE_X2Y61          MUXF7 (Prop_muxf7_I0_O)      0.241     8.738 r  cpu/rf/regFile_reg[7][0]_i_4/O
+                         net (fo=4, routed)           1.005     9.743    cpu/rf/data1[0]
+    SLICE_X5Y63          LUT5 (Prop_lut5_I4_O)        0.298    10.041 r  cpu/rf/regFile[7][1]_i_4/O
+                         net (fo=3, routed)           1.007    11.047    cpu/rf/C_1
+    SLICE_X5Y61          LUT6 (Prop_lut6_I4_O)        0.124    11.171 r  cpu/rf/regFile[7][8]_i_6/O
+                         net (fo=1, routed)           0.967    12.138    cpu/rf/Cout00_out__2
+    SLICE_X5Y64          LUT6 (Prop_lut6_I0_O)        0.124    12.262 r  cpu/rf/regFile[7][8]_i_5/O
+                         net (fo=2, routed)           1.033    13.295    cpu/rf/alu/r/C_6
+    SLICE_X7Y68          LUT6 (Prop_lut6_I0_O)        0.124    13.419 r  cpu/rf/regFile[7][8]_i_4/O
+                         net (fo=2, routed)           0.302    13.721    cpu/rf/C_8
+    SLICE_X7Y69          LUT6 (Prop_lut6_I0_O)        0.124    13.845 r  cpu/rf/regFile[7][11]_i_8/O
+                         net (fo=3, routed)           0.699    14.544    cpu/alucu/C_10
+    SLICE_X8Y69          LUT6 (Prop_lut6_I1_O)        0.124    14.668 f  cpu/alucu/regFile[7][10]_i_3/O
+                         net (fo=1, routed)           0.900    15.568    cpu/alucu/ALU[10]
+    SLICE_X7Y69          LUT2 (Prop_lut2_I0_O)        0.152    15.720 f  cpu/alucu/regFile[7][10]_i_2/O
+                         net (fo=3, routed)           0.820    16.540    cpu/alucu/ALUS_reg[3]_13
+    SLICE_X7Y67          LUT4 (Prop_lut4_I3_O)        0.326    16.866 r  cpu/alucu/LEDs_reg[1]_i_12/O
+                         net (fo=1, routed)           1.037    17.903    cpu/alucu/LEDs_reg[1]_i_12_n_0
+    SLICE_X11Y67         LUT5 (Prop_lut5_I1_O)        0.124    18.027 r  cpu/alucu/LEDs_reg[1]_i_11/O
+                         net (fo=1, routed)           0.956    18.983    cpu/alucu/LEDs_reg[1]_i_11_n_0
+    SLICE_X11Y65         LUT5 (Prop_lut5_I1_O)        0.124    19.107 r  cpu/alucu/LEDs_reg[1]_i_10/O
+                         net (fo=1, routed)           0.577    19.684    cpu/alucu/LEDs_reg[1]_i_10_n_0
+    SLICE_X11Y63         LUT5 (Prop_lut5_I1_O)        0.124    19.808 r  cpu/alucu/LEDs_reg[1]_i_9/O
+                         net (fo=1, routed)           1.109    20.917    cpu/alucu/LEDs_reg[1]_i_9_n_0
+    SLICE_X13Y60         LUT5 (Prop_lut5_I1_O)        0.124    21.041 r  cpu/alucu/LEDs_reg[1]_i_8/O
+                         net (fo=1, routed)           0.725    21.766    cpu/alucu/LEDs_reg[1]_i_8_n_0
+    SLICE_X11Y59         LUT4 (Prop_lut4_I1_O)        0.124    21.890 r  cpu/alucu/LEDs_reg[1]_i_5/O
+                         net (fo=1, routed)           0.438    22.328    cpu/alucu/LEDs_reg[1]_i_5_n_0
+    SLICE_X8Y59          LUT6 (Prop_lut6_I1_O)        0.124    22.452 r  cpu/alucu/LEDs_reg[1]_i_3/O
+                         net (fo=2, routed)           0.964    23.415    cpu/alucu/LEDs_reg[1]_i_3_n_0
+    SLICE_X7Y62          LUT6 (Prop_lut6_I4_O)        0.124    23.539 r  cpu/alucu/LEDs_reg[0]_i_2/O
+                         net (fo=44, routed)          1.658    25.198    cpu/alucu/LEDs_reg[0]_i_2_n_0
+    SLICE_X2Y64          LUT6 (Prop_lut6_I0_O)        0.124    25.322 r  cpu/alucu/BCD_reg[2]_i_4/O
+                         net (fo=1, routed)           0.520    25.842    cpu/datamemory/BCD_reg[2]_0
+    SLICE_X4Y64          LUT5 (Prop_lut5_I4_O)        0.124    25.966 r  cpu/datamemory/BCD_reg[2]_i_1/O
+                         net (fo=1, routed)           0.818    26.784    cpu/datamemory_n_10
+    SLICE_X2Y71          LDCE                                         r  cpu/BCD_reg[2]/D
+  -------------------------------------------------------------------    -------------------
+
+Slack:                    inf
+  Source:                 cpu/PC_reg[5]/C
+                            (rising edge-triggered cell FDCE)
+  Destination:            cpu/BCD_reg[9]/D
+  Path Group:             (none)
+  Path Type:              Max at Slow Process Corner
+  Data Path Delay:        26.736ns  (logic 3.457ns (12.930%)  route 23.279ns (87.070%))
+  Logic Levels:           21  (FDCE=1 LUT2=1 LUT4=3 LUT5=7 LUT6=8 MUXF7=1)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    SLICE_X0Y63          FDCE                         0.000     0.000 r  cpu/PC_reg[5]/C
+    SLICE_X0Y63          FDCE (Prop_fdce_C_Q)         0.456     0.456 r  cpu/PC_reg[5]/Q
+                         net (fo=158, routed)         4.107     4.563    cpu/rf/PC_reg[3]
+    SLICE_X15Y68         LUT4 (Prop_lut4_I0_O)        0.124     4.687 r  cpu/rf/mem_reg_0_63_0_0_i_32/O
+                         net (fo=64, routed)          3.687     8.373    cpu/rf/inst[16]
+    SLICE_X2Y61          LUT5 (Prop_lut5_I2_O)        0.124     8.497 r  cpu/rf/regFile[7][0]_i_5/O
+                         net (fo=1, routed)           0.000     8.497    cpu/rf/regFile[7][0]_i_5_n_0
+    SLICE_X2Y61          MUXF7 (Prop_muxf7_I0_O)      0.241     8.738 r  cpu/rf/regFile_reg[7][0]_i_4/O
+                         net (fo=4, routed)           1.005     9.743    cpu/rf/data1[0]
+    SLICE_X5Y63          LUT5 (Prop_lut5_I4_O)        0.298    10.041 r  cpu/rf/regFile[7][1]_i_4/O
+                         net (fo=3, routed)           1.007    11.047    cpu/rf/C_1
+    SLICE_X5Y61          LUT6 (Prop_lut6_I4_O)        0.124    11.171 r  cpu/rf/regFile[7][8]_i_6/O
+                         net (fo=1, routed)           0.967    12.138    cpu/rf/Cout00_out__2
+    SLICE_X5Y64          LUT6 (Prop_lut6_I0_O)        0.124    12.262 r  cpu/rf/regFile[7][8]_i_5/O
+                         net (fo=2, routed)           1.033    13.295    cpu/rf/alu/r/C_6
+    SLICE_X7Y68          LUT6 (Prop_lut6_I0_O)        0.124    13.419 r  cpu/rf/regFile[7][8]_i_4/O
+                         net (fo=2, routed)           0.302    13.721    cpu/rf/C_8
+    SLICE_X7Y69          LUT6 (Prop_lut6_I0_O)        0.124    13.845 r  cpu/rf/regFile[7][11]_i_8/O
+                         net (fo=3, routed)           0.699    14.544    cpu/alucu/C_10
+    SLICE_X8Y69          LUT6 (Prop_lut6_I1_O)        0.124    14.668 f  cpu/alucu/regFile[7][10]_i_3/O
+                         net (fo=1, routed)           0.900    15.568    cpu/alucu/ALU[10]
+    SLICE_X7Y69          LUT2 (Prop_lut2_I0_O)        0.152    15.720 f  cpu/alucu/regFile[7][10]_i_2/O
+                         net (fo=3, routed)           0.820    16.540    cpu/alucu/ALUS_reg[3]_13
+    SLICE_X7Y67          LUT4 (Prop_lut4_I3_O)        0.326    16.866 r  cpu/alucu/LEDs_reg[1]_i_12/O
+                         net (fo=1, routed)           1.037    17.903    cpu/alucu/LEDs_reg[1]_i_12_n_0
+    SLICE_X11Y67         LUT5 (Prop_lut5_I1_O)        0.124    18.027 r  cpu/alucu/LEDs_reg[1]_i_11/O
+                         net (fo=1, routed)           0.956    18.983    cpu/alucu/LEDs_reg[1]_i_11_n_0
+    SLICE_X11Y65         LUT5 (Prop_lut5_I1_O)        0.124    19.107 r  cpu/alucu/LEDs_reg[1]_i_10/O
+                         net (fo=1, routed)           0.577    19.684    cpu/alucu/LEDs_reg[1]_i_10_n_0
+    SLICE_X11Y63         LUT5 (Prop_lut5_I1_O)        0.124    19.808 r  cpu/alucu/LEDs_reg[1]_i_9/O
+                         net (fo=1, routed)           1.109    20.917    cpu/alucu/LEDs_reg[1]_i_9_n_0
+    SLICE_X13Y60         LUT5 (Prop_lut5_I1_O)        0.124    21.041 r  cpu/alucu/LEDs_reg[1]_i_8/O
+                         net (fo=1, routed)           0.725    21.766    cpu/alucu/LEDs_reg[1]_i_8_n_0
+    SLICE_X11Y59         LUT4 (Prop_lut4_I1_O)        0.124    21.890 r  cpu/alucu/LEDs_reg[1]_i_5/O
+                         net (fo=1, routed)           0.438    22.328    cpu/alucu/LEDs_reg[1]_i_5_n_0
+    SLICE_X8Y59          LUT6 (Prop_lut6_I1_O)        0.124    22.452 r  cpu/alucu/LEDs_reg[1]_i_3/O
+                         net (fo=2, routed)           0.964    23.415    cpu/alucu/LEDs_reg[1]_i_3_n_0
+    SLICE_X7Y62          LUT6 (Prop_lut6_I4_O)        0.124    23.539 r  cpu/alucu/LEDs_reg[0]_i_2/O
+                         net (fo=44, routed)          1.985    25.524    cpu/alucu/LEDs_reg[0]_i_2_n_0
+    SLICE_X3Y67          LUT6 (Prop_lut6_I0_O)        0.124    25.648 r  cpu/alucu/BCD_reg[9]_i_4/O
+                         net (fo=1, routed)           0.964    26.612    cpu/datamemory/BCD_reg[9]_0
+    SLICE_X5Y70          LUT5 (Prop_lut5_I4_O)        0.124    26.736 r  cpu/datamemory/BCD_reg[9]_i_1/O
+                         net (fo=1, routed)           0.000    26.736    cpu/datamemory_n_3
+    SLICE_X5Y70          LDCE                                         r  cpu/BCD_reg[9]/D
+  -------------------------------------------------------------------    -------------------
+
+Slack:                    inf
+  Source:                 cpu/PC_reg[5]/C
+                            (rising edge-triggered cell FDCE)
+  Destination:            cpu/PC_reg[29]/D
+  Path Group:             (none)
+  Path Type:              Max at Slow Process Corner
+  Data Path Delay:        26.689ns  (logic 4.182ns (15.669%)  route 22.507ns (84.331%))
+  Logic Levels:           23  (CARRY4=3 FDCE=1 LUT2=1 LUT4=3 LUT5=7 LUT6=7 MUXF7=1)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    SLICE_X0Y63          FDCE                         0.000     0.000 r  cpu/PC_reg[5]/C
+    SLICE_X0Y63          FDCE (Prop_fdce_C_Q)         0.456     0.456 r  cpu/PC_reg[5]/Q
+                         net (fo=158, routed)         4.107     4.563    cpu/rf/PC_reg[3]
+    SLICE_X15Y68         LUT4 (Prop_lut4_I0_O)        0.124     4.687 r  cpu/rf/mem_reg_0_63_0_0_i_32/O
+                         net (fo=64, routed)          3.687     8.373    cpu/rf/inst[16]
+    SLICE_X2Y61          LUT5 (Prop_lut5_I2_O)        0.124     8.497 r  cpu/rf/regFile[7][0]_i_5/O
+                         net (fo=1, routed)           0.000     8.497    cpu/rf/regFile[7][0]_i_5_n_0
+    SLICE_X2Y61          MUXF7 (Prop_muxf7_I0_O)      0.241     8.738 r  cpu/rf/regFile_reg[7][0]_i_4/O
+                         net (fo=4, routed)           1.005     9.743    cpu/rf/data1[0]
+    SLICE_X5Y63          LUT5 (Prop_lut5_I4_O)        0.298    10.041 r  cpu/rf/regFile[7][1]_i_4/O
+                         net (fo=3, routed)           1.007    11.047    cpu/rf/C_1
+    SLICE_X5Y61          LUT6 (Prop_lut6_I4_O)        0.124    11.171 r  cpu/rf/regFile[7][8]_i_6/O
+                         net (fo=1, routed)           0.967    12.138    cpu/rf/Cout00_out__2
+    SLICE_X5Y64          LUT6 (Prop_lut6_I0_O)        0.124    12.262 r  cpu/rf/regFile[7][8]_i_5/O
+                         net (fo=2, routed)           1.033    13.295    cpu/rf/alu/r/C_6
+    SLICE_X7Y68          LUT6 (Prop_lut6_I0_O)        0.124    13.419 r  cpu/rf/regFile[7][8]_i_4/O
+                         net (fo=2, routed)           0.302    13.721    cpu/rf/C_8
+    SLICE_X7Y69          LUT6 (Prop_lut6_I0_O)        0.124    13.845 r  cpu/rf/regFile[7][11]_i_8/O
+                         net (fo=3, routed)           0.699    14.544    cpu/alucu/C_10
+    SLICE_X8Y69          LUT6 (Prop_lut6_I1_O)        0.124    14.668 f  cpu/alucu/regFile[7][10]_i_3/O
+                         net (fo=1, routed)           0.900    15.568    cpu/alucu/ALU[10]
+    SLICE_X7Y69          LUT2 (Prop_lut2_I0_O)        0.152    15.720 f  cpu/alucu/regFile[7][10]_i_2/O
+                         net (fo=3, routed)           0.820    16.540    cpu/alucu/ALUS_reg[3]_13
+    SLICE_X7Y67          LUT4 (Prop_lut4_I3_O)        0.326    16.866 r  cpu/alucu/LEDs_reg[1]_i_12/O
+                         net (fo=1, routed)           1.037    17.903    cpu/alucu/LEDs_reg[1]_i_12_n_0
+    SLICE_X11Y67         LUT5 (Prop_lut5_I1_O)        0.124    18.027 r  cpu/alucu/LEDs_reg[1]_i_11/O
+                         net (fo=1, routed)           0.956    18.983    cpu/alucu/LEDs_reg[1]_i_11_n_0
+    SLICE_X11Y65         LUT5 (Prop_lut5_I1_O)        0.124    19.107 r  cpu/alucu/LEDs_reg[1]_i_10/O
+                         net (fo=1, routed)           0.577    19.684    cpu/alucu/LEDs_reg[1]_i_10_n_0
+    SLICE_X11Y63         LUT5 (Prop_lut5_I1_O)        0.124    19.808 r  cpu/alucu/LEDs_reg[1]_i_9/O
+                         net (fo=1, routed)           1.109    20.917    cpu/alucu/LEDs_reg[1]_i_9_n_0
+    SLICE_X13Y60         LUT5 (Prop_lut5_I1_O)        0.124    21.041 r  cpu/alucu/LEDs_reg[1]_i_8/O
+                         net (fo=1, routed)           0.725    21.766    cpu/alucu/LEDs_reg[1]_i_8_n_0
+    SLICE_X11Y59         LUT4 (Prop_lut4_I1_O)        0.124    21.890 r  cpu/alucu/LEDs_reg[1]_i_5/O
+                         net (fo=1, routed)           0.438    22.328    cpu/alucu/LEDs_reg[1]_i_5_n_0
+    SLICE_X8Y59          LUT6 (Prop_lut6_I1_O)        0.124    22.452 r  cpu/alucu/LEDs_reg[1]_i_3/O
+                         net (fo=2, routed)           0.964    23.415    cpu/alucu/LEDs_reg[1]_i_3_n_0
+    SLICE_X7Y62          LUT6 (Prop_lut6_I4_O)        0.124    23.539 r  cpu/alucu/LEDs_reg[0]_i_2/O
+                         net (fo=44, routed)          2.177    25.716    cpu/alucu/LEDs_reg[0]_i_2_n_0
+    SLICE_X0Y67          LUT5 (Prop_lut5_I0_O)        0.124    25.840 r  cpu/alucu/PC[20]_i_2/O
+                         net (fo=1, routed)           0.000    25.840    cpu/alucu/PC[20]_i_2_n_0
+    SLICE_X0Y67          CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.401    26.241 r  cpu/alucu/PC_reg[20]_i_1/CO[3]
+                         net (fo=1, routed)           0.000    26.241    cpu/alucu/PC_reg[20]_i_1_n_0
+    SLICE_X0Y68          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    26.355 r  cpu/alucu/PC_reg[24]_i_1/CO[3]
+                         net (fo=1, routed)           0.000    26.355    cpu/alucu/PC_reg[24]_i_1_n_0
+    SLICE_X0Y69          CARRY4 (Prop_carry4_CI_O[1])
+                                                      0.334    26.689 r  cpu/alucu/PC_reg[28]_i_1/O[1]
+                         net (fo=1, routed)           0.000    26.689    cpu/alucu_n_101
+    SLICE_X0Y69          FDCE                                         r  cpu/PC_reg[29]/D
+  -------------------------------------------------------------------    -------------------
+
+Slack:                    inf
+  Source:                 cpu/PC_reg[5]/C
+                            (rising edge-triggered cell FDCE)
+  Destination:            cpu/PC_reg[31]/D
+  Path Group:             (none)
+  Path Type:              Max at Slow Process Corner
+  Data Path Delay:        26.668ns  (logic 4.161ns (15.603%)  route 22.507ns (84.397%))
+  Logic Levels:           23  (CARRY4=3 FDCE=1 LUT2=1 LUT4=3 LUT5=7 LUT6=7 MUXF7=1)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    SLICE_X0Y63          FDCE                         0.000     0.000 r  cpu/PC_reg[5]/C
+    SLICE_X0Y63          FDCE (Prop_fdce_C_Q)         0.456     0.456 r  cpu/PC_reg[5]/Q
+                         net (fo=158, routed)         4.107     4.563    cpu/rf/PC_reg[3]
+    SLICE_X15Y68         LUT4 (Prop_lut4_I0_O)        0.124     4.687 r  cpu/rf/mem_reg_0_63_0_0_i_32/O
+                         net (fo=64, routed)          3.687     8.373    cpu/rf/inst[16]
+    SLICE_X2Y61          LUT5 (Prop_lut5_I2_O)        0.124     8.497 r  cpu/rf/regFile[7][0]_i_5/O
+                         net (fo=1, routed)           0.000     8.497    cpu/rf/regFile[7][0]_i_5_n_0
+    SLICE_X2Y61          MUXF7 (Prop_muxf7_I0_O)      0.241     8.738 r  cpu/rf/regFile_reg[7][0]_i_4/O
+                         net (fo=4, routed)           1.005     9.743    cpu/rf/data1[0]
+    SLICE_X5Y63          LUT5 (Prop_lut5_I4_O)        0.298    10.041 r  cpu/rf/regFile[7][1]_i_4/O
+                         net (fo=3, routed)           1.007    11.047    cpu/rf/C_1
+    SLICE_X5Y61          LUT6 (Prop_lut6_I4_O)        0.124    11.171 r  cpu/rf/regFile[7][8]_i_6/O
+                         net (fo=1, routed)           0.967    12.138    cpu/rf/Cout00_out__2
+    SLICE_X5Y64          LUT6 (Prop_lut6_I0_O)        0.124    12.262 r  cpu/rf/regFile[7][8]_i_5/O
+                         net (fo=2, routed)           1.033    13.295    cpu/rf/alu/r/C_6
+    SLICE_X7Y68          LUT6 (Prop_lut6_I0_O)        0.124    13.419 r  cpu/rf/regFile[7][8]_i_4/O
+                         net (fo=2, routed)           0.302    13.721    cpu/rf/C_8
+    SLICE_X7Y69          LUT6 (Prop_lut6_I0_O)        0.124    13.845 r  cpu/rf/regFile[7][11]_i_8/O
+                         net (fo=3, routed)           0.699    14.544    cpu/alucu/C_10
+    SLICE_X8Y69          LUT6 (Prop_lut6_I1_O)        0.124    14.668 f  cpu/alucu/regFile[7][10]_i_3/O
+                         net (fo=1, routed)           0.900    15.568    cpu/alucu/ALU[10]
+    SLICE_X7Y69          LUT2 (Prop_lut2_I0_O)        0.152    15.720 f  cpu/alucu/regFile[7][10]_i_2/O
+                         net (fo=3, routed)           0.820    16.540    cpu/alucu/ALUS_reg[3]_13
+    SLICE_X7Y67          LUT4 (Prop_lut4_I3_O)        0.326    16.866 r  cpu/alucu/LEDs_reg[1]_i_12/O
+                         net (fo=1, routed)           1.037    17.903    cpu/alucu/LEDs_reg[1]_i_12_n_0
+    SLICE_X11Y67         LUT5 (Prop_lut5_I1_O)        0.124    18.027 r  cpu/alucu/LEDs_reg[1]_i_11/O
+                         net (fo=1, routed)           0.956    18.983    cpu/alucu/LEDs_reg[1]_i_11_n_0
+    SLICE_X11Y65         LUT5 (Prop_lut5_I1_O)        0.124    19.107 r  cpu/alucu/LEDs_reg[1]_i_10/O
+                         net (fo=1, routed)           0.577    19.684    cpu/alucu/LEDs_reg[1]_i_10_n_0
+    SLICE_X11Y63         LUT5 (Prop_lut5_I1_O)        0.124    19.808 r  cpu/alucu/LEDs_reg[1]_i_9/O
+                         net (fo=1, routed)           1.109    20.917    cpu/alucu/LEDs_reg[1]_i_9_n_0
+    SLICE_X13Y60         LUT5 (Prop_lut5_I1_O)        0.124    21.041 r  cpu/alucu/LEDs_reg[1]_i_8/O
+                         net (fo=1, routed)           0.725    21.766    cpu/alucu/LEDs_reg[1]_i_8_n_0
+    SLICE_X11Y59         LUT4 (Prop_lut4_I1_O)        0.124    21.890 r  cpu/alucu/LEDs_reg[1]_i_5/O
+                         net (fo=1, routed)           0.438    22.328    cpu/alucu/LEDs_reg[1]_i_5_n_0
+    SLICE_X8Y59          LUT6 (Prop_lut6_I1_O)        0.124    22.452 r  cpu/alucu/LEDs_reg[1]_i_3/O
+                         net (fo=2, routed)           0.964    23.415    cpu/alucu/LEDs_reg[1]_i_3_n_0
+    SLICE_X7Y62          LUT6 (Prop_lut6_I4_O)        0.124    23.539 r  cpu/alucu/LEDs_reg[0]_i_2/O
+                         net (fo=44, routed)          2.177    25.716    cpu/alucu/LEDs_reg[0]_i_2_n_0
+    SLICE_X0Y67          LUT5 (Prop_lut5_I0_O)        0.124    25.840 r  cpu/alucu/PC[20]_i_2/O
+                         net (fo=1, routed)           0.000    25.840    cpu/alucu/PC[20]_i_2_n_0
+    SLICE_X0Y67          CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.401    26.241 r  cpu/alucu/PC_reg[20]_i_1/CO[3]
+                         net (fo=1, routed)           0.000    26.241    cpu/alucu/PC_reg[20]_i_1_n_0
+    SLICE_X0Y68          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    26.355 r  cpu/alucu/PC_reg[24]_i_1/CO[3]
+                         net (fo=1, routed)           0.000    26.355    cpu/alucu/PC_reg[24]_i_1_n_0
+    SLICE_X0Y69          CARRY4 (Prop_carry4_CI_O[3])
+                                                      0.313    26.668 r  cpu/alucu/PC_reg[28]_i_1/O[3]
+                         net (fo=1, routed)           0.000    26.668    cpu/alucu_n_99
+    SLICE_X0Y69          FDCE                                         r  cpu/PC_reg[31]/D
+  -------------------------------------------------------------------    -------------------
+
+Slack:                    inf
+  Source:                 cpu/PC_reg[5]/C
+                            (rising edge-triggered cell FDCE)
+  Destination:            cpu/BCD_reg[11]/D
+  Path Group:             (none)
+  Path Type:              Max at Slow Process Corner
+  Data Path Delay:        26.648ns  (logic 3.457ns (12.973%)  route 23.191ns (87.027%))
+  Logic Levels:           21  (FDCE=1 LUT2=1 LUT4=3 LUT5=7 LUT6=8 MUXF7=1)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    SLICE_X0Y63          FDCE                         0.000     0.000 r  cpu/PC_reg[5]/C
+    SLICE_X0Y63          FDCE (Prop_fdce_C_Q)         0.456     0.456 r  cpu/PC_reg[5]/Q
+                         net (fo=158, routed)         4.107     4.563    cpu/rf/PC_reg[3]
+    SLICE_X15Y68         LUT4 (Prop_lut4_I0_O)        0.124     4.687 r  cpu/rf/mem_reg_0_63_0_0_i_32/O
+                         net (fo=64, routed)          3.687     8.373    cpu/rf/inst[16]
+    SLICE_X2Y61          LUT5 (Prop_lut5_I2_O)        0.124     8.497 r  cpu/rf/regFile[7][0]_i_5/O
+                         net (fo=1, routed)           0.000     8.497    cpu/rf/regFile[7][0]_i_5_n_0
+    SLICE_X2Y61          MUXF7 (Prop_muxf7_I0_O)      0.241     8.738 r  cpu/rf/regFile_reg[7][0]_i_4/O
+                         net (fo=4, routed)           1.005     9.743    cpu/rf/data1[0]
+    SLICE_X5Y63          LUT5 (Prop_lut5_I4_O)        0.298    10.041 r  cpu/rf/regFile[7][1]_i_4/O
+                         net (fo=3, routed)           1.007    11.047    cpu/rf/C_1
+    SLICE_X5Y61          LUT6 (Prop_lut6_I4_O)        0.124    11.171 r  cpu/rf/regFile[7][8]_i_6/O
+                         net (fo=1, routed)           0.967    12.138    cpu/rf/Cout00_out__2
+    SLICE_X5Y64          LUT6 (Prop_lut6_I0_O)        0.124    12.262 r  cpu/rf/regFile[7][8]_i_5/O
+                         net (fo=2, routed)           1.033    13.295    cpu/rf/alu/r/C_6
+    SLICE_X7Y68          LUT6 (Prop_lut6_I0_O)        0.124    13.419 r  cpu/rf/regFile[7][8]_i_4/O
+                         net (fo=2, routed)           0.302    13.721    cpu/rf/C_8
+    SLICE_X7Y69          LUT6 (Prop_lut6_I0_O)        0.124    13.845 r  cpu/rf/regFile[7][11]_i_8/O
+                         net (fo=3, routed)           0.699    14.544    cpu/alucu/C_10
+    SLICE_X8Y69          LUT6 (Prop_lut6_I1_O)        0.124    14.668 f  cpu/alucu/regFile[7][10]_i_3/O
+                         net (fo=1, routed)           0.900    15.568    cpu/alucu/ALU[10]
+    SLICE_X7Y69          LUT2 (Prop_lut2_I0_O)        0.152    15.720 f  cpu/alucu/regFile[7][10]_i_2/O
+                         net (fo=3, routed)           0.820    16.540    cpu/alucu/ALUS_reg[3]_13
+    SLICE_X7Y67          LUT4 (Prop_lut4_I3_O)        0.326    16.866 r  cpu/alucu/LEDs_reg[1]_i_12/O
+                         net (fo=1, routed)           1.037    17.903    cpu/alucu/LEDs_reg[1]_i_12_n_0
+    SLICE_X11Y67         LUT5 (Prop_lut5_I1_O)        0.124    18.027 r  cpu/alucu/LEDs_reg[1]_i_11/O
+                         net (fo=1, routed)           0.956    18.983    cpu/alucu/LEDs_reg[1]_i_11_n_0
+    SLICE_X11Y65         LUT5 (Prop_lut5_I1_O)        0.124    19.107 r  cpu/alucu/LEDs_reg[1]_i_10/O
+                         net (fo=1, routed)           0.577    19.684    cpu/alucu/LEDs_reg[1]_i_10_n_0
+    SLICE_X11Y63         LUT5 (Prop_lut5_I1_O)        0.124    19.808 r  cpu/alucu/LEDs_reg[1]_i_9/O
+                         net (fo=1, routed)           1.109    20.917    cpu/alucu/LEDs_reg[1]_i_9_n_0
+    SLICE_X13Y60         LUT5 (Prop_lut5_I1_O)        0.124    21.041 r  cpu/alucu/LEDs_reg[1]_i_8/O
+                         net (fo=1, routed)           0.725    21.766    cpu/alucu/LEDs_reg[1]_i_8_n_0
+    SLICE_X11Y59         LUT4 (Prop_lut4_I1_O)        0.124    21.890 r  cpu/alucu/LEDs_reg[1]_i_5/O
+                         net (fo=1, routed)           0.438    22.328    cpu/alucu/LEDs_reg[1]_i_5_n_0
+    SLICE_X8Y59          LUT6 (Prop_lut6_I1_O)        0.124    22.452 r  cpu/alucu/LEDs_reg[1]_i_3/O
+                         net (fo=2, routed)           0.964    23.415    cpu/alucu/LEDs_reg[1]_i_3_n_0
+    SLICE_X7Y62          LUT6 (Prop_lut6_I4_O)        0.124    23.539 r  cpu/alucu/LEDs_reg[0]_i_2/O
+                         net (fo=44, routed)          2.006    25.545    cpu/alucu/LEDs_reg[0]_i_2_n_0
+    SLICE_X2Y66          LUT6 (Prop_lut6_I0_O)        0.124    25.669 r  cpu/alucu/BCD_reg[11]_i_4/O
+                         net (fo=1, routed)           0.476    26.145    cpu/datamemory/BCD_reg[11]_0
+    SLICE_X5Y70          LUT5 (Prop_lut5_I4_O)        0.124    26.269 r  cpu/datamemory/BCD_reg[11]_i_1/O
+                         net (fo=1, routed)           0.379    26.648    cpu/datamemory_n_1
+    SLICE_X5Y70          LDCE                                         r  cpu/BCD_reg[11]/D
+  -------------------------------------------------------------------    -------------------
+
+
+
+
+
+Min Delay Paths
+--------------------------------------------------------------------------------------
+Slack:                    inf
+  Source:                 cpu/PC_reg[18]/C
+                            (rising edge-triggered cell FDCE)
+  Destination:            cpu/LEDs_reg[2]/D
+  Path Group:             (none)
+  Path Type:              Min at Fast Process Corner
+  Data Path Delay:        0.321ns  (logic 0.186ns (57.896%)  route 0.135ns (42.104%))
+  Logic Levels:           2  (FDCE=1 LUT5=1)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    SLICE_X0Y66          FDCE                         0.000     0.000 r  cpu/PC_reg[18]/C
+    SLICE_X0Y66          FDCE (Prop_fdce_C_Q)         0.141     0.141 r  cpu/PC_reg[18]/Q
+                         net (fo=3, routed)           0.135     0.276    cpu/alucu/PC_reg__0[13]
+    SLICE_X1Y68          LUT5 (Prop_lut5_I2_O)        0.045     0.321 r  cpu/alucu/LEDs_reg[2]_i_1/O
+                         net (fo=1, routed)           0.000     0.321    cpu/alucu_n_31
+    SLICE_X1Y68          LDCE                                         r  cpu/LEDs_reg[2]/D
+  -------------------------------------------------------------------    -------------------
+
+Slack:                    inf
+  Source:                 cpu/PC_reg[16]/C
+                            (rising edge-triggered cell FDCE)
+  Destination:            cpu/PC_reg[17]/D
+  Path Group:             (none)
+  Path Type:              Min at Fast Process Corner
+  Data Path Delay:        0.343ns  (logic 0.265ns (77.365%)  route 0.078ns (22.635%))
+  Logic Levels:           2  (CARRY4=1 FDCE=1)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    SLICE_X0Y66          FDCE                         0.000     0.000 r  cpu/PC_reg[16]/C
+    SLICE_X0Y66          FDCE (Prop_fdce_C_Q)         0.141     0.141 r  cpu/PC_reg[16]/Q
+                         net (fo=3, routed)           0.078     0.219    cpu/alucu/PC_reg__0[11]
+    SLICE_X0Y66          CARRY4 (Prop_carry4_DI[0]_O[1])
+                                                      0.124     0.343 r  cpu/alucu/PC_reg[16]_i_1/O[1]
+                         net (fo=1, routed)           0.000     0.343    cpu/alucu_n_89
+    SLICE_X0Y66          FDCE                                         r  cpu/PC_reg[17]/D
+  -------------------------------------------------------------------    -------------------
+
+Slack:                    inf
+  Source:                 cpu/PC_reg[8]/C
+                            (rising edge-triggered cell FDCE)
+  Destination:            cpu/PC_reg[9]/D
+  Path Group:             (none)
+  Path Type:              Min at Fast Process Corner
+  Data Path Delay:        0.343ns  (logic 0.265ns (77.365%)  route 0.078ns (22.635%))
+  Logic Levels:           2  (CARRY4=1 FDCE=1)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    SLICE_X0Y64          FDCE                         0.000     0.000 r  cpu/PC_reg[8]/C
+    SLICE_X0Y64          FDCE (Prop_fdce_C_Q)         0.141     0.141 r  cpu/PC_reg[8]/Q
+                         net (fo=7, routed)           0.078     0.219    cpu/alucu/PC_reg__0[3]
+    SLICE_X0Y64          CARRY4 (Prop_carry4_DI[0]_O[1])
+                                                      0.124     0.343 r  cpu/alucu/PC_reg[8]_i_1/O[1]
+                         net (fo=1, routed)           0.000     0.343    cpu/alucu_n_81
+    SLICE_X0Y64          FDCE                                         r  cpu/PC_reg[9]/D
+  -------------------------------------------------------------------    -------------------
+
+Slack:                    inf
+  Source:                 cpu/PC_reg[22]/C
+                            (rising edge-triggered cell FDCE)
+  Destination:            cpu/PC_reg[23]/D
+  Path Group:             (none)
+  Path Type:              Min at Fast Process Corner
+  Data Path Delay:        0.350ns  (logic 0.268ns (76.574%)  route 0.082ns (23.426%))
+  Logic Levels:           2  (CARRY4=1 FDCE=1)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    SLICE_X0Y67          FDCE                         0.000     0.000 r  cpu/PC_reg[22]/C
+    SLICE_X0Y67          FDCE (Prop_fdce_C_Q)         0.141     0.141 r  cpu/PC_reg[22]/Q
+                         net (fo=3, routed)           0.082     0.223    cpu/alucu/PC_reg__0[17]
+    SLICE_X0Y67          CARRY4 (Prop_carry4_DI[2]_O[3])
+                                                      0.127     0.350 r  cpu/alucu/PC_reg[20]_i_1/O[3]
+                         net (fo=1, routed)           0.000     0.350    cpu/alucu_n_91
+    SLICE_X0Y67          FDCE                                         r  cpu/PC_reg[23]/D
+  -------------------------------------------------------------------    -------------------
+
+Slack:                    inf
+  Source:                 cpu/PC_reg[14]/C
+                            (rising edge-triggered cell FDCE)
+  Destination:            cpu/PC_reg[15]/D
+  Path Group:             (none)
+  Path Type:              Min at Fast Process Corner
+  Data Path Delay:        0.350ns  (logic 0.268ns (76.560%)  route 0.082ns (23.440%))
+  Logic Levels:           2  (CARRY4=1 FDCE=1)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    SLICE_X0Y65          FDCE                         0.000     0.000 r  cpu/PC_reg[14]/C
+    SLICE_X0Y65          FDCE (Prop_fdce_C_Q)         0.141     0.141 r  cpu/PC_reg[14]/Q
+                         net (fo=3, routed)           0.082     0.223    cpu/alucu/PC_reg__0[9]
+    SLICE_X0Y65          CARRY4 (Prop_carry4_DI[2]_O[3])
+                                                      0.127     0.350 r  cpu/alucu/PC_reg[12]_i_1/O[3]
+                         net (fo=1, routed)           0.000     0.350    cpu/alucu_n_83
+    SLICE_X0Y65          FDCE                                         r  cpu/PC_reg[15]/D
+  -------------------------------------------------------------------    -------------------
+
+Slack:                    inf
+  Source:                 cpu/PC_reg[18]/C
+                            (rising edge-triggered cell FDCE)
+  Destination:            cpu/PC_reg[19]/D
+  Path Group:             (none)
+  Path Type:              Min at Fast Process Corner
+  Data Path Delay:        0.350ns  (logic 0.268ns (76.560%)  route 0.082ns (23.440%))
+  Logic Levels:           2  (CARRY4=1 FDCE=1)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    SLICE_X0Y66          FDCE                         0.000     0.000 r  cpu/PC_reg[18]/C
+    SLICE_X0Y66          FDCE (Prop_fdce_C_Q)         0.141     0.141 r  cpu/PC_reg[18]/Q
+                         net (fo=3, routed)           0.082     0.223    cpu/alucu/PC_reg__0[13]
+    SLICE_X0Y66          CARRY4 (Prop_carry4_DI[2]_O[3])
+                                                      0.127     0.350 r  cpu/alucu/PC_reg[16]_i_1/O[3]
+                         net (fo=1, routed)           0.000     0.350    cpu/alucu_n_87
+    SLICE_X0Y66          FDCE                                         r  cpu/PC_reg[19]/D
+  -------------------------------------------------------------------    -------------------
+
+Slack:                    inf
+  Source:                 cpu/PC_reg[26]/C
+                            (rising edge-triggered cell FDCE)
+  Destination:            cpu/PC_reg[27]/D
+  Path Group:             (none)
+  Path Type:              Min at Fast Process Corner
+  Data Path Delay:        0.350ns  (logic 0.268ns (76.560%)  route 0.082ns (23.440%))
+  Logic Levels:           2  (CARRY4=1 FDCE=1)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    SLICE_X0Y68          FDCE                         0.000     0.000 r  cpu/PC_reg[26]/C
+    SLICE_X0Y68          FDCE (Prop_fdce_C_Q)         0.141     0.141 r  cpu/PC_reg[26]/Q
+                         net (fo=3, routed)           0.082     0.223    cpu/alucu/PC_reg__0[21]
+    SLICE_X0Y68          CARRY4 (Prop_carry4_DI[2]_O[3])
+                                                      0.127     0.350 r  cpu/alucu/PC_reg[24]_i_1/O[3]
+                         net (fo=1, routed)           0.000     0.350    cpu/alucu_n_95
+    SLICE_X0Y68          FDCE                                         r  cpu/PC_reg[27]/D
+  -------------------------------------------------------------------    -------------------
+
+Slack:                    inf
+  Source:                 cpu/PC_reg[30]/C
+                            (rising edge-triggered cell FDCE)
+  Destination:            cpu/PC_reg[31]/D
+  Path Group:             (none)
+  Path Type:              Min at Fast Process Corner
+  Data Path Delay:        0.352ns  (logic 0.268ns (76.089%)  route 0.084ns (23.911%))
+  Logic Levels:           2  (CARRY4=1 FDCE=1)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    SLICE_X0Y69          FDCE                         0.000     0.000 r  cpu/PC_reg[30]/C
+    SLICE_X0Y69          FDCE (Prop_fdce_C_Q)         0.141     0.141 r  cpu/PC_reg[30]/Q
+                         net (fo=3, routed)           0.084     0.225    cpu/alucu/PC_reg__0[25]
+    SLICE_X0Y69          CARRY4 (Prop_carry4_DI[2]_O[3])
+                                                      0.127     0.352 r  cpu/alucu/PC_reg[28]_i_1/O[3]
+                         net (fo=1, routed)           0.000     0.352    cpu/alucu_n_99
+    SLICE_X0Y69          FDCE                                         r  cpu/PC_reg[31]/D
+  -------------------------------------------------------------------    -------------------
+
+Slack:                    inf
+  Source:                 cpu/PC_reg[24]/C
+                            (rising edge-triggered cell FDCE)
+  Destination:            cpu/PC_reg[25]/D
+  Path Group:             (none)
+  Path Type:              Min at Fast Process Corner
+  Data Path Delay:        0.354ns  (logic 0.265ns (74.950%)  route 0.089ns (25.050%))
+  Logic Levels:           2  (CARRY4=1 FDCE=1)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    SLICE_X0Y68          FDCE                         0.000     0.000 r  cpu/PC_reg[24]/C
+    SLICE_X0Y68          FDCE (Prop_fdce_C_Q)         0.141     0.141 r  cpu/PC_reg[24]/Q
+                         net (fo=3, routed)           0.089     0.230    cpu/alucu/PC_reg__0[19]
+    SLICE_X0Y68          CARRY4 (Prop_carry4_DI[0]_O[1])
+                                                      0.124     0.354 r  cpu/alucu/PC_reg[24]_i_1/O[1]
+                         net (fo=1, routed)           0.000     0.354    cpu/alucu_n_97
+    SLICE_X0Y68          FDCE                                         r  cpu/PC_reg[25]/D
+  -------------------------------------------------------------------    -------------------
+
+Slack:                    inf
+  Source:                 cpu/PC_reg[28]/C
+                            (rising edge-triggered cell FDCE)
+  Destination:            cpu/PC_reg[29]/D
+  Path Group:             (none)
+  Path Type:              Min at Fast Process Corner
+  Data Path Delay:        0.354ns  (logic 0.265ns (74.950%)  route 0.089ns (25.050%))
+  Logic Levels:           2  (CARRY4=1 FDCE=1)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    SLICE_X0Y69          FDCE                         0.000     0.000 r  cpu/PC_reg[28]/C
+    SLICE_X0Y69          FDCE (Prop_fdce_C_Q)         0.141     0.141 r  cpu/PC_reg[28]/Q
+                         net (fo=3, routed)           0.089     0.230    cpu/alucu/PC_reg__0[23]
+    SLICE_X0Y69          CARRY4 (Prop_carry4_DI[0]_O[1])
+                                                      0.124     0.354 r  cpu/alucu/PC_reg[28]_i_1/O[1]
+                         net (fo=1, routed)           0.000     0.354    cpu/alucu_n_101
+    SLICE_X0Y69          FDCE                                         r  cpu/PC_reg[29]/D
+  -------------------------------------------------------------------    -------------------
+
+
+
+
+
