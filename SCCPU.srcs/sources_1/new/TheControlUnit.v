@@ -18,7 +18,7 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-
+`include "defines.v"
 
 module TheControlUnit(
 input [6:0] instruction ,  output reg Branch,
@@ -32,20 +32,46 @@ input [6:0] instruction ,  output reg Branch,
     
      always @(*) begin
     case(instruction[6:2])
-    (5'b01100)  : begin
+    (`OPCODE_Arith_R)  : begin
      Branch =0 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b10;  MemtoWrite=0; ALUsrc=0; RegWrite=1; 
- 
- end  (5'b00000)  : begin
+ end  (`OPCODE_Load)  : begin
      Branch =0 ; MemRead = 1 ;  MemtoReg= 1 ;   ALUop=2'b00;  MemtoWrite=0; ALUsrc=1 ; RegWrite=1; 
-  end (5'b01000)  : begin
+  end (`OPCODE_Store)  : begin
      Branch =0 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b00;  MemtoWrite=1; ALUsrc=1 ; RegWrite=0; 
- end  (5'b11000)  : begin
+ end  (`OPCODE_Branch)  : begin
      Branch =1 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0; 
 end  
+
+(`OPCODE_JALR)  : begin
+     Branch =1 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0; 
+end  
+
+(`OPCODE_JAL)  : begin
+     Branch =1 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0; 
+end  
+
+(`OPCODE_Arith_I)  : begin
+     Branch =0 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0; 
+end  
+
+(`OPCODE_AUIPC)  : begin
+     Branch =0 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0; 
+end  
+
+(`OPCODE_LUI)  : begin
+     Branch =0 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0; 
+end  
+
+(`OPCODE_SYSTEM)  : begin
+     Branch =1 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0; 
+end  
+
+(`OPCODE_Custom)  : begin
+     Branch =1 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0; 
+end  
+
 default : begin Branch =0 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b00;  MemtoWrite=0; ALUsrc=0; RegWrite=0; 
   end 
     endcase
    end
-    
-    
 endmodule

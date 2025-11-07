@@ -19,24 +19,44 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-
-module NbitALU #(parameter N=32) ( input [(N-1):0] Reg1  , input [(N-1):0] Reg2 , input [3:0] ALUop , output reg Zero, output reg [N-1:0] ALU 
- , input clk  );
+`include "defines.v"
+module NbitALU #(parameter N=32) ( input [(N-1):0] Reg1  , input [(N-1):0] Reg2 , input [3:0] ALUSELECT , output reg Zero, output reg [N-1:0] ALU 
+ , input clk ,input [4:0] shamt , output  wire cf, vf, sf );
  
-    wire [N-1:0] add;
+    wire [31:0] add, sub, op_b;
+    wire cfa, cfs;
+    
+      
+    assign op_b = (~Reg2);
+    
+    assign {cf, add} = alufn[0] ? (Reg1 + op_b + 1'b1) : (Reg1 + Reg2);
+    
+    assign zf = (add == 0);
+    assign sf = add[31];
+    assign vf = (Reg1[31] ^ (op_b[31]) ^ add[31] ^ cf);
+    
+    wire[31:0] shift_result;
+    shifter shifter0(.Reg1(a), .shamt(shamt), .type(alufn[1:0]),  .r(shift_result));
     
     
-    RCA r (.x(Reg1), .y(ALUop[2]? ~Reg2:Reg2), .cin(ALUop[2]), .S(add));
+//    RCA r (.x(Reg1), .y(ALUSELECT[2]? ~Reg2:Reg2), .cin(ALUSELECT[2]), .S(add));
 
    
     always @(*) begin
-    case(ALUop)
-    (4'b0010): ALU = add;
-    (4'b0110): ALU = add;
-    (4'b0000): ALU = Reg1&Reg2;
-    (4'b0001): ALU = Reg1 | Reg2;
-    default: ALU = 0;
-    endcase
+    case(ALUSELECT)
+            `ALU_ADD: ALU = add;           // ADD
+            `ALU_SUB: ALU = sub;           // SUB
+            `ALU_PASS: ALU = Reg2;         // PASS
+            `ALU_OR: ALU = Reg1 | Reg2;    // OR
+            `ALU_AND: ALU = Reg1 & Reg2;   // AND
+            `ALU_XOR: ALU = Reg1 ^ Reg2;   // XOR
+            `ALU_SRL: ALU = shift_result;  // Shift Right
+            `ALU_SRA: ALU = shift_result;  // Shift Right Arithmetic
+            `ALU_SLL: ALU = shift_result;  // Shift Left
+            `ALU_SLT: ALU = {31'b0, (Reg1 < Reg2)};   // Set Less Than
+            `ALU_SLTU: ALU = {31'b0, (Reg1 < Reg2)};  // Set Less Than Unsigned
+            default: ALU = 0;
+        endcase
     if (ALU == 0)begin
         Zero = 1;
     end

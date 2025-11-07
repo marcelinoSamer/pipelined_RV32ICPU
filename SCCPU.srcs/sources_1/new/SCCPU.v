@@ -18,8 +18,6 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-
-
 module SCCPU(
 input clk,
 input reset,
@@ -64,19 +62,7 @@ output reg [12:0] BCD
         end
             
     end
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+       
     InstMem instmem (.addr(PC[7:2]), .data_out(inst));
     wire Branch;
     wire MemRead;
@@ -97,7 +83,7 @@ output reg [12:0] BCD
     wire [31:0] data1;
     wire [31:0] data2;
     regFile rf (.reg1(inst[19:15]), .reg2(inst[24:20]), .writeReg(inst[11:7]), .write(RegWrite), .writeData(MemtoReg? memout : alures), .data1(data1), .data2(data2),
-  .rst(reset), .clk(clk));
+    .rst(reset), .clk(clk));
     
     wire [31:0] immediate;
     Immediategenerator ig (.instruction(inst), .imm(immediate));
@@ -110,7 +96,7 @@ output reg [12:0] BCD
     
     wire zero;
     wire [31:0] alures;
-    NbitALU alu (.clk(clk), .Reg1(data1), .Reg2(alusrc2), .Zero(zero), .ALUop(ALUS), .ALU(alures));
+    NbitALU alu (.clk(clk), .Reg1(data1), .Reg2(alusrc2), .Zero(zero), .ALUSELECT(ALUS), .ALU(alures));
     
     wire[31:0] memout;
     DataMem datamemory (.clk(clk), .MemRead(MemRead), .MemWrite(MemtoWrite), .addr(alures[7:2]), .data_in(data2), .data_out(memout));
