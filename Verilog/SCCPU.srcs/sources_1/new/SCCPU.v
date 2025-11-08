@@ -63,7 +63,7 @@ wire halt;
             PC <= 32'd0;
         else if(!halt) begin
             PC <= (Branch & zero)? PC+(immediate<<1) : PC+32'd4;
-else 
+end else begin
 PC <= PC; 
         end
             
