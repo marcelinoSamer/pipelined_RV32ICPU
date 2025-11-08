@@ -21,6 +21,23 @@
 
 
 module shifter(
-input a, input shamt, input [1:0] type,  output r
+input a, input shamt, input [1:0] type,  output reg r
     );
+    always @* begin
+    	case (type)begin
+    		2'b00: begin
+    			if (shamt) r = a << 1; 
+    			else r = a << 20;
+    		end
+    		2'b01: begin
+    			if (shamt) r = a >> 1;
+    			else r = a >> 20;
+    		end
+    		2'b10: begin
+    			if (shamt) r = a >>> 1; 
+    			else r = a >>> 20;
+    		end
+    	endcase
+    	
+    end
 endmodule
