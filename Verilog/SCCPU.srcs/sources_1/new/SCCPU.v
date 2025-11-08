@@ -18,6 +18,10 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
+
+`include "defines.v"
+
+
 module SCCPU(
 input clk,
 input reset,
@@ -28,7 +32,7 @@ output reg [12:0] BCD
     );
     reg [31:0] PC;
     wire [31:0] inst;
-
+wire halt;
 
     always @* begin
     case(ledsel)
@@ -57,8 +61,10 @@ output reg [12:0] BCD
     always @(posedge clk or posedge reset) begin
         if (reset)
             PC <= 32'd0;
-        else begin
+        else if(!halt) begin
             PC <= (Branch & zero)? PC+(immediate<<1) : PC+32'd4;
+else 
+PC <= PC; 
         end
             
     end
@@ -88,15 +94,29 @@ output reg [12:0] BCD
     wire [31:0] immediate;
     Immediategenerator ig (.instruction(inst), .imm(immediate));
     
-    wire [3:0] ALUS;
-    ALUControlUnit alucu (.instruction({inst[14:12], inst[30]}), .ALUop(ALUop), .clk(clk), .ALUS(ALUS));
+    wire [3:0] ALUSELECT;
+    ALUControlUnit alucu (.instruction({inst[14:12], inst[30]}), .ALUop(ALUop), .clk(clk), .ALUS(ALUSELECT));
     
     wire [31:0] alusrc2;
     assign alusrc2 = ALUsrc? immediate : data2;
     
     wire zero;
     wire [31:0] alures;
-    NbitALU alu (.clk(clk), .Reg1(data1), .Reg2(alusrc2), .Zero(zero), .ALUSELECT(ALUS), .ALU(alures));
+wire [4:0] shamt;
+    wire cf, vf, sf;
+
+ wire [4:0] opcode = inst[6:2];       
+    wire [2:0] funct3 = inst[14:12];
+    wire [6:0] funct7 = inst[31:25];
+
+assign shamt =
+    ((opcode == `OPCODE_Arith_I) && ((funct3 == `F3_SLL) || (funct3 == `F3_SRL))) ? inst[`IR_shamt] :
+    ((opcode == `OPCODE_Arith_R) && ((funct3 == `F3_SLL) || (funct3 == `F3_SRL))) ? data2[4:0] :
+    5'b00000;
+
+
+    NbitALU alu (.clk(clk), .Reg1(data1), .Reg2(alusrc2), .Zero(zero), .ALUSELECT(ALUSELECT), .ALU(alures) , .cf(cf) , .vf(vf), 
+.sf(sf), .shamt(shamt));
     
     wire[31:0] memout;
     DataMem datamemory (.clk(clk), .MemRead(MemRead), .MemWrite(MemtoWrite), .addr(alures[7:2]), .data_in(data2), .data_out(memout));
