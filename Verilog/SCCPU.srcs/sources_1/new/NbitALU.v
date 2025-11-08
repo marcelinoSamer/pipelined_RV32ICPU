@@ -23,7 +23,7 @@
 module NbitALU #(parameter N=32) ( input [(N-1):0] Reg1  , input [(N-1):0] Reg2 , input [3:0] ALUSELECT , output reg Zero, output reg [N-1:0] ALU 
  , input clk ,input [4:0] shamt , output  wire cf, vf, sf );
  
-    wire [31:0] add, sub, op_b;
+    wire [31:0] add, op_b;
     wire cfa, cfs;
     
       
@@ -38,14 +38,12 @@ module NbitALU #(parameter N=32) ( input [(N-1):0] Reg1  , input [(N-1):0] Reg2 
     wire[31:0] shift_result;
     shifter shifter0(.Reg1(a), .shamt(shamt), .type(alufn[1:0]),  .r(shift_result));
     
-    
-//    RCA r (.x(Reg1), .y(ALUSELECT[2]? ~Reg2:Reg2), .cin(ALUSELECT[2]), .S(add));
 
    
     always @(*) begin
     case(ALUSELECT)
             `ALU_ADD: ALU = add;           // ADD
-            `ALU_SUB: ALU = sub;           // SUB
+            `ALU_SUB: ALU = add;           // SUB
             `ALU_PASS: ALU = Reg2;         // PASS
             `ALU_OR: ALU = Reg1 | Reg2;    // OR
             `ALU_AND: ALU = Reg1 & Reg2;   // AND
@@ -53,8 +51,8 @@ module NbitALU #(parameter N=32) ( input [(N-1):0] Reg1  , input [(N-1):0] Reg2 
             `ALU_SRL: ALU = shift_result;  // Shift Right
             `ALU_SRA: ALU = shift_result;  // Shift Right Arithmetic
             `ALU_SLL: ALU = shift_result;  // Shift Left
-            `ALU_SLT: ALU = {31'b0, (Reg1 < Reg2)};   // Set Less Than
-            `ALU_SLTU: ALU = {31'b0, (Reg1 < Reg2)};  // Set Less Than Unsigned
+            `ALU_SLT: ALU = {31'b0,(sf != vf)};  // Set Less Than
+            `ALU_SLTU: ALU = {31'b0,(~cf)};   // Set Less Than Unsigned
             default: ALU = 0;
         endcase
     if (ALU == 0)begin

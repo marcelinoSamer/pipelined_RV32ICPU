@@ -88,17 +88,4 @@ default: begin
  end
  endmodule
 
-   /* if (ALUop == 2'b00) ALUS = 4'b0010; //LW/SW
-    else if (ALUop == 2'b01) ALUS = 4'b0110;
-    else if (ALUop == 2'b10) begin
-        case (instruction)
-            4'b0000: ALUS = 4'b0010;
-            4'b0001: ALUS = 4'b0110;
-            4'b1110: ALUS = 4'b0000;
-            4'b1100: ALUS = 4'b0001;
-            default: ALUS = 4'b1111;
-        endcase
-    end
-    
-    end
-endmodule*/
+ 
