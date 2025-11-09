@@ -87,7 +87,7 @@ The processor is tested on the **Nexys A7 FPGA board**, using:
 
 ## 👥 Team Members
 - **Marcelino Sedhum** – [900231128]  
-- **Mennatallah Zaid** – [Student ID]  
+- **Mennatallah Zaid** – [900232367]  
 
 ---
 
