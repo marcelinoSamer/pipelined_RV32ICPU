@@ -25,16 +25,16 @@ input [5:0] addr, input [31:0] data_in, output reg [31:0] data_out);
 reg [31:0] mem [0:63];
 
 
-//initial begin
-//    mem[0] = 32'd17;
-//    mem[1] = 32'd9;
-//    mem[2] = 32'd25;
-//end
 initial begin
-    mem[0] = 32'd5;    // first operand
-    mem[1] = 32'd3;    // second operand
-    mem[2] = 32'd20;   // loop limit
+    mem[0] = 32'd17;
+    mem[1] = 32'd9;
+    mem[2] = 32'd25;
 end
+//initial begin
+//    mem[0] = 32'd5;    // first operand
+//    mem[1] = 32'd3;    // second operand
+//    mem[2] = 32'd20;   // loop limit
+//end
 
 always @ (posedge clk)begin
 if(MemWrite == 1'b1) mem [addr] <= data_in;

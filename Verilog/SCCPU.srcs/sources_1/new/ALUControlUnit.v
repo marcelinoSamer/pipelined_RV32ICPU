@@ -32,7 +32,7 @@ wire [2:0] funct3 = instruction[`IR_funct3];
 wire [4:0] funct7 = instruction[`IR_funct7];
 
     always @ (*) begin
-
+halt=1'b0;
 case (ALUop) 
 
 2'b00 : begin 
@@ -64,7 +64,7 @@ end
 `F3_XOR: ALUSELECT=`ALU_XOR; 
 `F3_SLL : ALUSELECT =`ALU_SLL; 
 `F3_SRL : begin 
-if (f7==7'b0100000)begin
+if (funct7==7'b0100000)begin
 ALUSELECT= `ALU_SRA; 
 end else begin 
 ALUSELECT=`ALU_SRL; 

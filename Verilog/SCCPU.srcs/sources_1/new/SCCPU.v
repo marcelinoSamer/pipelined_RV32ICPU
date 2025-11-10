@@ -32,13 +32,38 @@ output reg [12:0] BCD
     );
     reg [31:0] PC;
     wire [31:0] inst;
-wire halt;
-
-    always @* begin
+    wire halt;
+    wire pc_load;  
+    
+    wire Branch;
+    wire MemRead;
+    wire MemtoReg;
+    wire [1:0] ALUop;
+    wire MemtoWrite;
+    wire ALUsrc;
+    wire RegWrite;
+    wire [1:0] PCsrc; 
+     wire AUIPC;  
+    wire [31:0] data1;
+    wire [31:0] data2;
+    wire [31:0] immediate;
+    wire [3:0] ALUSELECT;
+    wire [31:0] alusrc2;
+    wire [31:0] alusrc1;  
+    wire [31:0] alures;
+    wire [31:0] memout;
+    wire zero;
+    wire cf, vf, sf;
+    wire [4:0] shamt;
+    
+    wire [4:0] opcode = inst[`IR_opcode];      
+    wire [2:0] funct3 = inst[`IR_funct3];
+    wire [6:0] funct7 = inst[`IR_funct7];
+      always @* begin
     case(ledsel)
             2'b00: LEDs = PC[15:0];
             2'b01: LEDs = PC[31:16];
-            2'b10: LEDs = {2'b00, Branch, MemRead, MemtoReg, ALUop, MemtoWrite, ALUsrc, RegWrite, ALUS, zero, Branch&zero};
+            2'b10: LEDs = {2'b00, Branch, MemRead, MemtoReg, ALUop, MemtoWrite, ALUsrc, RegWrite, ALUSELECT, zero, Branch&zero};
         endcase
         
         case(ssdSel)
@@ -61,29 +86,23 @@ wire halt;
     always @(posedge clk or posedge reset) begin
         if (reset)
             PC <= 32'd0;
-        case (PCsrc): begin
+            else if (!halt) begin
+        case (PCsrc)
         	2'b00: PC <= PC + 32'd4;
         	2'b01: PC <= PC + immediate << 1;
         	2'b10: PC <= alures;
         	2'b11: PC <= PC;
         endcase
         end
+        end
             
-    end
+   
        
     InstMem instmem (.addr(PC[7:2]), .data_out(inst));
-    wire Branch;
-    wire MemRead;
-    wire MemtoReg;
-    wire [1:0] ALUop;
-    wire MemtoWrite;
-    wire ALUsrc;
-    wire RegWrite;
-    wire [1:0] PCsrc;
-    wire AUIPC;
+
     
     TheControlUnit CU (
-    .instruction(inst), 
+    .instruction(inst[6:0]), 
     .cf(cf), 
     .zf(zero),
     .vf(vf),
@@ -97,29 +116,17 @@ wire halt;
     .ALUsrc(ALUsrc),
     .RegWrite(RegWrite));
     
-    wire [31:0] data1;
-    wire [31:0] data2;
-    regFile rf (.reg1(inst[19:15]), .reg2(inst[24:20]), .writeReg(inst[11:7]), .write(RegWrite), .writeData(MemtoReg? memout : alures), .data1(data1), .data2(data2),
+   regFile rf (.reg1(inst[19:15]), .reg2(inst[24:20]), .writeReg(inst[11:7]), .write(RegWrite), .writeData(MemtoReg? memout : alures), .data1(data1), .data2(data2),
     .rst(reset), .clk(clk));
+ 
+ 
+     Immediategenerator ig (.IR(inst), .Imm(immediate));
+ 
+ 
+     ALUControlUnit alucu (.instruction(inst), .ALUop(ALUop), .clk(clk), .ALUSELECT(ALUSELECT), .halt(halt));
     
-    wire [31:0] immediate;
-    Immediategenerator ig (.instruction(inst), .imm(immediate));
-    
-    wire [3:0] ALUSELECT;
-    ALUControlUnit alucu (.instruction({inst[14:12], inst[30]}), .ALUop(ALUop), .clk(clk), .ALUS(ALUSELECT));
-    
-    wire [31:0] alusrc2;
-    wire [31:0] alusrc1;
     assign alusrc2 = ALUsrc? immediate : data2;
-    assign alusrc2 = AUIPC? PC : data1;
-    wire zero;
-    wire [31:0] alures;
-wire [4:0] shamt;
-    wire cf, vf, sf;
-
- wire [4:0] opcode = inst[6:2];       
-    wire [2:0] funct3 = inst[14:12];
-    wire [6:0] funct7 = inst[31:25];
+    assign alusrc1 = AUIPC? PC : data1;
 
 assign shamt =
     ((opcode == `OPCODE_Arith_I) && ((funct3 == `F3_SLL) || (funct3 == `F3_SRL))) ? inst[`IR_shamt] :
@@ -127,11 +134,12 @@ assign shamt =
     5'b00000;
 
 
-    NbitALU alu (.clk(clk), .Reg1(data1), .Reg2(alusrc2), .Zero(zero), .ALUSELECT(ALUSELECT), .ALU(alures) , .cf(cf) , .vf(vf), 
+    NbitALU alu (.clk(clk), .Reg1(alusrc1), .Reg2(alusrc2), .Zero(zero), .ALUSELECT(ALUSELECT), .ALU(alures) , .cf(cf) , .vf(vf), 
 .sf(sf), .shamt(shamt));
     
-    wire[31:0] memout;
-    DataMem datamemory (.clk(clk), .MemRead(MemRead), .MemWrite(MemtoWrite), .addr(alures[7:2]), .data_in(data2), .data_out(memout));
+    
+    
+     DataMem datamemory (.clk(clk), .MemRead(MemRead), .MemWrite(MemtoWrite), .addr(alures[7:2]), .data_in(data2), .data_out(memout));
     
     
     

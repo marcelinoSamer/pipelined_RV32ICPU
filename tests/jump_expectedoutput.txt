@@ -1,0 +1,41 @@
+# ==========================================================
+# RISC-V SCCPU JAL / JALR Test Trace
+# ==========================================================
+
+PC=00000000 | Instr=addi x1,x0,100
+  PC+4=00000004 | Branch=0 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=ADD ALUsrc=1 RegWrite=1
+  ALUSELECT=ADD | data1=0 | alusrc2=100 | ALUres=100
+  Register Write: x1 = 100
+------------------------------------------------------------
+
+PC=00000004 | Instr=jal x5,target
+  PC+4=00000008 | Branch=1 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=X ALUsrc=X RegWrite=1
+  x5 = 0x08  # return address
+  Jump Taken -> PC = target (example 0x10)
+------------------------------------------------------------
+
+PC=00000008 | Instr=addi x2,x0,999
+  SKIPPED due to jump
+------------------------------------------------------------
+
+PC=00000010 | Instr=addi x3,x0,123
+  PC+4=00000014 | Branch=0 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=ADD ALUsrc=1 RegWrite=1
+  ALUSELECT=ADD | data1=0 | alusrc2=123 | ALUres=123
+  Register Write: x3 = 123
+------------------------------------------------------------
+
+PC=00000014 | Instr=jalr x0,0(x5)
+  PC+4=00000018 | Branch=1 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=X ALUsrc=0 RegWrite=0
+  Jump Taken -> PC = x5 + 0 = 0x08
+------------------------------------------------------------
+
+PC=00000008 | Instr=addi x2,x0,999
+  PC+4=0000000C | Branch=0 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=ADD ALUsrc=1 RegWrite=1
+  ALUSELECT=ADD | data1=0 | alusrc2=999 | ALUres=999
+  Register Write: x2 = 999
+------------------------------------------------------------
+
+PC=0000000C | Instr=ecall
+  PC+4=0000000C | Branch=1 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=X ALUsrc=0 RegWrite=0
+  HALT asserted — CPU stops execution
+------------------------------------------------------------

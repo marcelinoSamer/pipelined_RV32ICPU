@@ -23,7 +23,7 @@
 module TheControlUnit(
 input [6:0] instruction ,
 input cf, vf, zf, sf, //input flags to select new pc
-    output reg PCsrc, //instead of making a branch flag specifically
+   output reg [1:0] PCsrc, //instead of making a branch flag specifically
     output reg MemRead,
     output reg MemtoReg,
     output reg [1:0] ALUop,
@@ -41,40 +41,40 @@ input cf, vf, zf, sf, //input flags to select new pc
  end  (`OPCODE_Load)  : begin
      PCsrc = 2'b00 ; MemRead = 1 ;  MemtoReg= 1 ;   ALUop=2'b00;  MemtoWrite=0; ALUsrc=1 ; RegWrite=1; AUIPC = 0;
   end (`OPCODE_Store)  : begin
-     Branch =0 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b00;  MemtoWrite=1; ALUsrc=1 ; RegWrite=0; 
+     PCsrc =0 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b00;  MemtoWrite=1; ALUsrc=1 ; RegWrite=0; 
  end  (`OPCODE_Branch)  : begin
-     Branch =1 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0; 
+     PCsrc =1 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0; 
 end  
 
 (`OPCODE_JALR)  : begin
-     Branch =1 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0; 
+     PCsrc =1 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0; 
 end  
 
 (`OPCODE_JAL)  : begin
-     Branch =1 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0; 
+     PCsrc =1 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0; 
 end  
 
 (`OPCODE_Arith_I)  : begin
-     Branch =0 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0; 
+     PCsrc =0 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0; 
 end  
 
 (`OPCODE_AUIPC)  : begin
-     Branch =0 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0; 
+     PCsrc =0 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0; 
 end  
 
 (`OPCODE_LUI)  : begin
-     Branch =0 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0; 
+     PCsrc =0 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0; 
 end  
 
 (`OPCODE_SYSTEM)  : begin
-     Branch =1 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0; 
+     PCsrc =1 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0; 
 end  
 
 (`OPCODE_Custom)  : begin
-     Branch =1 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0; 
+     PCsrc =1 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0; 
 end  
 
-default : begin Branch =0 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b00;  MemtoWrite=0; ALUsrc=0; RegWrite=0; 
+default : begin PCsrc =0 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b00;  MemtoWrite=0; ALUsrc=0; RegWrite=0; 
   end 
     endcase
    end

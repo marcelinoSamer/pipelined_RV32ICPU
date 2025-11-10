@@ -29,14 +29,14 @@ module NbitALU #(parameter N=32) ( input [(N-1):0] Reg1  , input [(N-1):0] Reg2 
       
     assign op_b = (~Reg2);
     
-    assign {cf, add} = alufn[0] ? (Reg1 + op_b + 1'b1) : (Reg1 + Reg2);
+    assign {cf, add} = ALUSELECT[0] ? (Reg1 + op_b + 1'b1) : (Reg1 + Reg2);
     
     assign zf = (add == 0);
     assign sf = add[31];
     assign vf = (Reg1[31] ^ (op_b[31]) ^ add[31] ^ cf);
     
     wire[31:0] shift_result;
-    shifter shifter0(.Reg1(a), .shamt(shamt), .type(alufn[1:0]),  .r(shift_result));
+    shifter shifter0(.a(a), .shamt(shamt), .type(ALUSELECT[1:0]),  .r(shift_result));
     
 
    

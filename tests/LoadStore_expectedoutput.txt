@@ -1,0 +1,34 @@
+# ==========================================================
+# RISC-V SCCPU Expected Trace
+# Program: LOAD/STORE Test
+# ==========================================================
+
+PC=00000000 | Instr=addi x1,x0,100
+  PC+4=00000004 | Branch=0 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=ADD ALUsrc=1 RegWrite=1
+  ALUSELECT=ADD | data1=0 | alusrc2=100 | ALUres=100
+  Register Write: x1 = 100
+------------------------------------------------------------
+
+PC=00000004 | Instr=addi x2,x0,55
+  PC+4=00000008 | Branch=0 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=ADD ALUsrc=1 RegWrite=1
+  ALUSELECT=ADD | data1=0 | alusrc2=55 | ALUres=55
+  Register Write: x2 = 55
+------------------------------------------------------------
+
+PC=00000008 | Instr=sw x2,0(x1)
+  PC+4=0000000C | Branch=0 MemRead=0 MemWrite=1 MemtoReg=X ALUop=ADD ALUsrc=1 RegWrite=0
+  ALUSELECT=ADD | data1=100 | alusrc2=0 | ALUres=100
+  Memory Write: MEM[100] = 55
+------------------------------------------------------------
+
+PC=0000000C | Instr=lw x3,0(x1)
+  PC+4=00000010 | Branch=0 MemRead=1 MemWrite=0 MemtoReg=1 ALUop=ADD ALUsrc=1 RegWrite=1
+  ALUSELECT=ADD | data1=100 | alusrc2=0 | ALUres=100
+  Memory Read: MEM[100] = 55
+  Register Write: x3 = 55
+------------------------------------------------------------
+
+PC=00000010 | Instr=ecall
+  PC+4=00000010 | Branch=1 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=X ALUsrc=0 RegWrite=0
+  HALT asserted — CPU stops execution
+------------------------------------------------------------

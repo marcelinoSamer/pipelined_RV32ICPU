@@ -1,0 +1,64 @@
+# ==========================================================
+# RISC-V SCCPU Expected Trace
+# Program: R-Type Arithmetic Test
+# ==========================================================
+
+PC=00000000 | Instr=addi x1,x0,10
+  PC+4=00000004 | Branch=0 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=10 ALUsrc=1 RegWrite=1
+  ALUSELECT=ADD | data1=0 | alusrc2=10 | ALUres=10
+  Register Write: x1 = 10
+------------------------------------------------------------
+
+PC=00000004 | Instr=addi x2,x0,5
+  PC+4=00000008 | Branch=0 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=10 ALUsrc=1 RegWrite=1
+  ALUSELECT=ADD | data1=0 | alusrc2=5 | ALUres=5
+  Register Write: x2 = 5
+------------------------------------------------------------
+
+PC=00000008 | Instr=add x3,x1,x2
+  PC+4=0000000C | Branch=0 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=10 ALUsrc=0 RegWrite=1
+  ALUSELECT=ADD | data1=10 | data2=5 | ALUres=15
+  Register Write: x3 = 15
+------------------------------------------------------------
+
+PC=0000000C | Instr=sub x4,x1,x2
+  PC+4=00000010 | Branch=0 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=10 ALUsrc=0 RegWrite=1
+  ALUSELECT=SUB | data1=10 | data2=5 | ALUres=5
+  Register Write: x4 = 5
+------------------------------------------------------------
+
+PC=00000010 | Instr=and x5,x1,x2
+  PC+4=00000014 | Branch=0 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=10 ALUsrc=0 RegWrite=1
+  ALUSELECT=AND | data1=10 | data2=5 | ALUres=0
+  Register Write: x5 = 0
+------------------------------------------------------------
+
+PC=00000014 | Instr=or x6,x1,x2
+  PC+4=00000018 | Branch=0 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=10 ALUsrc=0 RegWrite=1
+  ALUSELECT=OR  | data1=10 | data2=5 | ALUres=15
+  Register Write: x6 = 15
+------------------------------------------------------------
+
+PC=00000018 | Instr=xor x7,x1,x2
+  PC+4=0000001C | Branch=0 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=10 ALUsrc=0 RegWrite=1
+  ALUSELECT=XOR | data1=10 | data2=5 | ALUres=15
+  Register Write: x7 = 15
+------------------------------------------------------------
+
+PC=0000001C | Instr=sll x8,x2,x1
+  PC+4=00000020 | Branch=0 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=10 ALUsrc=0 RegWrite=1
+  ALUSELECT=SLL | data1=5 | data2=10 | ALUres=5120
+  Register Write: x8 = 5120
+------------------------------------------------------------
+
+PC=00000020 | Instr=slt x9,x2,x1
+  PC+4=00000024 | Branch=0 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=10 ALUsrc=0 RegWrite=1
+  ALUSELECT=SLT | data1=5 | data2=10 | ALUres=1
+  Register Write: x9 = 1
+------------------------------------------------------------
+
+PC=00000024 | Instr=ecall
+  PC+4=00000024 | Branch=1 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=01 ALUsrc=0 RegWrite=0
+  HALT asserted — CPU stops execution
+------------------------------------------------------------
+   

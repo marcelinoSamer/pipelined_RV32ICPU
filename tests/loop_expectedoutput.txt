@@ -1,0 +1,86 @@
+# ==========================================================
+# RISC-V SCCPU Expected Trace
+# Program: LOOP Test
+# ==========================================================
+
+PC=00000000 | Instr=addi x1,x0,0
+  PC+4=00000004 | Branch=0 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=ADD ALUsrc=1 RegWrite=1
+  ALUSELECT=ADD | data1=0 | alusrc2=0 | ALUres=0
+  Register Write: x1 = 0
+------------------------------------------------------------
+
+PC=00000004 | Instr=addi x2,x0,5
+  PC+4=00000008 | Branch=0 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=ADD ALUsrc=1 RegWrite=1
+  ALUSELECT=ADD | data1=0 | alusrc2=5 | ALUres=5
+  Register Write: x2 = 5
+------------------------------------------------------------
+
+# --- LOOP ITERATION 1 ---
+PC=00000008 | Instr=addi x1,x1,1
+  PC+4=0000000C | Branch=0 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=ADD ALUsrc=1 RegWrite=1
+  ALUSELECT=ADD | data1=0 | alusrc2=1 | ALUres=1
+  Register Write: x1 = 1
+------------------------------------------------------------
+
+PC=0000000C | Instr=blt x1,x2,loop
+  PC+4=00000010 | Branch=1 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=SUB ALUsrc=0 RegWrite=0
+  ALUSELECT=SUB | data1=1 | alusrc2=5 | ALUres=-4
+  Branch Taken: Yes -> PC = 0x08
+------------------------------------------------------------
+
+# --- LOOP ITERATION 2 ---
+PC=00000008 | Instr=addi x1,x1,1
+  PC+4=0000000C | Branch=0 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=ADD ALUsrc=1 RegWrite=1
+  ALUSELECT=ADD | data1=1 | alusrc2=1 | ALUres=2
+  Register Write: x1 = 2
+------------------------------------------------------------
+
+PC=0000000C | Instr=blt x1,x2,loop
+  PC+4=00000010 | Branch=1 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=SUB ALUsrc=0 RegWrite=0
+  ALUSELECT=SUB | data1=2 | alusrc2=5 | ALUres=-3
+  Branch Taken: Yes -> PC = 0x08
+------------------------------------------------------------
+
+# --- LOOP ITERATION 3 ---
+PC=00000008 | Instr=addi x1,x1,1
+  PC+4=0000000C | Branch=0 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=ADD ALUsrc=1 RegWrite=1
+  ALUSELECT=ADD | data1=2 | alusrc2=1 | ALUres=3
+  Register Write: x1 = 3
+------------------------------------------------------------
+
+PC=0000000C | Instr=blt x1,x2,loop
+  PC+4=00000010 | Branch=1 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=SUB ALUsrc=0 RegWrite=0
+  ALUSELECT=SUB | data1=3 | alusrc2=5 | ALUres=-2
+  Branch Taken: Yes -> PC = 0x08
+------------------------------------------------------------
+
+# --- LOOP ITERATION 4 ---
+PC=00000008 | Instr=addi x1,x1,1
+  PC+4=0000000C | Branch=0 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=ADD ALUsrc=1 RegWrite=1
+  ALUSELECT=ADD | data1=3 | alusrc2=1 | ALUres=4
+  Register Write: x1 = 4
+------------------------------------------------------------
+
+PC=0000000C | Instr=blt x1,x2,loop
+  PC+4=00000010 | Branch=1 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=SUB ALUsrc=0 RegWrite=0
+  ALUSELECT=SUB | data1=4 | alusrc2=5 | ALUres=-1
+  Branch Taken: Yes -> PC = 0x08
+------------------------------------------------------------
+
+# --- LOOP ITERATION 5 ---
+PC=00000008 | Instr=addi x1,x1,1
+  PC+4=0000000C | Branch=0 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=ADD ALUsrc=1 RegWrite=1
+  ALUSELECT=ADD | data1=4 | alusrc2=1 | ALUres=5
+  Register Write: x1 = 5
+------------------------------------------------------------
+
+PC=0000000C | Instr=blt x1,x2,loop
+  PC+4=00000010 | Branch=1 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=SUB ALUsrc=0 RegWrite=0
+  ALUSELECT=SUB | data1=5 | alusrc2=5 | ALUres=0
+  Branch Taken: No -> PC = 0x10
+------------------------------------------------------------
+
+PC=00000010 | Instr=ecall
+  PC+4=00000010 | Branch=1 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=X ALUsrc=0 RegWrite=0
+  HALT asserted — CPU stops execution
+------------------------------------------------------------

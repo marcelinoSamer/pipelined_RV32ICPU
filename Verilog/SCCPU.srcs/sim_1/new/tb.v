@@ -20,32 +20,60 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
+`timescale 1ns / 1ps
+
 module tb;
-reg reset;
- reg clk;
-    reg [7:0] addr;
-   
-     SCCPU uut (
+    // Inputs
+    reg clk;
+    reg reset;
+    reg [1:0] ledsel;
+    reg [3:0] ssdSel;
+
+    // Outputs
+    wire [15:0] LEDs;
+    wire [12:0] BCD;
+
+    // Instantiate the Unit Under Test (UUT)
+    SCCPU uut (
         .clk(clk),
-        .addr(addr),
-        .reset(reset)
+        .reset(reset),
+        .ledsel(ledsel),
+        .ssdSel(ssdSel),
+        .LEDs(LEDs),
+        .BCD(BCD)
     );
+
+    // Clock generation
     initial begin
-    reset = 0;
-    addr = 0;
-    #20
-    reset = 1;
-    #20 
-    reset = 0;
-      
-    end
-  
-  initial begin
         clk = 0;
-        forever #20 clk = ~clk;
-    end 
-  
-    
-    
+        forever #20 clk = ~clk;  // 40ns period
+    end
+
+    // Test sequence
+    initial begin
+        // Initialize inputs
+        reset = 1;
+        ledsel = 2'b00;
+        ssdSel = 4'b0000;
+
+        #50;  // Wait some time
+        reset = 0;
+
+        // Change display selects over time
+        #100 ledsel = 2'b01;
+        #100 ledsel = 2'b10;
+
+        #100 ssdSel = 4'b0001;
+        #100 ssdSel = 4'b0010;
+        #100 ssdSel = 4'b0011;
+        #100 ssdSel = 4'b0100;
+        #100 ssdSel = 4'b0101;
+
+        // Run for a while
+        #500;
+
+        $stop;  // Stop simulation
+    end
 
 endmodule
+
