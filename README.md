@@ -40,7 +40,7 @@ This structure maintains an effective CPI of 2 while ensuring correct synchroniz
 - ⚡ Tested on the **Nexys A7 FPGA board**
 
 📸 **Datapath Diagram:**  
-*(Insert datapath image here)*
+[![Datapath Diagram](./Assets/datapath.png)](./Assets/datapath.png)
 
 ---
 
