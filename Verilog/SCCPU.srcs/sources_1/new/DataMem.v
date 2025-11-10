@@ -29,6 +29,7 @@ initial begin
     mem[0] = 32'd17;
     mem[1] = 32'd9;
     mem[2] = 32'd25;
+      mem[55] = 32'd56;
 end
 //initial begin
 //    mem[0] = 32'd5;    // first operand

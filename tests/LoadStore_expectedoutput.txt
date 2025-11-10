@@ -1,34 +1,76 @@
-# ==========================================================
-# RISC-V SCCPU Expected Trace
-# Program: LOAD/STORE Test
-# ==========================================================
+Instruction 1:
+addi x1, x0, 100
 
-PC=00000000 | Instr=addi x1,x0,100
-  PC+4=00000004 | Branch=0 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=ADD ALUsrc=1 RegWrite=1
-  ALUSELECT=ADD | data1=0 | alusrc2=100 | ALUres=100
-  Register Write: x1 = 100
-------------------------------------------------------------
 
-PC=00000004 | Instr=addi x2,x0,55
-  PC+4=00000008 | Branch=0 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=ADD ALUsrc=1 RegWrite=1
-  ALUSELECT=ADD | data1=0 | alusrc2=55 | ALUres=55
-  Register Write: x2 = 55
-------------------------------------------------------------
+x1 = x0 + 100 = 100
 
-PC=00000008 | Instr=sw x2,0(x1)
-  PC+4=0000000C | Branch=0 MemRead=0 MemWrite=1 MemtoReg=X ALUop=ADD ALUsrc=1 RegWrite=0
-  ALUSELECT=ADD | data1=100 | alusrc2=0 | ALUres=100
-  Memory Write: MEM[100] = 55
-------------------------------------------------------------
+Memory unchanged
 
-PC=0000000C | Instr=lw x3,0(x1)
-  PC+4=00000010 | Branch=0 MemRead=1 MemWrite=0 MemtoReg=1 ALUop=ADD ALUsrc=1 RegWrite=1
-  ALUSELECT=ADD | data1=100 | alusrc2=0 | ALUres=100
-  Memory Read: MEM[100] = 55
-  Register Write: x3 = 55
-------------------------------------------------------------
+Registers:
 
-PC=00000010 | Instr=ecall
-  PC+4=00000010 | Branch=1 MemRead=0 MemWrite=0 MemtoReg=0 ALUop=X ALUsrc=0 RegWrite=0
-  HALT asserted — CPU stops execution
-------------------------------------------------------------
+x1 = 100
+x2 = ?
+x3 = ?
+
+Instruction 2:
+addi x2, x0, 25
+
+
+x2 = x0 + 25 = 25
+
+Memory unchanged
+
+Registers:
+
+x1 = 100
+x2 = 25
+x3 = ?
+
+Instruction 3:
+sw x2, 0(x1)
+
+
+Store word x2 into memory at address x1 + 0 = 100
+
+Memory[100] = 25
+
+Registers unchanged
+
+Registers:
+
+x1 = 100
+x2 = 25
+x3 = ?
+
+
+Memory:
+
+Memory[100] = 25
+
+Instruction 4:
+lw x3, 0(x1)
+
+
+Load word from memory at x1 + 0 = 100 into x3
+
+x3 = Memory[100] = 25
+
+Registers after load:
+
+x1 = 100
+x2 = 25
+x3 = 25
+x0 = 0
+
+
+Memory remains:
+
+Memory[100] = 25
+
+Instruction 5:
+ecall
+
+
+CPU halts
+
+No changes in registers or memory

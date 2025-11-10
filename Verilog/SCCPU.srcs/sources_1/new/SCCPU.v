@@ -90,12 +90,19 @@ output reg [12:0] BCD
             else if (!halt) begin
         case (PCsrc)
         	2'b00: PC <= PC + 32'd4;
-        	2'b01: PC <= PC + immediate << 1;
+        	2'b01: PC <= PC + immediate;
         	2'b10: PC <= alures;
-        	2'b11: PC <= PC;
+        	2'b11: begin 
+        	if (AUIPC) begin
+                      PC <= PC + (immediate << 12); 
+                end else begin
+                    PC <= PC; 
+                end
+            end
+            default: PC <= PC; 
         endcase
-        end
-        end
+    end
+end
             
    
        
@@ -103,8 +110,7 @@ output reg [12:0] BCD
 
     
     TheControlUnit CU (
-    .F3(funct3),
-    .instruction(inst[6:0]), 
+     .instruction(inst),  
     .cf(cf), 
     .zf(zero),
     .vf(vf),
@@ -119,7 +125,7 @@ output reg [12:0] BCD
     .RegWrite(RegWrite),
     .Jump(Jump));
     
-    assign writedata = MemtoReg? memout : (Jump? PC + 4 : alures)
+    assign writedata = MemtoReg? memout : (Jump? PC + 4 : alures);
    regFile rf (.reg1(inst[19:15]), .reg2(inst[24:20]), .writeReg(inst[11:7]), .write(RegWrite), .writeData(writedata), .data1(data1), .data2(data2),
     .rst(reset), .clk(clk));
  
@@ -138,8 +144,8 @@ assign shamt =
     5'b00000;
 
 
-    NbitALU alu (.clk(clk), .Reg1(alusrc1), .Reg2(alusrc2), .Zero(zero), .ALUSELECT(ALUSELECT), .ALU(alures) , .cf(cf) , .vf(vf), 
-.sf(sf), .shamt(shamt));
+    NbitALU alu ( .clk(clk) , .Reg1(alusrc1), .Reg2(alusrc2), .Zero(zero), .ALUSELECT(ALUSELECT), .ALU(alures) , .cf(cf) , .vf(vf), 
+.sf(sf), .shamt(shamt) , .AUIPC(AUIPC) , .PC(PC));
     
     
     
