@@ -48,6 +48,7 @@
 `define     F3_OR           3'b110
 `define     F3_AND          3'b111
 
+//funct3 values for branch
 `define     BR_BEQ          3'b000
 `define     BR_BNE          3'b001
 `define     BR_BLT          3'b100

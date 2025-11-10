@@ -102,6 +102,7 @@ output reg [12:0] BCD
 
     
     TheControlUnit CU (
+    .F3(funct3),
     .instruction(inst[6:0]), 
     .cf(cf), 
     .zf(zero),
