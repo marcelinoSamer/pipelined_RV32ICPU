@@ -54,8 +54,9 @@ output reg [12:0] BCD
     wire [31:0] memout;
     wire zero;
     wire cf, vf, sf;
+    wire Jump;
     wire [4:0] shamt;
-    
+    wire [31:0] writedata;
     wire [4:0] opcode = inst[`IR_opcode];      
     wire [2:0] funct3 = inst[`IR_funct3];
     wire [6:0] funct7 = inst[`IR_funct7];
@@ -115,9 +116,11 @@ output reg [12:0] BCD
     .ALUop(ALUop),
     .MemtoWrite(MemtoWrite),
     .ALUsrc(ALUsrc),
-    .RegWrite(RegWrite));
+    .RegWrite(RegWrite),
+    .Jump(Jump));
     
-   regFile rf (.reg1(inst[19:15]), .reg2(inst[24:20]), .writeReg(inst[11:7]), .write(RegWrite), .writeData(MemtoReg? memout : alures), .data1(data1), .data2(data2),
+    assign writedata = MemtoReg? memout : (Jump? PC + 4 : alures)
+   regFile rf (.reg1(inst[19:15]), .reg2(inst[24:20]), .writeReg(inst[11:7]), .write(RegWrite), .writeData(writedata), .data1(data1), .data2(data2),
     .rst(reset), .clk(clk));
  
  
