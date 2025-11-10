@@ -61,10 +61,12 @@ wire halt;
     always @(posedge clk or posedge reset) begin
         if (reset)
             PC <= 32'd0;
-        else if(!halt) begin
-            PC <= (Branch & zero)? PC+(immediate<<1) : PC+32'd4;
-end else begin
-PC <= PC; 
+        case (PCsrc): begin
+        	2'b00: PC <= PC + 32'd4;
+        	2'b01: PC <= PC + immediate << 1;
+        	2'b10: PC <= alures;
+        	2'b11: PC <= PC;
+        endcase
         end
             
     end
@@ -77,8 +79,17 @@ PC <= PC;
     wire MemtoWrite;
     wire ALUsrc;
     wire RegWrite;
-    TheControlUnit CU (.instruction(inst), 
-    .Branch(Branch),
+    wire [1:0] PCsrc;
+    wire AUIPC;
+    
+    TheControlUnit CU (
+    .instruction(inst), 
+    .cf(cf), 
+    .zf(zero),
+    .vf(vf),
+    .sf(sf),
+    .PCsrc(PCsrc),
+    .AUIPC(AUIPC),
     .MemRead(MemRead),
     .MemtoReg(MemtoReg),
     .ALUop(ALUop),
@@ -98,8 +109,9 @@ PC <= PC;
     ALUControlUnit alucu (.instruction({inst[14:12], inst[30]}), .ALUop(ALUop), .clk(clk), .ALUS(ALUSELECT));
     
     wire [31:0] alusrc2;
+    wire [31:0] alusrc1;
     assign alusrc2 = ALUsrc? immediate : data2;
-    
+    assign alusrc2 = AUIPC? PC : data1;
     wire zero;
     wire [31:0] alures;
 wire [4:0] shamt;

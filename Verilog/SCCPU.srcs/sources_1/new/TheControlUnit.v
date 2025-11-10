@@ -21,21 +21,25 @@
 `include "defines.v"
 
 module TheControlUnit(
-input [6:0] instruction ,  output reg Branch,
+input [6:0] instruction ,
+input cf, vf, zf, sf, //input flags to select new pc
+    output reg PCsrc, //instead of making a branch flag specifically
     output reg MemRead,
     output reg MemtoReg,
     output reg [1:0] ALUop,
     output reg MemtoWrite,
     output reg ALUsrc,
-    output reg RegWrite );
+    output reg RegWrite,
+    output reg AUIPC
+    );
     
     
      always @(*) begin
     case(instruction[6:2])
     (`OPCODE_Arith_R)  : begin
-     Branch =0 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b10;  MemtoWrite=0; ALUsrc=0; RegWrite=1; 
+     PCsrc = 2'b00 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b10;  MemtoWrite=0; ALUsrc=0; RegWrite=1; AUIPC = 0; //This is the format we work with
  end  (`OPCODE_Load)  : begin
-     Branch =0 ; MemRead = 1 ;  MemtoReg= 1 ;   ALUop=2'b00;  MemtoWrite=0; ALUsrc=1 ; RegWrite=1; 
+     PCsrc = 2'b00 ; MemRead = 1 ;  MemtoReg= 1 ;   ALUop=2'b00;  MemtoWrite=0; ALUsrc=1 ; RegWrite=1; AUIPC = 0;
   end (`OPCODE_Store)  : begin
      Branch =0 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b00;  MemtoWrite=1; ALUsrc=1 ; RegWrite=0; 
  end  (`OPCODE_Branch)  : begin
