@@ -22,70 +22,184 @@
 
 module TheControlUnit(
 input [31:0] instruction ,
-input cf, vf, zf, sf, //input flags to select new pc
-   output reg [1:0] PCsrc, //instead of making a branch flag specifically
     output reg MemRead,
     output reg MemtoReg,
-    output reg [1:0] ALUop,
-    output reg MemtoWrite,
-    output reg ALUsrc,
+    output reg [1:0] ALUop, //00=add, 01=sub, 10= arithmetic
+    output reg MemWrite,
     output reg RegWrite,
-    output reg AUIPC,
-    output reg Jump
+    output reg ALUsrc1, // 0 = reg, 1 = PC
+    output reg ALUsrc2, // 0 = reg, 1 = imm
+    output reg branch
     );
     
-    assign F3 = instruction[`IR_funct3];
-     always @(*) begin
-    case(instruction[`IR_opcode])
-    (`OPCODE_Arith_R)  : begin
-     PCsrc = 2'b00 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b10;  MemtoWrite=0; ALUsrc=0; RegWrite=1; Jump = 0; AUIPC = 0; //This is the format we work with
- end  (`OPCODE_Load)  : begin
-     PCsrc = 2'b00 ; MemRead = 1 ;  MemtoReg= 1 ;   ALUop=2'b00;  MemtoWrite=0; ALUsrc=1 ; RegWrite=1; Jump = 0; AUIPC = 0;
-  end (`OPCODE_Store)  : begin
-     PCsrc =2'b00 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b00;  MemtoWrite=1; ALUsrc=1 ; RegWrite=0; Jump = 0; AUIPC = 0;
- end  (`OPCODE_Branch)  : begin
-	
-   case (F3)
-     (`BR_BEQ): begin PCsrc = zf? 2'b01 : 2'b00 ;  MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0;  Jump = 0; AUIPC = 0;    end      //BEQ
-     (`BR_BNE) : begin PCsrc = ~zf ? 2'b01 : 2'b00  ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0;  Jump = 0; AUIPC = 0; end //BNE
-      (`BR_BLT): begin PCsrc = (sf != vf) ? 2'b01 : 2'b00;  MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0;  Jump = 0;  AUIPC = 0; end  //BLT
-     (`BR_BGE) : begin PCsrc = !(sf != vf) ? 2'b01 : 2'b00;  MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0;  Jump = 0; AUIPC = 0; end//BGE
-      (`BR_BLTU): begin PCsrc = ~cf ? 2'b01 : 2'b00;      MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0;  Jump = 0; AUIPC = 0;  end   //BLTU
-      (`BR_BGEU): begin PCsrc = cf ? 2'b01 : 2'b00;         
-     MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0;  Jump = 0; AUIPC = 0; end
-endcase
+assign F3 = instruction[`IR_funct3];
+always @(*) begin
+    	case(instruction[`IR_opcode])
+    		(`OPCODE_Arith_R)  : begin
+     			MemRead = 0 ;  
+     			MemtoReg= 0 ;   
+     			ALUop=2'b10;  
+     			MemWrite=0; 
+     			RegWrite=1; 
+     			ALUsrc1=0; 
+     			ALUsrc2=0; 
+     			branch = 0; 
+ 		end  
+ 		(`OPCODE_Load)  : begin
+  		        MemRead = 1 ;  
+	                MemtoReg= 1 ;   
+     			ALUop=2'b00;  
+     			MemWrite=0; 
+     			RegWrite=1; 
+     			ALUsrc1 =1 ; 
+     			ALUsrc2 = 0;
+     			branch = 0; 
+  		end 
+  		(`OPCODE_Store)  : begin
+     			MemRead = 0 ;  
+     			MemtoReg= 0 ;   
+     			ALUop=2'b00;  
+     			MemWrite=1; 
+     			RegWrite=0; 
+     			ALUsrc1 =1 ; 
+     			ALUsrc2 = 0;
+     			branch = 0; 
+ 		end  
+ 		(`OPCODE_Branch)  : begin
+			case (F3)
+     				(`BR_BEQ): begin 
+     					MemRead = 0 ;  
+     					MemtoReg= 0 ;   
+    				        ALUop=2'b01;  
+     					MemWrite=0; 
+     					RegWrite=0;  
+     					ALUsrc1=0 ; 
+     					ALUsrc2 = 0;    
+     					branch = 1; 
+     				end      
+     				(`BR_BNE) : begin 
+     					MemRead = 0 ;  
+     					MemtoReg= 0 ;   
+     					ALUop=2'b01;  
+     					MemWrite=0; 
+     					RegWrite=0;  
+     					ALUsrc1=0 ; 
+     					ALUsrc2 = 0; 
+     					branch = 1; 
+     				end
+     				(`BR_BLT): begin 
+     					MemRead = 0 ;  
+     					MemtoReg= 0 ;   
+     					ALUop=2'b01;  
+     					MemWrite=0; 
+     					RegWrite=0;  
+     					ALUsrc1 =0 ; 
+     					ALUsrc2 = 0;
+     					branch = 1;  
+     				end  
+     				(`BR_BGE) : begin 
+     					MemRead = 0 ;  
+     					MemtoReg= 0 ;   
+     					ALUop= 2'b01;  
+     					MemWrite=0; 
+     					RegWrite=0;  
+     					ALUsrc1 = 0; 
+     					ALUsrc2 = 0; 
+     					branch = 1; 
+     				end
+     				(`BR_BLTU): begin 
+     					MemRead = 0 ;  
+     					MemtoReg= 0 ;  
+     					ALUop=2'b01; 
+     					MemWrite=0;
+     					RegWrite=0; 
+     					ALUsrc1=0 ; 
+     					ALUsrc2 = 0; 
+     					branch = 1; 
+     				end   
+     				(`BR_BGEU): begin 
+     					MemRead = 0 ;  
+     					MemtoReg= 0 ;  
+     					ALUop=2'b01; 
+     					MemWrite=0;
+     					RegWrite=0; 
+     					ALUsrc1 = 0 ;
+     					ALUsrc2 = 0;
+     					branch = 1; 
+     				end
+			endcase
+		end
+		(`OPCODE_JALR)  : begin
+     			MemRead = 0 ; 
+     			MemtoReg= 0 ;  
+     			ALUop=2'b00; 
+     			MemWrite=0; 
+     			RegWrite=1;
+     			ALUsrc1 =1 ;
+     			ALUsrc2 = 0;
+     			branch = 1; 
+		end  
+		(`OPCODE_JAL)  : begin
+    			MemRead = 0 ; 
+    			MemtoReg= 0 ; 
+    			ALUop=2'b00;  
+    			MemWrite=0; 
+    			RegWrite=1;
+    			ALUsrc1 =1 ;
+    			ALUsrc2 = 1;
+    			branch = 1; 
+		end  
+		(`OPCODE_Arith_I)  : begin
+     			MemRead = 0 ;
+     			MemtoReg= 0 ;  
+     			ALUop=2'b10; 
+     			MemWrite=0;
+     			RegWrite=1;
+     			ALUsrc1 =1 ; 
+     			ALUsrc2 = 0;
+     			branch = 0; 
+		end  
+		(`OPCODE_AUIPC)  : begin
+     			MemRead = 0 ;  
+     			MemtoReg= 0 ; 
+     			ALUop=2'b00;
+     			MemWrite=0;
+     			RegWrite=1;
+     			ALUsrc1 =0 ;
+     			ALUsrc2 = 1;
+     			branch = 0; 
+		end  
+		(`OPCODE_LUI)  : begin
+     			MemRead = 0 ; 
+     			MemtoReg= 0 ; 
+     			ALUop=2'b00;  
+     			MemWrite=0; 
+     			RegWrite=1;
+     			ALUsrc1 =1 ; 
+     			ALUsrc2 = 0;
+     			branch = 0; 
+		end  
+		(`OPCODE_SYSTEM)  : begin
+  			MemRead = 0;
+  			MemtoReg= 0;
+  			ALUop=2'b01; 
+  			MemWrite=0; 
+  			RegWrite=0; 
+  			ALUsrc1 =0 ; 
+  			ALUsrc2 = 0;
+  			branch = 0; 
+		end   
+		default : begin  //depicts error, program freezes
+		MemRead = 0 ;
+		MemtoReg= 0 ; 
+		ALUop=2'b00; 
+		MemWrite=0;
+		RegWrite=0;
+		ALUsrc1 =0;
+		ALUsrc2 = 0;
+		branch = 0;
+  		end 
+  	endcase
 end
 
-(`OPCODE_JALR)  : begin
-     PCsrc =2'b10 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b00;  MemtoWrite=0; ALUsrc=1 ; RegWrite=1; Jump = 1; AUIPC = 0;
-end  
-
-(`OPCODE_JAL)  : begin
-    PCsrc =2'b01 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b00;  MemtoWrite=0; ALUsrc=1 ; RegWrite=1; Jump = 1; AUIPC = 1;
-end  
-
-(`OPCODE_Arith_I)  : begin
-     PCsrc =2'b00 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b10;  MemtoWrite=0; ALUsrc=1 ; RegWrite=1; Jump = 0; AUIPC = 0;
-end  
-
-(`OPCODE_AUIPC)  : begin
-     PCsrc =2'b00 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=1; Jump = 0; AUIPC = 1;
-end  
-
-(`OPCODE_LUI)  : begin
-     PCsrc =2'b00 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b00;  MemtoWrite=0; ALUsrc=1 ; RegWrite=1; Jump = 0; AUIPC = 0;
-end  
-
-(`OPCODE_SYSTEM)  : begin
-  PCsrc =2'b11; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0; Jump = 0; AUIPC = 0;
-end  
-
-//(`OPCODE_Custom)  : begin
-  //   PCsrc =1 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b01;  MemtoWrite=0; ALUsrc=0 ; RegWrite=0; Jump = 0; AUIPC = 0;
-//end  
-
-default : begin PCsrc =2'b11 ; MemRead = 0 ;  MemtoReg= 0 ;   ALUop=2'b00;  MemtoWrite=0; ALUsrc=0; RegWrite=0; Jump = 0; AUIPC = 0;//depicts error, program freezes
-  end 
-    endcase
-   end
 endmodule

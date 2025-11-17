@@ -30,20 +30,19 @@ input [3:0] ssdSel,
 output reg [15:0] LEDs,
 output reg [12:0] BCD
     );
-    reg [31:0] PC;
-    wire [31:0] inst;
-    wire halt;
-    wire pc_load;  
+    
+
+
     
     wire Branch;
     wire MemRead;
     wire MemtoReg;
     wire [1:0] ALUop;
-    wire MemtoWrite;
+    wire MemWrite;
     wire ALUsrc;
     wire RegWrite;
     wire [1:0] PCsrc; 
-     wire AUIPC;  
+    wire AUIPC;  
     wire [31:0] data1;
     wire [31:0] data2;
     wire [31:0] immediate;
@@ -60,11 +59,13 @@ output reg [12:0] BCD
     wire [4:0] opcode = inst[`IR_opcode];      
     wire [2:0] funct3 = inst[`IR_funct3];
     wire [6:0] funct7 = inst[`IR_funct7];
+    
+    //hardware testing block
       always @* begin
     case(ledsel)
             2'b00: LEDs = PC[15:0];
             2'b01: LEDs = PC[31:16];
-            2'b10: LEDs = {2'b00, Branch, MemRead, MemtoReg, ALUop, MemtoWrite, ALUsrc, RegWrite, ALUSELECT, zero, Branch&zero};
+            2'b10: LEDs = {2'b00, Branch, MemRead, MemtoReg, ALUop, MemWrite, ALUsrc, RegWrite, ALUSELECT, zero, Branch&zero};
         endcase
         
         case(ssdSel)
@@ -83,7 +84,12 @@ output reg [12:0] BCD
         endcase
     
     end
+    //hardware testing block end
 
+    //initializing the program counter and fetch stage
+    reg [31:0] PC;
+    wire [31:0] inst;
+    wire halt;
     always @(posedge clk or posedge reset) begin
         if (reset)
             PC <= 32'd0;
@@ -92,12 +98,7 @@ output reg [12:0] BCD
         	2'b00: PC <= PC + 32'd4;
         	2'b01: PC <= PC + immediate;
         	2'b10: PC <= alures;
-        	2'b11: begin 
-        	if (AUIPC) begin
-                      PC <= PC + (immediate << 12); 
-                end else begin
-                    PC <= PC; 
-                end
+        	2'b11: PC <= PC; 
             end
             default: PC <= PC; 
         endcase
@@ -107,33 +108,68 @@ end
    
        
     InstMem instmem (.addr(PC[7:2]), .data_out(inst));
-
     
+    //IF_ID
+    wire [31:0] IF_ID_PC, IF_ID_Inst;
+    nBitReg #(64) IF_ID (clk,reset,1'b1,
+                             {PC, inst},
+                             {IF_ID_PC,IF_ID_Inst} );
+                             
+                           
+                        
+    //Decode stage begin                    
+    wire MemRead;
+    wire MemtoReg;
+    wire [1:0] ALUop;
+    wire MemWrite;
+    wire ALUsrc1;
+    wire RegWrite;
+    wire ALUsrc2;  
+    wire Branch;
     TheControlUnit CU (
-     .instruction(inst),  
-    .cf(cf), 
-    .zf(zero),
-    .vf(vf),
-    .sf(sf),
-    .PCsrc(PCsrc),
-    .AUIPC(AUIPC),
+    .instruction(inst),  
     .MemRead(MemRead),
     .MemtoReg(MemtoReg),
+    .MemWrite(MemWrite),
     .ALUop(ALUop),
-    .MemtoWrite(MemtoWrite),
-    .ALUsrc(ALUsrc),
     .RegWrite(RegWrite),
-    .Jump(Jump));
+    .ALUsrc2(ALUsrc2),
+    .ALUsrc1(ALUsrc1),
+    .branch(branch));
     
-    assign writedata = MemtoReg? memout : (Jump? PC + 4 : alures);
+    assign writedata = MemtoReg? memout : (Jump? PC + 4 : alures); // in WB
    regFile rf (.reg1(inst[19:15]), .reg2(inst[24:20]), .writeReg(inst[11:7]), .write(RegWrite), .writeData(writedata), .data1(data1), .data2(data2),
     .rst(reset), .clk(clk));
  
  
      Immediategenerator ig (.IR(inst), .Imm(immediate));
  
+     //Decode stage end
+     
+     //ID_EX
+     wire [31:0] ID_EX_PC, ID_EX_data1, ID_EX_data2, ID_EX_Imm;
+     wire [3:0] ID_EX_Func;
+     wire [4:0] ID_EX_Rs1, ID_EX_Rs2, ID_EX_Rd;
+     wire [8:0] ctrl;
+     wire [1:0] ID_EX_Ctrl_MEM;
+     wire [1:0] ID_EX_Ctrl_WB;
+     wire [4:0] ID_EX_Ctrl_EX;
+     assign ctrl = {branch, ALUsrc1, ALUsrc2, ALUop, MemRead, MemWrite, MemtoReg, RegWrite};
+     
+     nBitReg #(156) ID_EX (clk,reset,1'b1,
+                           {ctrl, 
+                           IF_ID_PC, data1, data2, 
+                           immediate, {IF_ID_Inst[30], IF_ID_Inst[14:12]}, 
+                           IF_ID_Inst[19:15],IF_ID_Inst[24:20], IF_ID_Inst[11:7]},
+                           
+                           {ID_EX_Ctrl_EX, ID_EX_Ctrl_MEM, ID_EX_Ctrl_WB, 
+                           ID_EX_PC, ID_EX_data1, ID_EX_data2,
+                           ID_EX_Imm, ID_EX_Func, 
+                           ID_EX_Rs1, ID_EX_Rs2, ID_EX_Rd} );
  
-     ALUControlUnit alucu (.instruction(inst), .ALUop(ALUop), .clk(clk), .ALUSELECT(ALUSELECT), .halt(halt));
+ 
+    //Excute stage
+     ALUControlUnit alucu (.instruction(ID_EX_Func), .ALUop(ALUop), .clk(clk), .ALUSELECT(ALUSELECT), .halt(halt));
     
     assign alusrc2 = ALUsrc? immediate : data2;
     assign alusrc1 = AUIPC? PC : data1;
@@ -146,11 +182,33 @@ assign shamt =
 
     NbitALU alu ( .clk(clk) , .Reg1(alusrc1), .Reg2(alusrc2), .Zero(zero), .ALUSELECT(ALUSELECT), .ALU(alures) , .cf(cf) , .vf(vf), 
 .sf(sf), .shamt(shamt) , .AUIPC(AUIPC) , .PC(PC));
+
+    wire [31:0] EX_MEM_BranchAddOut, EX_MEM_ALU_out, EX_MEM_RegR2;
+    wire [7:0] EX_MEM_Ctrl;
+    wire [4:0] EX_MEM_Rd;
+    wire EX_MEM_Zero;
+    wire [31:0] value = (ID_EX_PC + (ID_EX_Imm << 1));
+    nBitReg #(110) EX_MEM (
+    clk, reset, 1'b1,
+    {ID_EX_Ctrl, value, zero, alures, ID_EX_RegR2, ID_EX_Rd},
+    {EX_MEM_Ctrl, EX_MEM_BranchAddOut, EX_MEM_Zero, EX_MEM_ALU_out, EX_MEM_RegR2, EX_MEM_Rd}
+);
     
     
     
-     DataMem datamemory (.clk(clk), .MemRead(MemRead), .MemWrite(MemtoWrite), .addr(alures[7:2]), .data_in(data2), .data_out(memout));
-    
+     DataMem datamemory (.clk(clk), .MemRead(MemRead), .MemWrite(MemWrite), .addr(alures[7:2]), .data_in(data2), .data_out(memout));
+     
+     
+    wire [31:0] MEM_WB_Mem_out;
+    wire [31:0] MEM_WB_ALU_out;
+    wire [7:0] MEM_WB_Ctrl;
+    wire [4:0] MEM_WB_Rd;
+    assign MEM_WB_Ctrl[6] = RegWrite;
+
+    nBitReg #(77) MEM_WB (clk,reset,1'b1,
+                            {EX_MEM_Ctrl, memout, EX_MEM_ALU_out, EX_MEM_Rd},
+                            {MEM_WB_Ctrl,MEM_WB_Mem_out, MEM_WB_ALU_out,
+                             MEM_WB_Rd} );
     
     
 endmodule
