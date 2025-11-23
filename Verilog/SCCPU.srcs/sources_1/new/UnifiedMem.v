@@ -2,7 +2,7 @@ module unified_mem #(parameter Size = 256,
     parameter Address_width = 8,
     parameter INSTR_END = 128  , 
 parameter DATA_SIZE = Size - INSTR_END) 
-( input wire clk, input wire [Address_width-1:0] address , input wire [1:0] MemRead ,input wire [1:0] MemWrite ,input wire [63:0] writedata ,output reg [63:0] read_data , input wire mem_unsigned ,  input wire is_instruction_fetch) ; 
+( input wire clk, input wire [Address_width-1:0] address , input wire [1:0] MemRead ,input wire [1:0] MemWrite ,input wire [63:0] writedata ,output reg [95:0] read_data , input wire mem_unsigned ,  input wire is_instruction_fetch) ; 
 
 
 
@@ -67,23 +67,20 @@ initial begin
             end
 end
             
-            2'b11: begin  // LW  or we will fetch 2 instructions for the buffer and the fetching stage 
+           2'b11: begin  // LW or Instruction Fetch
                 if (is_instruction_fetch) begin
+                    // Fetch 96 bits = 12 bytes = 3 instructions
                     read_data <= {
-                        memory[address+7], memory[address+6],
-                        memory[address+5], memory[address+4],
-                        memory[address+3], memory[address+2],
-                        memory[address+1], memory[address]
-                    };
+                        memory[addr11], memory[addr10], memory[addr9],  memory[addr8], 
+                        memory[addr7],  memory[addr6],  memory[addr5],  memory[addr4],                          			memory[addr3],  memory[addr2],  memory[addr1],  memory[addr0]};
                 end
                 else begin
-                    // LW:
-                   wire [31:0] w = {memory[addr3], memory[addr2], memory[addr1], memory[addr0]};
-                    read_data <= {32'b0, w};
+                    // LW - Load Word (32 bits), pad to 96 bits
+                    read_data <= {64'b0, memory[addr3], memory[addr2], memory[addr1], memory[addr0]};
                 end
             end
             default: begin
-                read_data <= 32'b0;
+                read_data <= 96'b0;
             end
         endcase
     end
