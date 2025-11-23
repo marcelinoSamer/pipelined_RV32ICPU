@@ -78,6 +78,7 @@ output reg [12:0] BCD
     reg [31:0] PC;
     wire [31:0] nextPC;
     wire [31:0] inst;
+    nextPC pcgen(.PC(PC), .imm(immediate), .rs1(data1), .stall(stall | stallCU), .branching(branching), .branchF(branch), .jumpF(jump), .nextPC(nextPC));
     always @(posedge clk or posedge reset) begin
         if (reset)
             PC <= 32'd0;
@@ -85,6 +86,7 @@ output reg [12:0] BCD
         PC <= nextPC;
     end
 
+    
     wire branching;
     wire match;        
     BPU branchPrediction(.branch1(branch), .branch2(EX_MEM_Ctrl_MEM[3]), .jump(jump), .result(branchTaken), .Reset(reset), .clk(clk), .prediction(branching), .match(match));
@@ -112,6 +114,7 @@ output reg [12:0] BCD
     wire jump;
     wire JALR;
     wire memSign;
+    wire stallCU;
     TheControlUnit CU (
     .instruction(IF_ID_INST),  
     .MemRead(MemRead),
@@ -124,7 +127,8 @@ output reg [12:0] BCD
     .branch(branch),
     .jump(jump),
     .JALR(JALR),
-    .memSign(memSign));
+    .memSign(memSign),
+    .stall(stallCU));
     
     assign writedata = MemtoReg? memout : (Jump? PC + 4 : alures); // in WB
     regFile rf (.reg1(inst[19:15]), .reg2(inst[24:20]), .writeReg(inst[11:7]), .write(RegWrite), .writeData(writedata), .data1(data1), .data2(data2),
