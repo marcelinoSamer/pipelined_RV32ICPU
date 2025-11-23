@@ -53,14 +53,14 @@ output reg [12:0] BCD
     case(ledsel)
             2'b00: LEDs = PC[15:0];
             2'b01: LEDs = PC[31:16];
-            2'b10: LEDs = {2'b00, Branch, MemRead, MemtoReg, ALUop, MemWrite, ALUsrc, RegWrite, ALUSELECT, zero, Branch&zero};
+            2'b10: LEDs = {2'b00, branch, MemRead, MemtoReg, ALUop, MemWrite, ALUsrc2, RegWrite, ALUSELECT, zero, branch&zero};
         endcase
         
         case(ssdSel)
             4'b0000: BCD = PC[12:0];
             4'b0001: BCD = PC[12:0] + 32'd4;
             4'b0010: BCD = PC+(immediate<<1);
-            4'b0011: BCD = (Branch & zero)? PC+(immediate<<1) : PC+32'd4;
+            4'b0011: BCD = (branch & zero)? PC+(immediate<<1) : PC+32'd4;
             4'b0100: BCD = data1;
             4'b0101: BCD = data2;
             4'b0110: BCD = MemtoReg? memout : alures;
@@ -85,9 +85,9 @@ output reg [12:0] BCD
         PC <= nextPC;
     end
 
-    
+    wire branching;
     wire match;        
-    BPU branchPrediction(.branch1(), branch2, jump, result, Reset, clk, output reg prediction, match);
+    BPU branchPrediction(.branch1(branch), .branch2(EX_MEM_Ctrl_MEM[3]), .jump(jump), .result(branchTaken), .Reset(reset), .clk(clk), .prediction(branching), .match(match));
        
        
     InstMem instmem (.addr(PC[7:2]), .data_out(inst));
@@ -101,16 +101,19 @@ output reg [12:0] BCD
     wire stall;
     HDU hazardDetection(.IF_ID_Rs1(IF_ID_Inst[19:15]), .IF_ID_Rs2(IF_ID_Inst[24:20]), .ID_EX_Rd(ID_EX_Rd), .match(match), .stall(stall));                    
     //Decode stage begin                    
-    wire MemRead;
+    wire [1:0] MemRead;
     wire MemtoReg;
     wire [1:0] ALUop;
-    wire MemWrite;
+    wire [1:0] MemWrite;
     wire ALUsrc1;
     wire RegWrite;
     wire ALUsrc2;  
-    wire Branch;
+    wire branch;
+    wire jump;
+    wire JALR;
+    wire memSign;
     TheControlUnit CU (
-    .instruction(inst),  
+    .instruction(IF_ID_INST),  
     .MemRead(MemRead),
     .MemtoReg(MemtoReg),
     .MemWrite(MemWrite),
@@ -118,7 +121,10 @@ output reg [12:0] BCD
     .RegWrite(RegWrite),
     .ALUsrc2(ALUsrc2),
     .ALUsrc1(ALUsrc1),
-    .branch(branch));
+    .branch(branch),
+    .jump(jump),
+    .JALR(JALR),
+    .memSign(memSign));
     
     assign writedata = MemtoReg? memout : (Jump? PC + 4 : alures); // in WB
     regFile rf (.reg1(inst[19:15]), .reg2(inst[24:20]), .writeReg(inst[11:7]), .write(RegWrite), .writeData(writedata), .data1(data1), .data2(data2),
@@ -132,23 +138,28 @@ output reg [12:0] BCD
      //ID_EX
      wire [31:0] ID_EX_PC, ID_EX_data1, ID_EX_data2, ID_EX_Imm;
      wire [3:0] ID_EX_Func;
+     wire [2:0] ID_EX_BF3;
      wire [4:0] ID_EX_Rs1, ID_EX_Rs2, ID_EX_Rd;
-     wire [8:0] ctrl;
-     wire [1:0] ID_EX_Ctrl_MEM;
+     wire [1:0] ctrl_WB;
+     wire [3:0] ctrl_MEM;
+     wire [4:0] ctrl_EX;
+     wire [3:0] ID_EX_Ctrl_MEM;
      wire [1:0] ID_EX_Ctrl_WB;
      wire [4:0] ID_EX_Ctrl_EX;
-     assign ctrl = {branch, ALUsrc1, ALUsrc2, ALUop, MemRead, MemWrite, MemtoReg, RegWrite};
-     
+     assign ctrl_WB = {MemtoReg, RegWrite};
+     assign ctrl_MEM = {MemRead, MemWrite, branch, memSign};
+     assign ctrl_EX = {branch, ALUsrc1, ALUsrc2, ALUop};
+
      nBitReg #(156) ID_EX (clk,reset,1'b1,
-                           {ctrl, 
+                           {ctrl_EX, ctrl_MEM, ctrl_WB,
                            IF_ID_PC, data1, data2, 
                            immediate, {IF_ID_Inst[30], IF_ID_Inst[14:12]}, 
-                           IF_ID_Inst[19:15],IF_ID_Inst[24:20], IF_ID_Inst[11:7]},
+                           IF_ID_Inst[19:15],IF_ID_Inst[24:20], IF_ID_Inst[11:7], IF_ID_Inst[14:12]},
                            
                            {ID_EX_Ctrl_EX, ID_EX_Ctrl_MEM, ID_EX_Ctrl_WB, 
                            ID_EX_PC, ID_EX_data1, ID_EX_data2,
                            ID_EX_Imm, ID_EX_Func, 
-                           ID_EX_Rs1, ID_EX_Rs2, ID_EX_Rd} );
+                           ID_EX_Rs1, ID_EX_Rs2, ID_EX_Rd, ID_EX_BF3} );
  
  
     //Excute stage
@@ -157,29 +168,31 @@ output reg [12:0] BCD
     assign alusrc2 = ALUsrc1? immediate : data2;
     assign alusrc1 = ALUsrc2? PC : data1;
 
-assign shamt =
-    ((opcode == `OPCODE_Arith_I) && ((funct3 == `F3_SLL) || (funct3 == `F3_SRL))) ? inst[`IR_shamt] :
-    ((opcode == `OPCODE_Arith_R) && ((funct3 == `F3_SLL) || (funct3 == `F3_SRL))) ? data2[4:0] :
-    5'b00000;
+    assign shamt =
+        ((opcode == `OPCODE_Arith_I) && ((funct3 == `F3_SLL) || (funct3 == `F3_SRL))) ? inst[`IR_shamt] :
+        ((opcode == `OPCODE_Arith_R) && ((funct3 == `F3_SLL) || (funct3 == `F3_SRL))) ? data2[4:0] :
+        5'b00000;
 
 
     NbitALU alu ( .clk(clk) , .Reg1(alusrc1), .Reg2(alusrc2), .Zero(zero), .ALUSELECT(ALUSELECT), .ALU(alures) , .cf(cf) , .vf(vf), 
-.sf(sf), .shamt(shamt) , .AUIPC(AUIPC) , .PC(PC));
+                  .sf(sf), .shamt(shamt) , .AUIPC(AUIPC) , .PC(PC));
 
     wire [31:0] EX_MEM_BranchAddOut, EX_MEM_ALU_out, EX_MEM_RegR2;
-    wire [7:0] EX_MEM_Ctrl;
+    wire [3:0] EX_MEM_Ctrl_MEM;
+    wire [1:0] EX_MEM_Ctrl_WB;
     wire [4:0] EX_MEM_Rd;
+    wire [2:0] EX_MEM_BF3;
     wire EX_MEM_Zero;
-    wire [31:0] value = (ID_EX_PC + (ID_EX_Imm << 1));
+    wire [31:0] value = (ID_EX_PC + (ID_EX_Imm << 1)); // BPU
     nBitReg #(110) EX_MEM (
     clk, reset, 1'b1,
-    {ID_EX_Ctrl, value, zero, alures, ID_EX_RegR2, ID_EX_Rd},
-    {EX_MEM_Ctrl, EX_MEM_BranchAddOut, EX_MEM_Zero, EX_MEM_ALU_out, EX_MEM_RegR2, EX_MEM_Rd}
-);
+    {ID_EX_Ctrl_MEM, ID_EX_Ctrl_WB, value, zero, alures, ID_EX_RegR2, ID_EX_Rd, ID_EX_BF3},
+    {EX_MEM_Ctrl_MEM, EX_MEM_Ctrl_WB,  EX_MEM_BranchAddOut, EX_MEM_Zero, EX_MEM_ALU_out, EX_MEM_RegR2, EX_MEM_Rd, EX_MEM_BF3}
+    );
     
-    
-    
-     DataMem datamemory (.clk(clk), .MemRead(MemRead), .MemWrite(MemWrite), .addr(alures[7:2]), .data_in(data2), .data_out(memout));
+    wire branchTaken;
+    BLU branchLogic(.branch(EX_MEM_Ctrl_MEM[3]), .F3(EX_MEM_BF3), .c(cf), .z(zf), .v(vf), .s(sf), .branchTaken(branchTaken));
+    DataMem datamemory (.clk(clk), .MemRead(MemRead), .MemWrite(MemWrite), .addr(alures[7:2]), .data_in(data2), .data_out(memout));
      
      
     wire [31:0] MEM_WB_Mem_out;
