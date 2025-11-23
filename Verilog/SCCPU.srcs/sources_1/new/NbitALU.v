@@ -32,14 +32,13 @@ module NbitALU #(parameter N=32) ( input [(N-1):0] Reg1  , input [(N-1):0] Reg2 
     assign {cf, add} = ALUSELECT[0] ? (Reg1 + op_b + 1'b1) : (Reg1 + Reg2);
     
     assign zf = (add == 0);
-  assign sf = add[31];  // Sign flag: the most significant bit of the ALU result
-assign vf = (Reg1[31] ^ op_b[31]) && (Reg1[31] ^ add[31]);  // Signed overflow flag
+    assign sf = add[31];  // Sign flag: the most significant bit of the ALU result
+    assign vf = (Reg1[31] ^ op_b[31]) && (Reg1[31] ^ add[31]);  // Signed overflow flag
  
     wire[31:0] shift_result;
     shifter shifter0(.a(a), .shamt(shamt), .type(ALUSELECT[1:0]),  .r(shift_result));
     
 
-   
     always @(*) begin
     case(ALUSELECT)
             `ALU_ADD: ALU = add;           // ADD

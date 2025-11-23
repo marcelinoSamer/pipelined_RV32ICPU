@@ -31,18 +31,6 @@ output reg [15:0] LEDs,
 output reg [12:0] BCD
     );
     
-
-
-    
-    wire Branch;
-    wire MemRead;
-    wire MemtoReg;
-    wire [1:0] ALUop;
-    wire MemWrite;
-    wire ALUsrc;
-    wire RegWrite;
-    wire [1:0] PCsrc; 
-    wire AUIPC;  
     wire [31:0] data1;
     wire [31:0] data2;
     wire [31:0] immediate;
@@ -88,24 +76,19 @@ output reg [12:0] BCD
 
     //initializing the program counter and fetch stage
     reg [31:0] PC;
+    wire [31:0] nextPC;
     wire [31:0] inst;
-    wire halt;
     always @(posedge clk or posedge reset) begin
         if (reset)
             PC <= 32'd0;
-            else if (!halt) begin
-        case (PCsrc)
-        	2'b00: PC <= PC + 32'd4;
-        	2'b01: PC <= PC + immediate;
-        	2'b10: PC <= alures;
-        	2'b11: PC <= PC; 
-            end
-            default: PC <= PC; 
-        endcase
+        else
+        PC <= nextPC;
     end
-end
-            
-   
+
+    
+    wire match;        
+    BPU branchPrediction(.branch1(), branch2, jump, result, Reset, clk, output reg prediction, match);
+       
        
     InstMem instmem (.addr(PC[7:2]), .data_out(inst));
     
@@ -115,8 +98,8 @@ end
                              {PC, inst},
                              {IF_ID_PC,IF_ID_Inst} );
                              
-                           
-                        
+    wire stall;
+    HDU hazardDetection(.IF_ID_Rs1(IF_ID_Inst[19:15]), .IF_ID_Rs2(IF_ID_Inst[24:20]), .ID_EX_Rd(ID_EX_Rd), .match(match), .stall(stall));                    
     //Decode stage begin                    
     wire MemRead;
     wire MemtoReg;
@@ -138,7 +121,7 @@ end
     .branch(branch));
     
     assign writedata = MemtoReg? memout : (Jump? PC + 4 : alures); // in WB
-   regFile rf (.reg1(inst[19:15]), .reg2(inst[24:20]), .writeReg(inst[11:7]), .write(RegWrite), .writeData(writedata), .data1(data1), .data2(data2),
+    regFile rf (.reg1(inst[19:15]), .reg2(inst[24:20]), .writeReg(inst[11:7]), .write(RegWrite), .writeData(writedata), .data1(data1), .data2(data2),
     .rst(reset), .clk(clk));
  
  
@@ -169,10 +152,10 @@ end
  
  
     //Excute stage
-     ALUControlUnit alucu (.instruction(ID_EX_Func), .ALUop(ALUop), .clk(clk), .ALUSELECT(ALUSELECT), .halt(halt));
+     ALUControlUnit alucu (.instruction(ID_EX_Func), .ALUop(ALUop), .clk(clk), .ALUSELECT(ALUSELECT));
     
-    assign alusrc2 = ALUsrc? immediate : data2;
-    assign alusrc1 = AUIPC? PC : data1;
+    assign alusrc2 = ALUsrc1? immediate : data2;
+    assign alusrc1 = ALUsrc2? PC : data1;
 
 assign shamt =
     ((opcode == `OPCODE_Arith_I) && ((funct3 == `F3_SLL) || (funct3 == `F3_SRL))) ? inst[`IR_shamt] :
