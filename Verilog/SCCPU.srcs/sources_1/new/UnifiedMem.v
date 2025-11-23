@@ -1,14 +1,14 @@
 module unified_mem #(parameter Size = 256,
     parameter Address_width = 8,
     parameter INSTR_END = 128  , 
-parameter DATA_SIZE = Size - INSTR_END) 
-( input wire clk, input wire [Address_width-1:0] address , input wire [1:0] MemRead ,input wire [1:0] MemWrite ,input wire [63:0] writedata ,output reg [95:0] read_data , input wire mem_unsigned ,  input wire is_instruction_fetch) ; 
+    parameter DATA_SIZE = Size - INSTR_END) 
+(input wire clk, input wire [Address_width-1:0] address , input wire [1:0] MemRead ,input wire [1:0] MemWrite ,input wire [63:0] writedata ,output reg [63:0] read_data , input wire mem_unsigned ,  input wire is_instruction_fetch) ; 
 
 
 
- reg [7:0] memory [0:Size-1];
-  wire instr_region = (address < INSTR_END);
-function [Address_width-1:0] wrap_data_addr;
+    reg [7:0] memory [0:Size-1];
+    wire instr_region = (address < INSTR_END);
+    function [Address_width-1:0] wrap_data_addr;
         input [Address_width-1:0] addr;
         begin
             wrap_data_addr = (addr - INSTR_END) % DATA_SIZE;
@@ -19,18 +19,18 @@ function [Address_width-1:0] wrap_data_addr;
     wire [Address_width-1:0] addr1 = instr_region ? address + 1 : (wrap_data_addr(address + 1) + INSTR_END);
     wire [Address_width-1:0] addr2 = instr_region ? address + 2 : (wrap_data_addr(address + 2) + INSTR_END);
     wire [Address_width-1:0] addr3 = instr_region ? address + 3 : (wrap_data_addr(address + 3) + INSTR_END);
-initial begin
+    /*initial begin
         $readmemh("program.mem", memory); //to be tested
-    end
+    end*/   //test bench file
 
 
  always @(posedge clk) begin
-  if (!instr_region) begin
-      case (MemWrite)
+    if (!instr_region) begin
+        case (MemWrite)
             2'b01: begin  // SB
                 memory[addr0] <= writedata[7:0];
             end
-            
+      
             2'b10: begin  // SH 
                 memory[addr0]   <= writedata[7:0];
                 memory[addr1+1] <= writedata[15:8];
@@ -47,14 +47,14 @@ initial begin
   end       
       case (MemRead)
             2'b01: begin  // LB / LBU 
-               wire [7:0] b = memory[addr0];
+                wire [7:0] b = memory[addr0];
                 wire [31:0] b_ext = mem_unsigned ? {24'b0, b} : {{24{b[7]}}, b};
                 read_data <= {32'b0, b_ext};
-    end
-                else begin // LB 
-               read_data <= {32'b0, 24'b0, memory[address]};
-                end
             end
+                else begin // LB 
+                    read_data <= {32'b0, 24'b0, memory[address]};
+                end
+                end
             
             2'b10: begin  // LH / LHU 
                 wire [15:0] h = {memory[addr1], memory[addr0]};

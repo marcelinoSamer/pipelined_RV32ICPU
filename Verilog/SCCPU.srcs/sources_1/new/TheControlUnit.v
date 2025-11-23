@@ -32,7 +32,8 @@ input [31:0] instruction ,
     output reg branch,
     output reg jump,
     output reg JALR,
-    output reg memSign
+    output reg memSign,
+    output reg stall
     );
     
 assign F3 = instruction[`IR_funct3];
@@ -198,6 +199,7 @@ always @(*) begin
   			    branch = 0; 
   			    jump = 0; 
     			JALR = 0;
+    			stall = 1;
 		end   
 		default : begin  //depicts error, program freezes
 		        MemRead = 0 ;
