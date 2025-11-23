@@ -145,15 +145,14 @@ output reg [12:0] BCD
      wire [2:0] ID_EX_BF3;
      wire [4:0] ID_EX_Rs1, ID_EX_Rs2, ID_EX_Rd;
      wire [1:0] ctrl_WB;
-     wire [3:0] ctrl_MEM;
+     wire [5:0] ctrl_MEM;
      wire [4:0] ctrl_EX;
      wire [3:0] ID_EX_Ctrl_MEM;
      wire [1:0] ID_EX_Ctrl_WB;
      wire [4:0] ID_EX_Ctrl_EX;
-     assign ctrl_WB = {MemtoReg, RegWrite};
-     assign ctrl_MEM = {MemRead, MemWrite, branch, memSign};
-     assign ctrl_EX = {branch, ALUsrc1, ALUsrc2, ALUop};
-
+     assign ctrl_WB = stall? 2'b0 : {MemtoReg, RegWrite};
+     assign ctrl_MEM = stall? 6'b0 : {MemRead, MemWrite, branch, memSign};
+     assign ctrl_EX = stall? 5'b0 : {branch, ALUsrc1, ALUsrc2, ALUop};
      nBitReg #(156) ID_EX (clk,reset,1'b1,
                            {ctrl_EX, ctrl_MEM, ctrl_WB,
                            IF_ID_PC, data1, data2, 
@@ -167,22 +166,33 @@ output reg [12:0] BCD
  
  
     //Excute stage
-     ALUControlUnit alucu (.instruction(ID_EX_Func), .ALUop(ALUop), .clk(clk), .ALUSELECT(ALUSELECT));
+    ALUControlUnit alucu (.instruction(ID_EX_Func), .ALUop(ALUop), .clk(clk), .ALUSELECT(ALUSELECT));
     
-    assign alusrc2 = ALUsrc1? immediate : data2;
-    assign alusrc1 = ALUsrc2? PC : data1;
 
     assign shamt =
         ((opcode == `OPCODE_Arith_I) && ((funct3 == `F3_SLL) || (funct3 == `F3_SRL))) ? inst[`IR_shamt] :
         ((opcode == `OPCODE_Arith_R) && ((funct3 == `F3_SLL) || (funct3 == `F3_SRL))) ? data2[4:0] :
         5'b00000;
 
+    //ALU with forwarding
+    wire [31:0] alu1, alu2;
+    wire [31:0] midmux;
+    n4x1MUX ALU1 (.a(ID_EX_RegR1), .b(MEM_WB_Mem_out), .c(EX_MEM_ALU_out), .s(fowA), .out(alu1));
+    n4x1MUX ALU2 (.a(ID_EX_RegR2), .b(MEM_WB_Mem_out), .c(EX_MEM_ALU_out), .s(fowB), .out(midmux));
+    assign alu2 = ID_EX_Ctrl_EX[2]? ID_EX_Imm : midmux;
+    assign alusrc1 = ID_EX_Ctrl_EX[1]? PC : alu1;
 
-    NbitALU alu ( .clk(clk) , .Reg1(alusrc1), .Reg2(alusrc2), .Zero(zero), .ALUSELECT(ALUSELECT), .ALU(alures) , .cf(cf) , .vf(vf), 
-                  .sf(sf), .shamt(shamt) , .AUIPC(AUIPC) , .PC(PC));
+    NbitALU alu (.clk(clk), .Reg1(alusrc1), .Reg2(alu2), .Zero(zero), .ALUSELECT(ALUSELECT), .ALU(alures), .cf(cf), .vf(vf) , .sf(sf) , .shamt(shamt) );
+     
 
+
+    wire [1:0] forA, forB;
+    
+    ForwardingUnit forward(.ID_rs1(ID_EX_Rs1) , .ID_rs2(ID_EX_Rs2) , .EX_rd(EX_MEM_Rd) , 
+                            .MEM_rd(MEM_WB_Rd), .EX_regWrite(EX_MEM_Ctrl_WB[0]) , .MEM_regWrite(MEM_WB_Ctrl[0]), 
+                                .fowA(forA), .fowB(forB));
     wire [31:0] EX_MEM_BranchAddOut, EX_MEM_ALU_out, EX_MEM_RegR2;
-    wire [3:0] EX_MEM_Ctrl_MEM;
+    wire [5:0] EX_MEM_Ctrl_MEM;
     wire [1:0] EX_MEM_Ctrl_WB;
     wire [4:0] EX_MEM_Rd;
     wire [2:0] EX_MEM_BF3;
@@ -195,18 +205,17 @@ output reg [12:0] BCD
     );
     
     wire branchTaken;
-    BLU branchLogic(.branch(EX_MEM_Ctrl_MEM[3]), .F3(EX_MEM_BF3), .c(cf), .z(zf), .v(vf), .s(sf), .branchTaken(branchTaken));
+    BLU branchLogic(.branch(EX_MEM_Ctrl_MEM[1]), .F3(EX_MEM_BF3), .c(cf), .z(zf), .v(vf), .s(sf), .branchTaken(branchTaken));
     DataMem datamemory (.clk(clk), .MemRead(MemRead), .MemWrite(MemWrite), .addr(alures[7:2]), .data_in(data2), .data_out(memout));
      
      
     wire [31:0] MEM_WB_Mem_out;
     wire [31:0] MEM_WB_ALU_out;
-    wire [7:0] MEM_WB_Ctrl;
+    wire [1:0] MEM_WB_Ctrl;
     wire [4:0] MEM_WB_Rd;
-    assign MEM_WB_Ctrl[6] = RegWrite;
 
     nBitReg #(77) MEM_WB (clk,reset,1'b1,
-                            {EX_MEM_Ctrl, memout, EX_MEM_ALU_out, EX_MEM_Rd},
+                            {EX_MEM_Ctrl_WB, memout, EX_MEM_ALU_out, EX_MEM_Rd},
                             {MEM_WB_Ctrl,MEM_WB_Mem_out, MEM_WB_ALU_out,
                              MEM_WB_Rd} );
     
