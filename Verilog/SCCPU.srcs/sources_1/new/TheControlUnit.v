@@ -35,7 +35,7 @@ input [31:0] instruction ,
     output reg memSign,
     output reg stall
     );
-    
+wire [2:0] F3;
 assign F3 = instruction[`IR_funct3];
 always @(*) begin
     	case(instruction[`IR_opcode])
@@ -51,6 +51,7 @@ always @(*) begin
      			jump = 0;
      			JALR = 0;
      			memSign = 0;
+     			stall = 0;
  		end  
  		(`OPCODE_Load)  : begin
 	            MemtoReg= 1 ;   
@@ -61,6 +62,7 @@ always @(*) begin
      			branch = 0; 
      			jump = 0;
      			JALR = 0;
+     			stall = 0;
      			case(F3)
      			    3'b000: begin
      			        memSign = 1;
@@ -98,6 +100,7 @@ always @(*) begin
      			branch = 0; 
      			jump = 0;
      			JALR = 0;
+     			stall = 0;
      			case(F3)
      			    3'b000: begin
      			        memSign = 1;
@@ -127,6 +130,7 @@ always @(*) begin
      		    branch = 1;
      		    jump = 0;
      		    JALR = 0;
+     		    stall = 0;
 		end
 		(`OPCODE_JALR)  : begin
      			MemRead = 0 ; 
@@ -139,6 +143,7 @@ always @(*) begin
      			branch = 0; 
      			jump = 1;
      			JALR = 1;
+     			stall = 0;
 		end  
 		(`OPCODE_JAL)  : begin
     			MemRead = 0 ; 
@@ -151,6 +156,7 @@ always @(*) begin
     			branch = 0;
     			jump = 0; 
     			JALR = 0;
+    			stall = 0;
 		end  
 		(`OPCODE_Arith_I)  : begin
      			MemRead = 0 ;
@@ -163,6 +169,7 @@ always @(*) begin
      			branch = 0; 
      			jump = 0; 
     			JALR = 0;
+    			stall = 0;
 		end  
 		(`OPCODE_AUIPC)  : begin
      			MemRead = 0 ;  
@@ -175,6 +182,7 @@ always @(*) begin
      			branch = 0; 
      			jump = 0; 
     			JALR = 0;
+    			stall = 0;
 		end  
 		(`OPCODE_LUI)  : begin
      			MemRead = 0 ; 
@@ -187,6 +195,7 @@ always @(*) begin
      			branch = 0; 
      			jump = 0; 
     			JALR = 0;
+    			stall = 0;
 		end  
 		(`OPCODE_SYSTEM)  : begin
   			    MemRead = 0;
@@ -212,6 +221,7 @@ always @(*) begin
 		        branch = 0;
 		        jump = 0; 
     			JALR = 0;
+    			stall = 0;
   		end 
   	endcase
 end
