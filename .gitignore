@@ -71,3 +71,42 @@ xvlog.*
 
 ## checkpoint files
 *.dcp
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+.env/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+*.whl
+
+# Unit test / coverage
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.cache
+nosetests.xml
+coverage.xml
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
