@@ -90,7 +90,45 @@ output reg [12:0] BCD
        
        
     InstMem instmem (.addr(PC[7:2]), .data_out(inst));
-    
+     wire [95:0] read_data ;
+ wire is_instruction_fetch;
+
+UnifiedMem Memory ( 
+    .clk(clk),
+    .address(is_instruction_fetch ? PC[7:2] : EX_MEM_ALU_out[7:2]),
+    .MemRead(is_instruction_fetch ? 2'b11 : MemRead),
+    .MemWrite(is_instruction_fetch ? 2'b00 : MemWrite),
+    .writedata(EX_MEM_RegR2),
+    .read_data(read_data),
+    .mem_unsigned(memSign),
+    .is_instruction_fetch(is_instruction_fetch)
+);
+
+wire [31:0] instruction_out;
+
+Buffer buffer_inst(
+    .clk(clk),
+    .reset(reset),
+    .mem_data(read_data[95:32]), 
+    .instruction_out(instruction_out),
+    .is_instruction_fetch(is_instruction_fetch)
+);
+
+wire [31:0] instr_from_memory  = read_data[31:0];     
+wire [31:0] instr_from_buffer  = instruction_out;      
+wire [31:0] next_IF_inst;
+assign next_IF_inst = is_instruction_fetch ? instr_from_mem : instr_from_buffer;
+
+    //IF_ID
+    wire [31:0] IF_ID_PC, IF_ID_Inst;
+   nBitReg #(64) IF_ID (
+    .clk(clk),
+    .rst(reset),
+    .enable(1'b1),
+    .D({PC, next_IF_inst}),    
+    .Q({IF_ID_PC, IF_ID_Inst})
+);
+       
     //IF_ID
     wire [31:0] IF_ID_PC;
     wire [31:0] IF_ID_Inst;
