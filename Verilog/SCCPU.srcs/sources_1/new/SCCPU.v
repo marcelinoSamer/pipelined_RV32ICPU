@@ -75,7 +75,7 @@ output reg [12:0] BCD
     reg [31:0] PC;
     wire [31:0] nextPC;
     wire [31:0] inst;
-    nextPC pcgen(.PC(PC), .imm(EX_MEM_Imm), .EX_MEM_PC(EX_MEM_PC), .rs1(data1), .stall(stall | stallCU), .branching(branching), .match(match), .branchF(branch), .jumpF(jump), .nextPC(nextPC));
+    nextPC pcgen(.PC((branching || jump || stallCU)? IF_ID_PC :PC), .imm(immediate), .EX_MEM_Imm(EX_MEM_Imm), .EX_MEM_PC(EX_MEM_PC), .rs1(data1), .stall(stall | stallCU), .branching(branching), .match(match), .branchF(branch), .jumpF(jump), .JALR(JALR), .nextPC(nextPC));
     always @(posedge clk or posedge reset) begin
         if (reset)
             PC <= 32'd0;
@@ -86,11 +86,11 @@ output reg [12:0] BCD
     
     wire branching;
     wire match;        
-    BPU branchPrediction(.branch2(EX_MEM_Ctrl_MEM[3]), .result(branchTaken), .Reset(reset), .clk(clk), .prediction(branching), .match(match));
+    BPU branchPrediction(.branch2(EX_MEM_Ctrl_MEM[1]), .result(branchTaken), .Reset(reset), .clk(clk), .prediction(branching), .match(match));
        
        
     InstMem instmem (.addr(PC[7:2]), .data_out(inst));
-     wire [95:0] read_data ;
+    /*wire [95:0] read_data ;
  wire is_instruction_fetch;
 
 UnifiedMem Memory ( 
@@ -127,7 +127,7 @@ assign next_IF_inst = is_instruction_fetch ? instr_from_mem : instr_from_buffer;
     .enable(1'b1),
     .D({PC, next_IF_inst}),    
     .Q({IF_ID_PC, IF_ID_Inst})
-);
+);*/
        
     //IF_ID
     wire [31:0] IF_ID_PC;
@@ -137,7 +137,7 @@ assign next_IF_inst = is_instruction_fetch ? instr_from_mem : instr_from_buffer;
                              {IF_ID_PC,IF_ID_Inst} );
                              
     wire stall;
-    HDU hazardDetection(.IF_ID_Rs1(IF_ID_Inst[19:15]), .IF_ID_Rs2(IF_ID_Inst[24:20]), .ID_EX_Rd(ID_EX_Rd), .match(match), .stall(stall));                    
+    HDU hazardDetection(.IF_ID_Rs1(IF_ID_Inst[19:15]), .IF_ID_Rs2(IF_ID_Inst[24:20]), .ID_EX_Rd(ID_EX_Rd), .stall(stall));                    
     //Decode stage begin                    
     wire [1:0] MemRead;
     wire MemtoReg;
@@ -189,14 +189,14 @@ assign next_IF_inst = is_instruction_fetch ? instr_from_mem : instr_from_buffer;
      wire [31:0] ID_EX_Inst;
      
      //Hazard flush
-     assign ctrl_WB = stall? 3'b0 : {jump, MemtoReg, RegWrite};
-     assign ctrl_MEM = stall? 6'b0 : {MemRead, MemWrite, branch, memSign};
-     assign ctrl_EX = stall? 5'b0 : {branch, ALUsrc1, ALUsrc2, ALUop};
+     assign ctrl_WB = (stall || jump)? 3'b0 : {jump, MemtoReg, RegWrite};
+     assign ctrl_MEM = (stall || jump)? 6'b0 : {MemRead, MemWrite, branch, memSign};
+     assign ctrl_EX = (stall || jump)? 5'b0 : {branch, ALUsrc1, ALUsrc2, ALUop};
      nBitReg #(198) ID_EX (clk,reset,1'b1,
-                           {ctrl_EX, ctrl_MEM, ctrl_WB,
+                           ((stall || ~match)? 198'b0 : {ctrl_EX, ctrl_MEM, ctrl_WB,
                            IF_ID_PC, IF_ID_Inst, data1, data2, 
                            immediate, {IF_ID_Inst[30], IF_ID_Inst[14:12]}, 
-                           IF_ID_Inst[19:15],IF_ID_Inst[24:20], IF_ID_Inst[11:7], IF_ID_Inst[14:12]},
+                           IF_ID_Inst[19:15],IF_ID_Inst[24:20], IF_ID_Inst[11:7], IF_ID_Inst[14:12]}),
                            
                            {ID_EX_Ctrl_EX, ID_EX_Ctrl_MEM, ID_EX_Ctrl_WB, 
                            ID_EX_PC, ID_EX_Inst, ID_EX_data1, ID_EX_data2,
@@ -216,7 +216,7 @@ assign next_IF_inst = is_instruction_fetch ? instr_from_mem : instr_from_buffer;
     //ALU with forwarding
     wire [31:0] alu1, alu2;
     wire [31:0] midmux;
-    n4x1MUX ALU1 (.a(ID_EX_data1), .b(MEM_WB_Mem_out), .c(EX_MEM_ALU_out), .d(ID_EX_PC), .s(ID_EX_Ctrl_EX[2]? 2'b11 : forA), .out(alu1));
+    n4x1MUX ALU1 (.a(ID_EX_data1), .b(ID_EX_Ctrl_WB[1]? MEM_WB_Mem_out : MEM_WB_ALU_out), .c(EX_MEM_ALU_out), .d(ID_EX_PC), .s(ID_EX_Ctrl_EX[2]? 2'b11 : forA), .out(alu1));
     n4x1MUX ALU2 (.a(ID_EX_data2), .b(MEM_WB_Mem_out), .c(EX_MEM_ALU_out), .s(forB), .out(midmux));
     assign alu2 = ID_EX_Ctrl_EX[3]? ID_EX_Imm : midmux;
     //assign alusrc1 = ID_EX_Ctrl_EX[1]? PC : alu1;
@@ -238,7 +238,8 @@ assign next_IF_inst = is_instruction_fetch ? instr_from_mem : instr_from_buffer;
     wire [3:0] EX_MEM_ALUF;
     nBitReg #(117) EX_MEM (
     clk, reset, 1'b1,
-    {ID_EX_Ctrl_MEM, ID_EX_Ctrl_WB, ID_EX_PC, ID_EX_Imm, alures, ID_EX_Rd, ID_EX_BF3, {zero, cf, vf, sf}},
+    (~match? 117'b0 : {ID_EX_Ctrl_MEM, ID_EX_Ctrl_WB, ID_EX_PC, ID_EX_Imm, alures, ID_EX_Rd, ID_EX_BF3, {zero, cf, vf, sf}}),
+    
     {EX_MEM_Ctrl_MEM, EX_MEM_Ctrl_WB,  EX_MEM_PC, EX_MEM_Imm, EX_MEM_ALU_out, EX_MEM_Rd, EX_MEM_BF3, EX_MEM_ALUF}
     );
     

@@ -58,7 +58,7 @@ module tb;
         reset = 0;
 
         // Run for a while
-        #100;
+        #400;
         reset = 1;
 
         #60;  // Wait some time

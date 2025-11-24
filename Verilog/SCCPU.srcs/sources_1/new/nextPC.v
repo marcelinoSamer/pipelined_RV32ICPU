@@ -21,25 +21,25 @@
 
 
 module nextPC(
-input [31:0] PC, [31:0] imm, [31:0] rs1,[31:0] EX_MEM_PC, input stall, branching,  branchF, jumpF, match, output reg [31:0] nextPC
+input [31:0] PC, [31:0] imm, EX_MEM_Imm, [31:0] rs1,[31:0] EX_MEM_PC, input stall, branching,  branchF, jumpF, JALR, match, output reg [31:0] nextPC
     );
      always @* begin
         if (stall) begin
             nextPC = PC;
         end
         
-        else if (jumpF) begin
+        else if (jumpF && JALR) begin
             nextPC = (rs1 + (imm<<1)) & 32'hFFFFFFFE; //anding with ...11110 so the last bit is cleared for byte alignment
         end
         
-        else if (branching && branchF) begin
+        else if ((branching && branchF) || jumpF && ~JALR) begin
             nextPC = PC + (imm<<1);
         end
         
         else if (~match && branching)
             nextPC = EX_MEM_PC + 4;
         else if (~match && ~branching)
-            nextPC = EX_MEM_PC + (imm<<1);
+            nextPC = EX_MEM_PC + (EX_MEM_Imm);
         else begin
             nextPC = PC + 4;
         end
