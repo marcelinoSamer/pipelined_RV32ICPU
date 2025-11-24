@@ -21,7 +21,7 @@
 
 
 module nextPC(
-input [31:0] PC, imm, rs1, EX_MEM_PC, input stall, branching,  branchF, jumpF, match, output reg [31:0] nextPC
+input [31:0] PC, [31:0] imm, [31:0] rs1,[31:0] EX_MEM_PC, input stall, branching,  branchF, jumpF, match, output reg [31:0] nextPC
     );
      always @* begin
         if (stall) begin

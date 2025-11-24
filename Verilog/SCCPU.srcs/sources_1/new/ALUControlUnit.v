@@ -29,7 +29,6 @@ wire [2:0] funct3 = instruction[2:0];
 wire funct7 = instruction[3];
 
 	always @ (*) begin
-		halt=1'b0;
 		case (ALUop) 
 			2'b00 : begin 
 				ALUSELECT = `ALU_ADD; 

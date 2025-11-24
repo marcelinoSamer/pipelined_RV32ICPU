@@ -46,31 +46,24 @@ module tb;
     // Clock generation
     initial begin
         clk = 0;
-        forever #20 clk = ~clk;  // 40ns period
+        forever #5 clk = ~clk;  // 40ns period
     end
 
     // Test sequence
     initial begin
         // Initialize inputs
         reset = 1;
-        ledsel = 2'b00;
-        ssdSel = 4'b0000;
 
-        #50;  // Wait some time
+        #60;  // Wait some time
         reset = 0;
 
-        // Change display selects over time
-        #100 ledsel = 2'b01;
-        #100 ledsel = 2'b10;
-
-        #100 ssdSel = 4'b0001;
-        #100 ssdSel = 4'b0010;
-        #100 ssdSel = 4'b0011;
-        #100 ssdSel = 4'b0100;
-        #100 ssdSel = 4'b0101;
-
         // Run for a while
-        #500;
+        #100;
+        reset = 1;
+
+        #60;  // Wait some time
+        reset = 0;
+        #100;
 
         $stop;  // Stop simulation
     end
