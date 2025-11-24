@@ -167,7 +167,7 @@ output reg [12:0] BCD
  
  
     //Excute stage
-    ALUControlUnit alucu (.instruction(ID_EX_Func), .ALUop(ALUop), .clk(clk), .ALUSELECT(ALUSELECT));
+    ALUControlUnit alucu (.instruction(ID_EX_Func), .ALUop(ID_EX_Ctrl_EX[1:0]), .clk(clk), .ALUSELECT(ALUSELECT));
     
 
     assign shamt =

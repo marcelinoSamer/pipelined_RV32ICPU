@@ -39,7 +39,7 @@ wire funct7 = instruction[3];
 			2'b10 : begin // r-type i-type will need compairason between funct3 and funct7 
 				case (funct3) 
 					`F3_ADD : begin 
-						if (funct7 == 7'b0100000) ALUSELECT = `ALU_SUB;
+						if (funct7) ALUSELECT = `ALU_SUB;
 						else ALUSELECT= `ALU_ADD; 
 					 end 
 					 `F3_AND: ALUSELECT = `ALU_AND; 
