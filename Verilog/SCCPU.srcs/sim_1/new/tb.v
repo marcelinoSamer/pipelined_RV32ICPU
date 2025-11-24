@@ -54,7 +54,7 @@ module tb;
         // Initialize inputs
         reset = 1;
 
-        #60;  // Wait some time
+        #4;  // Wait some time
         reset = 0;
 
         // Run for a while
