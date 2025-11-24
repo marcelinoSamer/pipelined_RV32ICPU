@@ -36,7 +36,7 @@ module NbitALU #(parameter N=32) ( input [(N-1):0] Reg1  , input [(N-1):0] Reg2 
     assign vf = (Reg1[31] ^ op_b[31]) && (Reg1[31] ^ add[31]);  // Signed overflow flag
  
     wire[31:0] shift_result;
-    shifter shifter0(.a(a), .shamt(shamt), .type(ALUSELECT[1:0]),  .r(shift_result));
+    shifter shifter0(.a(Reg2), .shamt(shamt), .type(ALUSELECT[1:0]),  .r(shift_result));
     
 
     always @(*) begin

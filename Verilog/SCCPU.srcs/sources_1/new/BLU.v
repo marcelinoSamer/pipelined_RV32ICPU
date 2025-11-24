@@ -32,6 +32,7 @@ module BLU(
     output reg branchTaken
     );
     always @* begin
+        if (branch) begin
         case(F3)
             `BR_BEQ:begin
                 if (z) branchTaken = 1;
@@ -58,6 +59,7 @@ module BLU(
                 else branchTaken = 0;
             end
         endcase
+        end else branchTaken = 0;
     end
     
 endmodule

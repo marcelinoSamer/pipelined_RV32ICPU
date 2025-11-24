@@ -32,11 +32,11 @@ initial begin
     end
 end
 
-always @(posedge clk or posedge rst)begin
+always @(negedge clk or posedge rst)begin
 
     if (rst == 1)begin
-        for(i=0; i<32;i=i+1)begin
-            regFile[i]=0;
+        for(i=1; i<32;i=i+1)begin
+            regFile[i]=32'd3;
         end
     end
   

@@ -154,7 +154,7 @@ always @(*) begin
     			ALUsrc1 =1 ;
     			ALUsrc2 = 1;
     			branch = 0;
-    			jump = 0; 
+    			jump = 1; 
     			JALR = 0;
     			stall = 0;
 		end  
