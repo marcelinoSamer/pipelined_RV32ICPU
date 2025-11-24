@@ -63,9 +63,6 @@ module tb;
 
         #60;  // Wait some time
         reset = 0;
-        #100;
-
-        $stop;  // Stop simulation
     end
 
 endmodule

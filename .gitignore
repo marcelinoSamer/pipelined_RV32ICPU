@@ -13,8 +13,7 @@
 *.vdi
 
 ## bitstream
-*.bit
-*.bin
+*.bitf
 *.mcs
 *.svf
 *.image
@@ -87,9 +86,4 @@ env/
 
 # VSCode settings
 .vscode/
-
-# Output files (optional)
-*.hex
-*.txt
-
 

@@ -164,7 +164,7 @@ always @(*) begin
      			ALUop=2'b10; 
      			MemWrite=0;
      			RegWrite=1;
-     			ALUsrc1 =1 ; 
+     			ALUsrc1 =1; 
      			ALUsrc2 = 0;
      			branch = 0; 
      			jump = 0; 

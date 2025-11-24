@@ -154,7 +154,7 @@ output reg [12:0] BCD
      assign ctrl_WB = stall? 3'b0 : {jump, MemtoReg, RegWrite};
      assign ctrl_MEM = stall? 6'b0 : {MemRead, MemWrite, branch, memSign};
      assign ctrl_EX = stall? 5'b0 : {branch, ALUsrc1, ALUsrc2, ALUop};
-     nBitReg #(194) ID_EX (clk,reset,1'b1,
+     nBitReg #(198) ID_EX (clk,reset,1'b1,
                            {ctrl_EX, ctrl_MEM, ctrl_WB,
                            IF_ID_PC, IF_ID_Inst, data1, data2, 
                            immediate, {IF_ID_Inst[30], IF_ID_Inst[14:12]}, 
@@ -180,7 +180,7 @@ output reg [12:0] BCD
     wire [31:0] midmux;
     n4x1MUX ALU1 (.a(ID_EX_data1), .b(MEM_WB_Mem_out), .c(EX_MEM_ALU_out), .d(ID_EX_PC), .s(ID_EX_Ctrl_EX[2]? 2'b11 : forA), .out(alu1));
     n4x1MUX ALU2 (.a(ID_EX_data2), .b(MEM_WB_Mem_out), .c(EX_MEM_ALU_out), .s(forB), .out(midmux));
-    assign alu2 = ID_EX_Ctrl_EX[2]? ID_EX_Imm : midmux;
+    assign alu2 = ID_EX_Ctrl_EX[3]? ID_EX_Imm : midmux;
     //assign alusrc1 = ID_EX_Ctrl_EX[1]? PC : alu1;
 
     NbitALU alu (.clk(clk), .Reg1(alu1), .Reg2(alu2), .Zero(zero), .ALUSELECT(ALUSELECT), .AUIPC(ID_EX_Ctrl_EX[1] & ~ID_EX_Ctrl_WB[2]), .ALU(alures), .cf(cf), .vf(vf) , .sf(sf) , .shamt(shamt) );
