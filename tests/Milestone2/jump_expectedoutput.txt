@@ -1,0 +1,41 @@
+1️⃣ addi x1, x0, 100
+
+x1 = 100
+
+PC moves from 0x00 → 0x04
+
+2️⃣ jal x5, target
+
+Suppose PC is 0x04. jal stores PC+4 = 0x08 in x5
+
+Jump goes to target label
+
+x5 = 0x08
+
+Instruction at x2 (addi x2, x0, 999) is skipped
+
+3️⃣ At target: addi x3, x0, 123
+
+x3 = 123
+
+PC moves forward
+
+4️⃣ jalr x0, 0(x5)
+
+rd = x0 → return address is discarded (not stored)
+
+Jump target: x5 + 0 = 0x08 → returns to the instruction after the original jal
+
+This effectively “returns” to where the program would have continued.
+
+5️⃣ Program resumes after jal → addi x2, x0, 999
+
+This instruction is executed now, because we “returned” via jalr
+
+x2 = 999
+
+6️⃣ ecall
+
+Execution halts
+
+No register changes
