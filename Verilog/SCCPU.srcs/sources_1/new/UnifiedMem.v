@@ -48,36 +48,36 @@ module UnifiedMem #(parameter Size = 4096,
     
 always @(posedge clk) begin
     // Instruction 0: 00a00093   (ADDI x1, x0, 10)
-    memory[0]  <= 8'b10010011;
-    memory[1]  <= 8'b00000000;
-    memory[2]  <= 8'b10100000;
-    memory[3]  <= 8'b00000000;
+   memory[0] <= 8'b10010011;
+    memory[1] <= 8'b00000000;
+    memory[2] <= 8'b00100000;
+    memory[3] <= 8'b00000011;
 
-    // Instruction 1: 01400113   (ADDI x2, x0, 20)
-    memory[4]  <= 8'b00010011;
-    memory[5]  <= 8'b00000001;
-    memory[6]  <= 8'b01000000;
-    memory[7]  <= 8'b00000001;
+    // addi x2, x0, 20   (0x01400113)
+    memory[4] <= 8'b00010011;
+    memory[5] <= 8'b00000001;
+    memory[6] <= 8'b01000000;
+    memory[7] <= 8'b00000001;
 
-    // Instruction 2: 002081b3   (ADD x3, x1, x2)
+    // sub x3, x1, x2    (0x402081B3)
     memory[8]  <= 8'b10110011;
     memory[9]  <= 8'b10000001;
     memory[10] <= 8'b00100000;
-    memory[11] <= 8'b00000000;
+    memory[11] <= 8'b01000000;
 
-    // Instruction 3: 00118233   (ADD x4, x3, x1)
+    // sub x4, x2, x1    (0x40110233)
     memory[12] <= 8'b00110011;
-    memory[13] <= 8'b10000010;
+    memory[13] <= 8'b00000010;
     memory[14] <= 8'b00010001;
-    memory[15] <= 8'b00000000;
+    memory[15] <= 8'b01000000;
 
-    // Instruction 4: 001002b3   (ADD x5, x0, x1)
+    // sub x5, x1, x0    (0x400082B3)
     memory[16] <= 8'b10110011;
-    memory[17] <= 8'b00000010;
-    memory[18] <= 8'b00010000;
-    memory[19] <= 8'b00000000;
+    memory[17] <= 8'b10000010;
+    memory[18] <= 8'b00000000;
+    memory[19] <= 8'b01000000;
 
-    // Instruction 5: 00000073   (ECALL)
+    // ecall             (0x00000073)
     memory[20] <= 8'b01110011;
     memory[21] <= 8'b00000000;
     memory[22] <= 8'b00000000;
