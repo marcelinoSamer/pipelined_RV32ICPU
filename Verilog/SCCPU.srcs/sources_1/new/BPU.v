@@ -21,7 +21,7 @@
 
 
 module BPU(
-input branch1, branch2, jump, result, Reset, clk, output reg prediction, match
+input branch2, result, Reset, clk, output reg prediction, match
     );
     reg [1:0]State;
     localparam Staken = 2'b00;
@@ -29,32 +29,38 @@ input branch1, branch2, jump, result, Reset, clk, output reg prediction, match
     localparam Wnot = 2'b11;
     localparam Snot = 2'b10;
     reg tReset;
-    always @* begin
+    always @(posedge clk or posedge Reset) begin
         tReset <= Reset;
         if(tReset) begin
             State <= Snot;
         end else begin
         case(State)
             Staken: begin
-                if(branch2 && result)
+                if(~branch2 || result)
                     State <= Staken;
                 else
                     State <= Wtaken;
             end
             Wtaken: begin
-                if(branch2 && result)
+                if(~branch2)
+                    State <= Wtaken;
+                else if (result)
                     State <= Staken;
                 else
                     State <= Wnot;
             end
             Wnot: begin
-                if(branch2 && result)
+                if(~branch2)
+                    State <= Wnot;
+                else if (result)
                     State <= Wtaken;
                 else
-                    State <= Snot;
+                    State<=Snot;
             end
             Snot: begin
-                if(branch2 && result)
+                if(~branch2)
+                    State<=Snot;
+                else if (result)    
                     State <= Wnot;
                 else
                     State <= Snot;
@@ -62,13 +68,8 @@ input branch1, branch2, jump, result, Reset, clk, output reg prediction, match
             default:;
         endcase
         end
-    end
-    
-    always @* begin
-        if (jump) prediction = 1;
-        else begin
-            prediction = ~State[1];
-            match = result & prediction;
-        end
+        
+        prediction <= ~State[1];
+        match <= (prediction == result);
     end
 endmodule

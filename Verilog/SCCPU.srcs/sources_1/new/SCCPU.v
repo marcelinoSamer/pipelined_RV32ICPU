@@ -78,18 +78,18 @@ output reg [12:0] BCD
     reg [31:0] PC;
     wire [31:0] nextPC;
     wire [31:0] inst;
-    nextPC pcgen(.PC(PC), .imm(immediate), .rs1(data1), .stall(stall | stallCU), .branching(branching), .branchF(branch), .jumpF(jump), .nextPC(nextPC));
+    nextPC pcgen(.PC(PC), .imm(EX_MEM_Imm), .EX_MEM_PC(EX_MEM_PC), .rs1(data1), .stall(stall | stallCU), .branching(branching), .match(match), .branchF(branch), .jumpF(jump), .nextPC(nextPC));
     always @(posedge clk or posedge reset) begin
         if (reset)
             PC <= 32'd0;
         else
-        PC <= nextPC;
+            PC <= nextPC;
     end
 
     
     wire branching;
     wire match;        
-    BPU branchPrediction(.branch1(branch), .branch2(EX_MEM_Ctrl_MEM[3]), .jump(jump), .result(branchTaken), .Reset(reset), .clk(clk), .prediction(branching), .match(match));
+    BPU branchPrediction(.branch2(EX_MEM_Ctrl_MEM[3]), .result(branchTaken), .Reset(reset), .clk(clk), .prediction(branching), .match(match));
        
        
     InstMem instmem (.addr(PC[7:2]), .data_out(inst));
@@ -97,7 +97,7 @@ output reg [12:0] BCD
     //IF_ID
     wire [31:0] IF_ID_PC, IF_ID_Inst;
     nBitReg #(64) IF_ID (clk,reset,1'b1,
-                             {PC, inst},
+                             (stall? 64'b0 : {PC, inst}),
                              {IF_ID_PC,IF_ID_Inst} );
                              
     wire stall;
@@ -130,12 +130,12 @@ output reg [12:0] BCD
     .memSign(memSign),
     .stall(stallCU));
     
-    assign writedata = MemtoReg? memout : (Jump? PC + 4 : alures); // in WB
-    regFile rf (.reg1(inst[19:15]), .reg2(inst[24:20]), .writeReg(inst[11:7]), .write(RegWrite), .writeData(writedata), .data1(data1), .data2(data2),
+    assign writedata = MEM_WB_Ctrl[1]?  MEM_WB_Mem_out : (MEM_WB_Ctrl[2]? MEM_WB_PC + 4 : MEM_WB_ALU_out); // in WB
+    regFile rf (.reg1(inst[19:15]), .reg2(inst[24:20]), .writeReg(inst[11:7]), .write(MEM_WB_Ctrl[0]), .writeData(writedata), .data1(data1), .data2(data2),
     .rst(reset), .clk(clk));
  
  
-     Immediategenerator ig (.IR(inst), .Imm(immediate));
+     Immediategenerator ig (.IR(IF_ID_Inst), .Imm(immediate));
  
      //Decode stage end
      
@@ -144,13 +144,15 @@ output reg [12:0] BCD
      wire [3:0] ID_EX_Func;
      wire [2:0] ID_EX_BF3;
      wire [4:0] ID_EX_Rs1, ID_EX_Rs2, ID_EX_Rd;
-     wire [1:0] ctrl_WB;
+     wire [2:0] ctrl_WB;
      wire [5:0] ctrl_MEM;
      wire [4:0] ctrl_EX;
      wire [3:0] ID_EX_Ctrl_MEM;
-     wire [1:0] ID_EX_Ctrl_WB;
+     wire [2:0] ID_EX_Ctrl_WB;
      wire [4:0] ID_EX_Ctrl_EX;
-     assign ctrl_WB = stall? 2'b0 : {MemtoReg, RegWrite};
+     
+     //Hazard flush
+     assign ctrl_WB = stall? 3'b0 : {jump, MemtoReg, RegWrite};
      assign ctrl_MEM = stall? 6'b0 : {MemRead, MemWrite, branch, memSign};
      assign ctrl_EX = stall? 5'b0 : {branch, ALUsrc1, ALUsrc2, ALUop};
      nBitReg #(156) ID_EX (clk,reset,1'b1,
@@ -191,17 +193,16 @@ output reg [12:0] BCD
     ForwardingUnit forward(.ID_rs1(ID_EX_Rs1) , .ID_rs2(ID_EX_Rs2) , .EX_rd(EX_MEM_Rd) , 
                             .MEM_rd(MEM_WB_Rd), .EX_regWrite(EX_MEM_Ctrl_WB[0]) , .MEM_regWrite(MEM_WB_Ctrl[0]), 
                                 .fowA(forA), .fowB(forB));
-    wire [31:0] EX_MEM_BranchAddOut, EX_MEM_ALU_out, EX_MEM_RegR2;
+    wire [31:0] EX_MEM_BranchAddOut, EX_MEM_ALU_out, EX_MEM_RegR2, EX_MEM_PC;
     wire [5:0] EX_MEM_Ctrl_MEM;
-    wire [1:0] EX_MEM_Ctrl_WB;
+    wire [2:0] EX_MEM_Ctrl_WB;
     wire [4:0] EX_MEM_Rd;
     wire [2:0] EX_MEM_BF3;
     wire EX_MEM_Zero;
-    wire [31:0] value = (ID_EX_PC + (ID_EX_Imm << 1)); // BPU
     nBitReg #(110) EX_MEM (
     clk, reset, 1'b1,
-    {ID_EX_Ctrl_MEM, ID_EX_Ctrl_WB, value, zero, alures, ID_EX_RegR2, ID_EX_Rd, ID_EX_BF3},
-    {EX_MEM_Ctrl_MEM, EX_MEM_Ctrl_WB,  EX_MEM_BranchAddOut, EX_MEM_Zero, EX_MEM_ALU_out, EX_MEM_RegR2, EX_MEM_Rd, EX_MEM_BF3}
+    {ID_EX_Ctrl_MEM, ID_EX_Ctrl_WB, ID_EX_PC, ID_EX_Imm,zero, alures, ID_EX_RegR2, ID_EX_Rd, ID_EX_BF3},
+    {EX_MEM_Ctrl_MEM, EX_MEM_Ctrl_WB,  EX_MEM_PC, EX_MEM_Imm, EX_MEM_Zero, EX_MEM_ALU_out, EX_MEM_RegR2, EX_MEM_Rd, EX_MEM_BF3}
     );
     
     wire branchTaken;
@@ -211,13 +212,14 @@ output reg [12:0] BCD
      
     wire [31:0] MEM_WB_Mem_out;
     wire [31:0] MEM_WB_ALU_out;
-    wire [1:0] MEM_WB_Ctrl;
+    wire [31:0] MEM_WB_PC;
+    wire [2:0] MEM_WB_Ctrl;
     wire [4:0] MEM_WB_Rd;
 
     nBitReg #(77) MEM_WB (clk,reset,1'b1,
-                            {EX_MEM_Ctrl_WB, memout, EX_MEM_ALU_out, EX_MEM_Rd},
+                            {EX_MEM_Ctrl_WB, memout, EX_MEM_ALU_out, EX_MEM_Rd, EX_MEM_PC},
                             {MEM_WB_Ctrl,MEM_WB_Mem_out, MEM_WB_ALU_out,
-                             MEM_WB_Rd} );
+                             MEM_WB_Rd, MEM_WB_PC} );
     
     
 endmodule
