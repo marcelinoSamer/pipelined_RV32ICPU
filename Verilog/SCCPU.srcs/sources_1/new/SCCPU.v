@@ -88,50 +88,53 @@ output reg [12:0] BCD
     wire match;        
     BPU branchPrediction(.branch2(EX_MEM_Ctrl_MEM[1]), .result(branchTaken), .Reset(reset), .clk(clk), .prediction(branching), .match(match));
        
-       
-//    InstMem instmem (.addr(PC[7:2]), .data_out(inst));
-    wire [95:0] read_data ;
- wire is_instruction_fetch;
 
-wire buffer_empty = buffer_inst.buffer_empty; 
-wire[31:0] instruction_out;
-assign is_instruction_fetch = buffer_empty;   
+  wire [95:0] read_data;
+    wire buffer_empty;
+    wire [31:0] instruction_out;
 
-Buffer buffer_inst(
-    .clk(clk),
-    .reset(reset),
-    .mem_data(read_data),
-    .instruction_out(instruction_out),
-    .buffer_empty(buffer_empty)
-);
+    wire is_instruction_fetch = buffer_empty;
 
-UnifiedMem Memory(
-    .clk(clk),
-    .address(is_instruction_fetch ? PC[7:2] : EX_MEM_ALU_out[7:2]),
-    .MemRead(is_instruction_fetch ? 2'b11 : MemRead),
-    .MemWrite(is_instruction_fetch ? 2'b00 : MemWrite),
-    .writedata(EX_MEM_RegR2),
-    .read_data(read_data),
-    .mem_unsigned(memSign),
-    .is_instruction_fetch(is_instruction_fetch) , .PC(PC)
-);
+    wire fetch_enable = buffer_empty && !(stall | stallCU);
+    
+    Buffer buffer_inst(
+        .clk(clk),
+        .reset(reset),
+        .mem_data(read_data),
+        .fetch_enable(fetch_enable),
+        .instruction_out(instruction_out),
+        .buffer_empty(buffer_empty)
+    );
 
+  
+    wire [31:0] EX_MEM_RegR2; //There is no value such as EX MEM REG R2 ,i am supposed to connect it to the writeback value that will come from the alu to be written in the memory 
+    
+    UnifiedMem Memory(
+        .clk(clk),
+        .address(fetch_enable ? PC[7:2] : EX_MEM_ALU_out[7:2]),
+        .MemRead(fetch_enable ? 2'b11 : EX_MEM_Ctrl_MEM[5:4]),
+        .MemWrite(fetch_enable ? 2'b00 :MEM_WB_Ctrl),
+        .writedata(32'b1),
+        .read_data(read_data),
+        .mem_unsigned(EX_MEM_Ctrl_MEM[0]),
+        .fetch_enable(fetch_enable),
+        .PC(PC)
+    );
 
-wire [31:0] instr_from_memory  = read_data[31:0];     
-wire [31:0] instr_from_buffer  = instruction_out;      
-wire [31:0] next_IF_inst;
-assign next_IF_inst = is_instruction_fetch ? instr_from_memory : instr_from_buffer;
+   
+    wire [31:0] next_IF_inst = instruction_out;
 
-    //IF_ID
+   
     wire [31:0] IF_ID_PC, IF_ID_Inst;
-   nBitReg #(64) IF_ID (
-    .clk(clk),
-    .rst(reset),
-    .load(1'b1),
-    .D({PC, next_IF_inst}),    
-    .Q({IF_ID_PC, IF_ID_Inst})
-);
-       
+    wire IF_ID_enable = !(stall | stallCU) && !buffer_empty;
+    
+    nBitReg #(64) IF_ID (
+        .clk(clk),
+        .rst(reset),
+        .load(1'b1), 
+        .D({PC, next_IF_inst}),    
+        .Q({IF_ID_PC, IF_ID_Inst})
+    ); 
 //    //IF_ID
 //    wire [31:0] IF_ID_PC;
 //    wire [31:0] IF_ID_Inst;
@@ -193,7 +196,7 @@ assign next_IF_inst = is_instruction_fetch ? instr_from_memory : instr_from_buff
      
      //Hazard flush
      assign ctrl_WB = (stall || jump)? 3'b0 : {jump, MemtoReg, RegWrite};
-     assign ctrl_MEM = (stall || jump)? 6'b0 : {MemRead, MemWrite, branch, memSign};
+     assign ctrl_MEM = (stall || jump)? 5'b0 : {MemRead, MemWrite, branch, memSign};
      assign ctrl_EX = (stall || jump)? 5'b0 : {branch, ALUsrc1, ALUsrc2, ALUop};
      nBitReg #(198) ID_EX (clk,reset,1'b1,
                            ((stall || ~match)? 198'b0 : {ctrl_EX, ctrl_MEM, ctrl_WB,
@@ -234,7 +237,7 @@ assign next_IF_inst = is_instruction_fetch ? instr_from_memory : instr_from_buff
                             .MEM_rd(MEM_WB_Rd), .EX_regWrite(EX_MEM_Ctrl_WB[0]) , .MEM_regWrite(MEM_WB_Ctrl[0]), 
                                 .fowA(forA), .fowB(forB));
     wire [31:0] EX_MEM_ALU_out, EX_MEM_PC, EX_MEM_Imm;
-    wire [5:0] EX_MEM_Ctrl_MEM;
+    wire [4:0] EX_MEM_Ctrl_MEM;
     wire [2:0] EX_MEM_Ctrl_WB;
     wire [4:0] EX_MEM_Rd;
     wire [2:0] EX_MEM_BF3;

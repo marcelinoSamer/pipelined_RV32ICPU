@@ -1,6 +1,6 @@
-  module UnifiedMem #(parameter Size = 4096,
+  module UnifiedMem #(parameter Size = 150,
     parameter Address_width = 6,
-    parameter INSTR_END = 2048  , 
+    parameter INSTR_END = 100  , 
     parameter DATA_SIZE = Size - INSTR_END) 
  (input wire clk,
  input wire [Address_width-1:0] address , 
@@ -9,7 +9,7 @@
  input wire [31:0] writedata ,
  output reg [95:0] read_data ,
  input wire mem_unsigned , 
- input wire is_instruction_fetch , input [31:0] PC, input flush  )  ; 
+ input wire fetch_enable , input [31:0] PC  )  ; 
 
 
 
@@ -109,7 +109,7 @@
       
             2'b10: begin  // SH 
                 memory[addr0]   <= writedata[7:0];
-                memory[addr1+1] <= writedata[15:8];
+                memory[addr1] <= writedata[15:8];
             end
             
             2'b11: begin  // SW 
@@ -120,7 +120,10 @@
             end
             
             endcase
-  end       
+  end 
+     end 
+     
+     always @(*) begin    
       case (MemRead)
             2'b01: begin  // LB / LBU 
                  b = memory[addr0];
@@ -135,9 +138,9 @@
                 read_data <= {32'b0, h_ext};
                end
 
-            
+          
            2'b11: begin  // LW or Instruction Fetch
-                if (is_instruction_fetch) begin
+                if (fetch_enable) begin
                     // Fetch 96 bits = 12 bytes = 3 instructions
                     read_data <= {
                         memory[PC+11], memory[PC+10], memory[PC+9],  memory[PC+8], 
@@ -154,5 +157,6 @@
             end
         endcase
     end
+ 
 endmodule 
         
