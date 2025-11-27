@@ -1,17 +1,14 @@
 module Buffer( 
     input  clk, 
     input  reset,
-    input  [63:0] mem_data,
+    input  [95:0] mem_data,
     output reg [31:0] instruction_out,
-    output wire is_instruction_fetch
+    output reg buffer_empty  
 );
 
     reg [31:0] instr0, instr1;
     reg valid0, valid1;
-    reg next_is_slot0;
-
-    // high when empty , Works as an enable that 
-    assign is_instruction_fetch = ~(valid0 | valid1);
+    reg first_output;  
 
     always @(posedge clk or posedge reset) begin
         if (reset) begin
@@ -20,31 +17,27 @@ module Buffer(
             valid0 <= 0;
             valid1 <= 0;
             instruction_out <= 32'b0;
-            next_is_slot0 <= 1'b1;
-        
+            first_output <= 1;
+            buffer_empty <= 1'b1;  
         end else begin
-            
           
-            if (is_instruction_fetch) begin
+            buffer_empty <= ~(valid0 | valid1);
+
+            if (buffer_empty && ~valid0 && ~valid1 && ~first_output) begin
                 instr0 <= mem_data[63:32];  
-                instr1 <= mem_data[31:0];  
+                instr1 <= mem_data[95:64];  
                 valid0 <= 1;
                 valid1 <= 1;
-                instruction_out <= 32'b0;
-                next_is_slot0 <= 1'b1;
-            end
-            
-           
-            else begin
-                if (valid0 && next_is_slot0) begin
-                    instruction_out <= instr0;
-                    valid0 <= 0;
-                    next_is_slot0 <= 1'b0;
-                end 
-                else if (valid1 && !next_is_slot0) begin
+                first_output <= 0;  
+                instruction_out <= mem_data[63:32];
+            end else begin
+                if (valid1 & ~first_output) begin
                     instruction_out <= instr1;
                     valid1 <= 0;
-                    next_is_slot0 <= 1'b1;
+                    valid0<=0;
+                    first_output<=1;
+                    buffer_empty<=1'b1;
+                    
                 end
             end
         end

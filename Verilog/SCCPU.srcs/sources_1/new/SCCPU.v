@@ -89,11 +89,23 @@ output reg [12:0] BCD
     BPU branchPrediction(.branch2(EX_MEM_Ctrl_MEM[1]), .result(branchTaken), .Reset(reset), .clk(clk), .prediction(branching), .match(match));
        
        
-    InstMem instmem (.addr(PC[7:2]), .data_out(inst));
-    /*wire [95:0] read_data ;
+//    InstMem instmem (.addr(PC[7:2]), .data_out(inst));
+    wire [95:0] read_data ;
  wire is_instruction_fetch;
 
-UnifiedMem Memory ( 
+wire buffer_empty = buffer_inst.buffer_empty; 
+wire[31:0] instruction_out;
+assign is_instruction_fetch = buffer_empty;   
+
+Buffer buffer_inst(
+    .clk(clk),
+    .reset(reset),
+    .mem_data(read_data),
+    .instruction_out(instruction_out),
+    .buffer_empty(buffer_empty)
+);
+
+UnifiedMem Memory(
     .clk(clk),
     .address(is_instruction_fetch ? PC[7:2] : EX_MEM_ALU_out[7:2]),
     .MemRead(is_instruction_fetch ? 2'b11 : MemRead),
@@ -101,40 +113,31 @@ UnifiedMem Memory (
     .writedata(EX_MEM_RegR2),
     .read_data(read_data),
     .mem_unsigned(memSign),
-    .is_instruction_fetch(is_instruction_fetch)
+    .is_instruction_fetch(is_instruction_fetch) , .PC(PC)
 );
 
-wire [31:0] instruction_out;
-
-Buffer buffer_inst(
-    .clk(clk),
-    .reset(reset),
-    .mem_data(read_data[95:32]), 
-    .instruction_out(instruction_out),
-    .is_instruction_fetch(is_instruction_fetch)
-);
 
 wire [31:0] instr_from_memory  = read_data[31:0];     
 wire [31:0] instr_from_buffer  = instruction_out;      
 wire [31:0] next_IF_inst;
-assign next_IF_inst = is_instruction_fetch ? instr_from_mem : instr_from_buffer;
+assign next_IF_inst = is_instruction_fetch ? instr_from_memory : instr_from_buffer;
 
     //IF_ID
     wire [31:0] IF_ID_PC, IF_ID_Inst;
    nBitReg #(64) IF_ID (
     .clk(clk),
     .rst(reset),
-    .enable(1'b1),
+    .load(1'b1),
     .D({PC, next_IF_inst}),    
     .Q({IF_ID_PC, IF_ID_Inst})
-);*/
+);
        
-    //IF_ID
-    wire [31:0] IF_ID_PC;
-    wire [31:0] IF_ID_Inst;
-    nBitReg #(64) IF_ID (clk,reset,1'b1,
-                             (stall? 64'b0 : {PC, inst}),
-                             {IF_ID_PC,IF_ID_Inst} );
+//    //IF_ID
+//    wire [31:0] IF_ID_PC;
+//    wire [31:0] IF_ID_Inst;
+//    nBitReg #(64) IF_ID (clk,reset,1'b1,
+//                             (stall? 64'b0 : {PC, inst}),
+//                             {IF_ID_PC,IF_ID_Inst} );
                              
     wire stall;
     HDU hazardDetection(.IF_ID_Rs1(IF_ID_Inst[19:15]), .IF_ID_Rs2(IF_ID_Inst[24:20]), .ID_EX_Rd(ID_EX_Rd), .stall(stall));                    
@@ -202,10 +205,10 @@ assign next_IF_inst = is_instruction_fetch ? instr_from_mem : instr_from_buffer;
                            ID_EX_PC, ID_EX_Inst, ID_EX_data1, ID_EX_data2,
                            ID_EX_Imm, ID_EX_Func, 
                            ID_EX_Rs1, ID_EX_Rs2, ID_EX_Rd, ID_EX_BF3} );
- 
+
  
     //Excute stage
-    ALUControlUnit alucu (.instruction(ID_EX_Func), .ALUop(ID_EX_Ctrl_EX[1:0]), .clk(clk), .ALUSELECT(ALUSELECT));
+    ALUControlUnit alucu (.instruction(ID_EX_Func), .ALUop(ID_EX_Ctrl_EX[1:0]), .clk(clk), .ALUSELECT(ALUSELECT) );
     
 
     assign shamt =
@@ -245,7 +248,7 @@ assign next_IF_inst = is_instruction_fetch ? instr_from_mem : instr_from_buffer;
     
     wire branchTaken;
     BLU branchLogic(.branch(EX_MEM_Ctrl_MEM[1]), .F3(EX_MEM_BF3), .c(EX_MEM_ALUF[2]), .z(EX_MEM_ALUF[3]), .v(EX_MEM_ALUF[1]), .s(EX_MEM_ALUF[0]), .branchTaken(branchTaken));
-    DataMem datamemory (.clk(clk), .MemRead(MemRead), .MemWrite(MemWrite), .addr(alures[7:2]), .data_in(data2), .data_out(memout));
+//    DataMem datamemory (.clk(clk), .MemRead(MemRead), .MemWrite(MemWrite), .addr(alures[7:2]), .data_in(data2), .data_out(memout));
      
      
     wire [31:0] MEM_WB_Mem_out;

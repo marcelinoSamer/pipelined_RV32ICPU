@@ -1,4 +1,4 @@
-module UnifiedMem #(parameter Size = 4096,
+  module UnifiedMem #(parameter Size = 4096,
     parameter Address_width = 6,
     parameter INSTR_END = 2048  , 
     parameter DATA_SIZE = Size - INSTR_END) 
@@ -9,7 +9,7 @@ module UnifiedMem #(parameter Size = 4096,
  input wire [31:0] writedata ,
  output reg [95:0] read_data ,
  input wire mem_unsigned , 
- input wire is_instruction_fetch) ; 
+ input wire is_instruction_fetch , input [31:0] PC, input flush  )  ; 
 
 
 
@@ -41,8 +41,65 @@ module UnifiedMem #(parameter Size = 4096,
     /*initial begin
         $readmemh("program.mem", memory); //to be tested
     end*/   //test bench file
+    
+    
+//initial begin
+       
+        
+//        // Load test program
+//        // Instruction 0: ADDI x1, x0, 10 (0x00a00093)
+//        memory[0]  = 8'h93;
+//        memory[1]  = 8'h00;
+//        memory[2]  = 8'ha0;
+//        memory[3]  = 8'h00;
 
+//        // Instruction 1: ADDI x2, x0, 20 (0x01400113)
+//        memory[4]  = 8'h13;
+//        memory[5]  = 8'h01;
+//        memory[6]  = 8'h40;
+//        memory[7]  = 8'h01;
 
+//        // Instruction 2: ADD x3, x1, x2 (0x002081b3)
+//        memory[8]  = 8'hb3;
+//        memory[9]  = 8'h81;
+//        memory[10] = 8'h20;
+//        memory[11] = 8'h00;
+
+//        // Instruction 3: ADD x4, x3, x1 (0x00118233)
+//        memory[12] = 8'h33;
+//        memory[13] = 8'h82;
+//        memory[14] = 8'h11;
+//        memory[15] = 8'h00;
+
+//        // Instruction 4: ADD x5, x0, x1 (0x001002b3)
+//        memory[16] = 8'hb3;
+//        memory[17] = 8'h02;
+//        memory[18] = 8'h10;
+//        memory[19] = 8'h00;
+
+//        // Instruction 5: ECALL (0x00000073)
+//        memory[20] = 8'h73;
+//        memory[21] = 8'h00;
+//        memory[22] = 8'h00;
+//        memory[23] = 8'h00;
+        
+//        // Initialize data memory with test values
+//        memory[2048] = 8'h11;  // Data at address 0 (word 0)
+//        memory[2049] = 8'h00;
+//        memory[2050] = 8'h00;
+//        memory[2051] = 8'h00;
+        
+//        memory[2052] = 8'h09;  // Data at address 4 (word 1)
+//        memory[2053] = 8'h00;
+//        memory[2054] = 8'h00;
+//        memory[2055] = 8'h00;
+//    end
+    
+ 
+   reg [7:0] b; 
+                reg [31:0] b_ext;
+ reg [15:0] h; 
+                reg [31:0] h_ext; 
  always @(posedge clk) begin
     if (!instr_region) begin
         case (MemWrite)
@@ -66,15 +123,15 @@ module UnifiedMem #(parameter Size = 4096,
   end       
       case (MemRead)
             2'b01: begin  // LB / LBU 
-                reg [7:0] b = memory[addr0];
-                reg [31:0] b_ext = mem_unsigned ? {24'b0, b} : {{24{b[7]}}, b};
+                 b = memory[addr0];
+                 b_ext = mem_unsigned ? {24'b0, b} : {{24{b[7]}}, b};
                 read_data <= {32'b0, b_ext};
             end
                
             
             2'b10: begin  // LH / LHU 
-                reg [15:0] h = {memory[addr1], memory[addr0]};
-                reg [31:0] h_ext = mem_unsigned ? {16'b0, h} : {{16{h[15]}}, h};
+                 h = {memory[addr1], memory[addr0]};
+                h_ext = mem_unsigned ? {16'b0, h} : {{16{h[15]}}, h};
                 read_data <= {32'b0, h_ext};
                end
 
@@ -83,9 +140,9 @@ module UnifiedMem #(parameter Size = 4096,
                 if (is_instruction_fetch) begin
                     // Fetch 96 bits = 12 bytes = 3 instructions
                     read_data <= {
-                        memory[addr11], memory[addr10], memory[addr9],  memory[addr8], 
-                        memory[addr7],  memory[addr6],  memory[addr5],  memory[addr4],                          			
-                        memory[addr3],  memory[addr2],  memory[addr1],  memory[addr0]};
+                        memory[PC+11], memory[PC+10], memory[PC+9],  memory[PC+8], 
+                        memory[PC+7],  memory[PC+6],  memory[PC+5],  memory[PC+4],                          			
+                        memory[PC+3],  memory[PC+2],  memory[PC+1],  memory[PC]};
                 end
                 else begin
                     // LW - Load Word (32 bits), pad to 96 bits
@@ -97,4 +154,5 @@ module UnifiedMem #(parameter Size = 4096,
             end
         endcase
     end
-endmodule
+endmodule 
+        
