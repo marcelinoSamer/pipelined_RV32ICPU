@@ -1,4 +1,4 @@
-  addi x1, x0, 5        # x1 = 5
+   addi x1, x0, 5        # x1 = 5
     addi x2, x0, 5        # x2 = 5
     beq x1, x2, taken1    # Should branch (equal)
     addi x3, x0, 1        # Should be skipped

@@ -25,10 +25,6 @@
 module SCCPU(
 input clk,
 input reset,
-input [1:0] ledsel,
-input [3:0] ssdSel,
-output reg [15:0] LEDs,
-output reg [12:0] BCD
     );
     
     wire [31:0] data1;
@@ -45,31 +41,6 @@ output reg [12:0] BCD
     wire [2:0] funct3 = ID_EX_Inst[`IR_funct3];
     wire [6:0] funct7 = ID_EX_Inst[`IR_funct7];
     
-    //hardware testing block
-      always @* begin
-    case(ledsel)
-            2'b00: LEDs = PC[15:0];
-            2'b01: LEDs = PC[31:16];
-            2'b10: LEDs = {2'b00, branch, MemRead, MemtoReg, ALUop, MemWrite, ALUsrc2, RegWrite, ALUSELECT, zero, branch&zero};
-        endcase
-        
-        case(ssdSel)
-            4'b0000: BCD = PC[12:0];
-            4'b0001: BCD = PC[12:0] + 32'd4;
-            4'b0010: BCD = PC+(immediate<<1);
-            4'b0011: BCD = (branch & zero)? PC+(immediate<<1) : PC+32'd4;
-            4'b0100: BCD = data1;
-            4'b0101: BCD = data2;
-            4'b0110: BCD = MemtoReg? memout : alures;
-            4'b0111: BCD = immediate;
-            4'b1000: BCD = immediate<<1;
-            //4'b1001: BCD = alusrc2;
-            4'b1010: BCD = alures;
-            4'b1011: BCD = memout;
-        endcase
-    
-    end
-    //hardware testing block end
 
     //initializing the program counter and fetch stage
     reg [31:0] PC;
@@ -88,12 +59,10 @@ output reg [12:0] BCD
     wire match;        
     BPU branchPrediction(.branch2(EX_MEM_Ctrl_MEM[1]), .result(branchTaken), .Reset(reset), .clk(clk), .prediction(branching), .match(match));
        
-
-  wire [95:0] read_data;
+//flushing needs to be tested , stalling needs to be tested , the unified memory parameters are changed to smaller values to test the loads and stores 
+    wire [95:0] read_data;
     wire buffer_empty;
     wire [31:0] instruction_out;
-
-    wire is_instruction_fetch = buffer_empty;
 
     wire fetch_enable = buffer_empty && !(stall | stallCU);
     
@@ -107,14 +76,14 @@ output reg [12:0] BCD
     );
 
   
-    wire [31:0] EX_MEM_RegR2; //There is no value such as EX MEM REG R2 ,i am supposed to connect it to the writeback value that will come from the alu to be written in the memory 
+    wire [31:0] EX_MEM_RegR2; //There is no value such as EX MEM REG R2 ,i am supposed to connect it to the writeback value that //will come from the alu to be written in the memory 
     
     UnifiedMem Memory(
         .clk(clk),
-        .address(fetch_enable ? PC[7:2] : EX_MEM_ALU_out[7:2]),
+        .address(fetch_enable ? PC[7:2] : EX_MEM_ALU_out[7:2]), //The CTRLs need to be revised for this line and the two following //lines 
         .MemRead(fetch_enable ? 2'b11 : EX_MEM_Ctrl_MEM[5:4]),
         .MemWrite(fetch_enable ? 2'b00 :MEM_WB_Ctrl),
-        .writedata(32'b1),
+        .writedata(32'b1), //This is a hardwire value for testibf
         .read_data(read_data),
         .mem_unsigned(EX_MEM_Ctrl_MEM[0]),
         .fetch_enable(fetch_enable),
@@ -131,7 +100,7 @@ output reg [12:0] BCD
     nBitReg #(64) IF_ID (
         .clk(clk),
         .rst(reset),
-        .load(1'b1), 
+        .load(1'b1), //hardwired value , needs to be changes to IF/ID enable or the fetch enable from above (under testing) 
         .D({PC, next_IF_inst}),    
         .Q({IF_ID_PC, IF_ID_Inst})
     ); 

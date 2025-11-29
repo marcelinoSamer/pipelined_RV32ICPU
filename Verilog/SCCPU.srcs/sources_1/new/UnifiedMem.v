@@ -37,64 +37,6 @@
     wire [Address_width-1:0] addr10 = instr_region ? (address + 10) : (wrap_data_addr(address + 10) + INSTR_END);
     wire [Address_width-1:0] addr11 = instr_region ? (address + 11) : (wrap_data_addr(address + 11) + INSTR_END);
 
-
-    /*initial begin
-        $readmemh("program.mem", memory); //to be tested
-    end*/   //test bench file
-    
-    
-//initial begin
-       
-        
-//        // Load test program
-//        // Instruction 0: ADDI x1, x0, 10 (0x00a00093)
-//        memory[0]  = 8'h93;
-//        memory[1]  = 8'h00;
-//        memory[2]  = 8'ha0;
-//        memory[3]  = 8'h00;
-
-//        // Instruction 1: ADDI x2, x0, 20 (0x01400113)
-//        memory[4]  = 8'h13;
-//        memory[5]  = 8'h01;
-//        memory[6]  = 8'h40;
-//        memory[7]  = 8'h01;
-
-//        // Instruction 2: ADD x3, x1, x2 (0x002081b3)
-//        memory[8]  = 8'hb3;
-//        memory[9]  = 8'h81;
-//        memory[10] = 8'h20;
-//        memory[11] = 8'h00;
-
-//        // Instruction 3: ADD x4, x3, x1 (0x00118233)
-//        memory[12] = 8'h33;
-//        memory[13] = 8'h82;
-//        memory[14] = 8'h11;
-//        memory[15] = 8'h00;
-
-//        // Instruction 4: ADD x5, x0, x1 (0x001002b3)
-//        memory[16] = 8'hb3;
-//        memory[17] = 8'h02;
-//        memory[18] = 8'h10;
-//        memory[19] = 8'h00;
-
-//        // Instruction 5: ECALL (0x00000073)
-//        memory[20] = 8'h73;
-//        memory[21] = 8'h00;
-//        memory[22] = 8'h00;
-//        memory[23] = 8'h00;
-        
-//        // Initialize data memory with test values
-//        memory[2048] = 8'h11;  // Data at address 0 (word 0)
-//        memory[2049] = 8'h00;
-//        memory[2050] = 8'h00;
-//        memory[2051] = 8'h00;
-        
-//        memory[2052] = 8'h09;  // Data at address 4 (word 1)
-//        memory[2053] = 8'h00;
-//        memory[2054] = 8'h00;
-//        memory[2055] = 8'h00;
-//    end
-    
  
    reg [7:0] b; 
                 reg [31:0] b_ext;
