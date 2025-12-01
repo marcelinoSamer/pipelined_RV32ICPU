@@ -86,7 +86,8 @@ input [31:0] instruction ,
     output reg jump,
     output reg JALR,
     output reg memSign,
-    output reg stall
+    output reg stall,
+    output reg AUIPC
     );
 wire [2:0] F3;
 assign F3 = instruction[`IR_funct3];
@@ -230,12 +231,13 @@ always @(*) begin
      			ALUop=2'b00;
      			MemWrite=0;
      			RegWrite=1;
-     			ALUsrc1 =0 ;
+     			ALUsrc1 =1;
      			ALUsrc2 = 1;
      			branch = 0; 
      			jump = 0; 
     			JALR = 0;
     			stall = 0;
+    			AUIPC = 1;
 		end  
 		(`OPCODE_LUI)  : begin
      			MemRead = 0 ; 

@@ -22,7 +22,7 @@ module tb;
         #1;
         
         // Load hex file into memory
-        $readmemh("C:/Users/ASUS/Desktop/pipelined_RV32ICPU/tests/Milestone3/jalr.hex", uut.Memory.memory);
+        $readmemh("C:/Users/ASUS/Desktop/pipelined_RV32ICPU/tests/Milestone3/auipc.hex", uut.Memory.memory);
         
 
 end    

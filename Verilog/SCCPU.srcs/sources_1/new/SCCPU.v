@@ -58,6 +58,7 @@ input reset
           wire match;   
           wire stall;
           wire [31:0] IF_ID_PC, IF_ID_Inst;
+          wire AUIPC;
     //initializing the program counter and fetch stage
     reg [31:0] PC;
     wire [31:0] nextPC;
@@ -149,7 +150,8 @@ Buffer buffer_inst(
     .jump(jump),
     .JALR(JALR),
     .memSign(memSign),
-    .stall(stallCU));
+    .stall(stallCU) , 
+    .AUIPC(AUIPC));
     
     assign writedata = MEM_WB_Ctrl[1]?  MEM_WB_Mem_out : (MEM_WB_Ctrl[2]? MEM_WB_PC + 4 : MEM_WB_ALU_out); // in WB
     regFile rf (.reg1(IF_ID_Inst[19:15]), .reg2(IF_ID_Inst[24:20]), .writeReg(MEM_WB_Rd), .write(MEM_WB_Ctrl[0]), .writeData(writedata), .data1(data1), .data2(data2),
@@ -196,7 +198,7 @@ Buffer buffer_inst(
     assign alu2 = ID_EX_Ctrl_EX[3]? ID_EX_Imm : midmux;
     //assign alusrc1 = ID_EX_Ctrl_EX[1]? PC : alu1;
 
-    NbitALU alu (.clk(clk), .Reg1(alu1), .Reg2(alu2), .Zero(zero), .ALUSELECT(ALUSELECT), .AUIPC(ID_EX_Ctrl_EX[1] & ~ID_EX_Ctrl_WB[2]), .ALU(alures), .cf(cf), .vf(vf) , .sf(sf) , .shamt(shamt) );
+    NbitALU alu (.clk(clk), .Reg1(alu1), .Reg2(alu2), .Zero(zero), .ALUSELECT(ALUSELECT), .AUIPC(AUIPC), .ALU(alures), .cf(cf), .vf(vf) , .sf(sf) , .shamt(shamt) ,.PC(ID_EX_PC));
 
     
     ForwardingUnit forward(.ID_rs1(ID_EX_Rs1) , .ID_rs2(ID_EX_Rs2) , .EX_rd(EX_MEM_Rd) , 

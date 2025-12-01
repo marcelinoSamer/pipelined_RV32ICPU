@@ -53,14 +53,14 @@ module UnifiedMem #(
     reg [15:0] h; 
     reg [31:0] h_ext; 
     
-    integer i ;
+//    integer i ;
     
-    initial begin 
+//    initial begin 
 
-    for (i=100 ; i<150;i=i+1) begin 
-    memory[i] <=2;
-    end
-    end 
+//    for (i=100 ; i<150;i=i+1) begin 
+//    memory[i] <=2;
+//    end
+//    end 
     // Memory writes - only allow in data region
     always @(posedge clk) begin
        
@@ -88,7 +88,7 @@ module UnifiedMem #(
         end 
     
      
-    // Memory reads
+    // reads
     always @(*) begin    
         case (MemRead)
             2'b01: begin  // LB / LBU 

@@ -1,3 +1,4 @@
+add x0, x0 , x0
   addi x1, x0, 0xFF     # x1 = 0xFF
     xori x2, x1, 0x0F     # x2 = 0xF0
     xori x3, x1, -1       # x3 = NOT(x1)

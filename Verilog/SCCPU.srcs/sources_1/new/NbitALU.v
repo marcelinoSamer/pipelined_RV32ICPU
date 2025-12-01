@@ -95,7 +95,7 @@ module NbitALU #(parameter N=32) ( input [(N-1):0] Reg1  , input [(N-1):0] Reg2 
 
     always @(*) begin
     case(ALUSELECT)
-            `ALU_ADD: ALU = add;           // ADD
+            `ALU_ADD: ALU = add;
             `ALU_SUB: ALU = add;           // SUB
             `ALU_PASS: ALU = Reg2;         // PASS
             `ALU_OR: ALU = Reg1 | Reg2;    // OR
