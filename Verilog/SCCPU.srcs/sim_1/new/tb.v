@@ -1,69 +1,46 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 10/20/2025 08:59:49 AM
-// Design Name: 
-// Module Name: tb
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
-
-
-`timescale 1ns / 1ps
-
 module tb;
-    // Inputs
+    // Testbench signals
     reg clk;
     reg reset;
-    reg [1:0] ledsel;
-    reg [3:0] ssdSel;
-
-    // Outputs
-    wire [15:0] LEDs;
-    wire [12:0] BCD;
-
-    // Instantiate the Unit Under Test (UUT)
+  
+    // Instantiate the CPU
     SCCPU uut (
         .clk(clk),
-        .reset(reset),
-        .ledsel(ledsel),
-        .ssdSel(ssdSel),
-        .LEDs(LEDs),
-        .BCD(BCD)
+        .reset(reset)
     );
-
-    // Clock generation
+    
+    // Clock generation - 10ns period (100MHz)
     initial begin
         clk = 0;
-        forever #5 clk = ~clk;  // 40ns period
+        forever #5 clk = ~clk;
     end
+    
+    // Load program into memory
+    initial begin
+        // Wait for memory to be initialized
+        #1;
+        
+        // Load hex file into memory
+        $readmemh("C:/Users/ASUS/Desktop/pipelined_RV32ICPU/tests/Milestone3/jalr.hex", uut.Memory.memory);
+        
 
-    // Test sequence
+end    
+    // Test control
     initial begin
         // Initialize inputs
         reset = 1;
-
-        #60;  // Wait some time
+        
+        // Hold reset for a few cycles
+        #20;
         reset = 0;
+        
+ 
+        
+        // Run for sufficient time
+        #5000;
+        
 
-        // Run for a while
-        #400;
-        reset = 1;
-
-        #60;  // Wait some time
-        reset = 0;
-    end
-
+end
+    
 endmodule
-

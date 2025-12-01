@@ -29,11 +29,11 @@ input [31:0] PC, [31:0] imm, EX_MEM_Imm, [31:0] rs1,[31:0] EX_MEM_PC, input stal
         end
         
         else if (jumpF && JALR) begin
-            nextPC = (rs1 + (imm<<1)) & 32'hFFFFFFFE; //anding with ...11110 so the last bit is cleared for byte alignment
+            nextPC = (rs1 + (imm)) & 32'hFFFFFFFE; //anding with ...11110 so the last bit is cleared for byte alignment
         end
         
         else if ((branching && branchF) || jumpF && ~JALR) begin
-            nextPC = PC + (imm<<1);
+            nextPC = PC + (imm);
         end
         
         else if (~match && branching)
