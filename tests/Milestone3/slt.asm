@@ -1,3 +1,4 @@
+add x0 , x0 , x0
 addi x1, x0, 10       # x1 = 10
     addi x2, x0, 20       # x2 = 20
     slt x3, x1, x2        # x3 = 1 (10 < 20)

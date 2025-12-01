@@ -1,3 +1,4 @@
+add x0, x0 , x0 
  addi x1, x0, 0x80     # x1 = 128
     addi x2, x0, 4        # Shift amount
     srl x3, x1, x2        # x3 = 8

@@ -1,3 +1,4 @@
+add x0, x0, x0
  addi x1, x0, 10       # x1 = 10
     slti x2, x1, 20       # x2 = 1 (10 < 20)
     slti x3, x1, 5        # x3 = 0 (10 not < 5)

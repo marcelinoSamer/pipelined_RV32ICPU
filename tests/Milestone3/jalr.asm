@@ -1,4 +1,4 @@
- auipc x1, 0           # Get current PC
+add x0, x0 , x0  
     addi x1, x1, 16       # Calculate target address
     jalr x2, x1, 0        # Jump to x1 + 0
     addi x3, x0, 1        # This should be skipped

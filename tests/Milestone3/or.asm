@@ -1,3 +1,4 @@
+add x0, x0, x0   
  addi x1, x0, 0xF0     # x1 = 0xF0
     addi x2, x0, 0x0F     # x2 = 0x0F
     or x3, x1, x2         # x3 = 0xFF

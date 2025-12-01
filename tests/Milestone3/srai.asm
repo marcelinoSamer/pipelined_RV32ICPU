@@ -1,3 +1,4 @@
+add x0, x0 , x0 
  addi x1, x0, 0x80     # x1 = 128
     srai x2, x1, 4        # x2 = 8
     addi x3, x0, -1       # x3 = 0xFFFFFFFF

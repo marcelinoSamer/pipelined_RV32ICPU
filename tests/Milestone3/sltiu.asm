@@ -1,3 +1,4 @@
+add x0, x0 , x0
  addi x1, x0, 10       # x1 = 10
     sltiu x2, x1, 20      # x2 = 1
     sltiu x3, x1, 5       # x3 = 0

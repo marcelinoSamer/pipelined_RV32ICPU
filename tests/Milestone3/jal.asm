@@ -1,4 +1,5 @@
-jal x1, target1       # Jump to target1, x1 = return address
+add x0 , x0 , x0
+jal x1, target3      # Jump to target1, x1 = return address
 target1:
     jal x2, target2       # Jump to target2, x2 = return address
 target2:
